@@ -2887,85 +2887,85 @@ class Patient extends MX_Controller {
             }
         }
 
-        foreach ($data['labrequests'] as $labrequest) {
+        // foreach ($data['labrequests'] as $labrequest) {
 
-            $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
-            $labtestdata = '';
-            foreach ($labtests as $labtest) {
-                $labrequest_text = $labtest->long_common_name;
-                if (empty($labrequest_text)) {
-                    $labrequest_text = $labtest->lab_request_text;
-                }
+        //     $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
+        //     $labtestdata = '';
+        //     foreach ($labtests as $labtest) {
+        //         $labrequest_text = $labtest->long_common_name;
+        //         if (empty($labrequest_text)) {
+        //             $labrequest_text = $labtest->lab_request_text;
+        //         }
 
-                $labloinc = 'Loinc Number '.$labtest->loinc_num;
-                if (empty($labtest->loinc_num)) {
-                    $labloinc = '';
-                }
+        //         $labloinc = 'Loinc Number '.$labtest->loinc_num;
+        //         if (empty($labtest->loinc_num)) {
+        //             $labloinc = '';
+        //         }
 
-                $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
-                $labtestdata .= $labtestsingle;
-            }
-            $alltest = $labtestdata;
+        //         $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
+        //         $labtestdata .= $labtestsingle;
+        //     }
+        //     $alltest = $labtestdata;
 
-            $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
-            $labrequest_specialty = [];
-            $labrequest_doctor_specialty_explode = explode(',', $doctor->specialties);
+        //     $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
+        //     $labrequest_specialty = [];
+        //     $labrequest_doctor_specialty_explode = explode(',', $doctor->specialties);
 
-            foreach($labrequest_doctor_specialty_explode as $labrequest_doctor_specialty) {
-                $labrequest_specialties = $this->specialty_model->getSpecialtyById($labrequest_doctor_specialty)->display_name_ph;
-                $labrequest_specialty[] = '<span class="badge badge-light badge-pill">'. $labrequest_specialties .'</span>';
-            }
+        //     foreach($labrequest_doctor_specialty_explode as $labrequest_doctor_specialty) {
+        //         $labrequest_specialties = $this->specialty_model->getSpecialtyById($labrequest_doctor_specialty)->display_name_ph;
+        //         $labrequest_specialty[] = '<span class="badge badge-light badge-pill">'. $labrequest_specialties .'</span>';
+        //     }
 
-            $labrequest_spec = implode(' ', $labrequest_specialty);
+        //     $labrequest_spec = implode(' ', $labrequest_specialty);
 
-            $hospital_details = $this->hospital_model->getHospitalById($labrequest->hospital_id);
-            $encounter = $this->encounter_model->getEncounterById($labrequest->encounter_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
-                $branch_name = "Online";
-            }
+        //     $hospital_details = $this->hospital_model->getHospitalById($labrequest->hospital_id);
+        //     $encounter = $this->encounter_model->getEncounterById($labrequest->encounter_id);
+        //     $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+        //     if (empty($branch_name)) {
+        //         $branch_name = "Online";
+        //     }
 
-            if(!empty($labrequest->created_at)) {
-                $timeline[strtotime($labrequest->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($labrequest->created_at.' UTC')) . '</span></li>
-                                                        <li><i class="fa fa-download bg-cyan"></i>
-                                                        <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($labrequest->created_at.' UTC')), 3) . '</span>
-                                                            <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('request') . '</span></h3>
-                                                            <div class="timelineleft-body">
-                                                                '. $alltest .'
-                                                                <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->lab_request_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
-                                                            </div>
-                                                            <div class="timelineleft-footer border-top bg-light">
-                                                                <div class="d-flex align-items-center mt-auto">
-                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
-                                                                    <div>
-                                                                        <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
-                                                                        <small class="d-block text-muted">'. $labrequest_spec .'</small>
-                                                                    </div>
-                                                                    <div class="ml-auto mr-3 text-right">
-                                                                        <div class="row">
-                                                                            <div class="col-md-12 col-sm-12">
-                                                                                <strong>'. $hospital_details->name .'</strong>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-12 col-sm-12">
-                                                                                <small>'. $branch_name .'</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div>
-                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div></li>';
-            } else {
-                '';
-            }
-        }
+        //     if(!empty($labrequest->created_at)) {
+        //         $timeline[strtotime($labrequest->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($labrequest->created_at.' UTC')) . '</span></li>
+        //                                                 <li><i class="fa fa-download bg-cyan"></i>
+        //                                                 <div class="timelineleft-item">
+        //                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($labrequest->created_at.' UTC')), 3) . '</span>
+        //                                                     <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('request') . '</span></h3>
+        //                                                     <div class="timelineleft-body">
+        //                                                         '. $alltest .'
+        //                                                         <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->lab_request_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+        //                                                     </div>
+        //                                                     <div class="timelineleft-footer border-top bg-light">
+        //                                                         <div class="d-flex align-items-center mt-auto">
+        //                                                             <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
+        //                                                             <div>
+        //                                                                 <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
+        //                                                                 <small class="d-block text-muted">'. $labrequest_spec .'</small>
+        //                                                             </div>
+        //                                                             <div class="ml-auto mr-3 text-right">
+        //                                                                 <div class="row">
+        //                                                                     <div class="col-md-12 col-sm-12">
+        //                                                                         <strong>'. $hospital_details->name .'</strong>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div class="row">
+        //                                                                     <div class="col-md-12 col-sm-12">
+        //                                                                         <small>'. $branch_name .'</small>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                             <div>
+        //                                                                 <div>
+        //                                                                     <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div></li>';
+        //     } else {
+        //         '';
+        //     }
+        // }
 
         // foreach ($data['labs'] as $lab) {
 
@@ -3039,823 +3039,823 @@ class Patient extends MX_Controller {
         //     }
         // }
 
-        foreach ($data['medical_histories'] as $medical_history) {
-            $specialty = [];
-            $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
-            $doctor_specialty_explode = explode(',', $case_doctor->specialties);
-            $hospital_details = $this->hospital_model->getHospitalById($medical_history->hospital_id);
-            $encounter = $this->encounter_model->getEncounterById($medical_history->encounter_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
-                $branch_name = "Online";
-            }
-            foreach($doctor_specialty_explode as $doctor_specialty) {
-                $specialties = $this->specialty_model->getSpecialtyById($doctor_specialty)->display_name_ph;
-                $specialty[] = '<span class="badge badge-light badge-pill">'. $specialties .'</span>';
-            }
+        // foreach ($data['medical_histories'] as $medical_history) {
+        //     $specialty = [];
+        //     $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
+        //     $doctor_specialty_explode = explode(',', $case_doctor->specialties);
+        //     $hospital_details = $this->hospital_model->getHospitalById($medical_history->hospital_id);
+        //     $encounter = $this->encounter_model->getEncounterById($medical_history->encounter_id);
+        //     $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+        //     if (empty($branch_name)) {
+        //         $branch_name = "Online";
+        //     }
+        //     foreach($doctor_specialty_explode as $doctor_specialty) {
+        //         $specialties = $this->specialty_model->getSpecialtyById($doctor_specialty)->display_name_ph;
+        //         $specialty[] = '<span class="badge badge-light badge-pill">'. $specialties .'</span>';
+        //     }
 
-            $spec = implode(' ', $specialty);
+        //     $spec = implode(' ', $specialty);
 
 
-            if (!empty($case_doctor)) {
-                $doctor_name = $case_doctor->name;
-            } else {
-                $doctor_name = '';
-            }
+        //     if (!empty($case_doctor)) {
+        //         $doctor_name = $case_doctor->name;
+        //     } else {
+        //         $doctor_name = '';
+        //     }
             
-            if (!empty($medical_history->case_date)) {
-                $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($medical_history->case_date.' UTC')) . '</span></li>
-                                                        <li>
-                                                            <i class="fa fa-download bg-info"></i>
-                                                            <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($medical_history->case_date.' UTC')), 3) . '</span>
-                                                                <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
-                                                                <div class="timelineleft-body">
-                                                                    <h6>'. lang('clinical') . ' ' . lang('impression') .' / '. lang('diagnosis') .'</h6>
-                                                                    <div class="text-muted h6 mb-5">'. $medical_history->title .'</div>
-                                                                    <h6>'. lang('case') . ' ' . lang('summary') .'</h6>
-                                                                    <div class="text-muted h6">'. $medical_history->description .'</div>
-                                                                </div>
-                                                                <div class="timelineleft-footer border-top bg-light">
-                                                                    <div class="d-flex align-items-center mt-auto">
-                                                                        <div class="avatar brround avatar-md mr-3" style="background-image: url('. $case_doctor->img_url .')"></div>
-                                                                        <div>
-                                                                            <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
-                                                                            <small class="d-block text-muted">' . $spec . '</small>
-                                                                        </div>
-                                                                        <div class="ml-auto mr-3 text-right">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12 col-sm-12">
-                                                                                    <strong>'. $hospital_details->name .'</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="col-md-12 col-sm-12">
-                                                                                    <small>'. $branch_name .'</small>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div>
-                                                                                <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>';
-            } else {
-                '';
-            }
-        }
+        //     if (!empty($medical_history->case_date)) {
+        //         $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($medical_history->case_date.' UTC')) . '</span></li>
+        //                                                 <li>
+        //                                                     <i class="fa fa-download bg-info"></i>
+        //                                                     <div class="timelineleft-item">
+        //                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($medical_history->case_date.' UTC')), 3) . '</span>
+        //                                                         <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
+        //                                                         <div class="timelineleft-body">
+        //                                                             <h6>'. lang('clinical') . ' ' . lang('impression') .' / '. lang('diagnosis') .'</h6>
+        //                                                             <div class="text-muted h6 mb-5">'. $medical_history->title .'</div>
+        //                                                             <h6>'. lang('case') . ' ' . lang('summary') .'</h6>
+        //                                                             <div class="text-muted h6">'. $medical_history->description .'</div>
+        //                                                         </div>
+        //                                                         <div class="timelineleft-footer border-top bg-light">
+        //                                                             <div class="d-flex align-items-center mt-auto">
+        //                                                                 <div class="avatar brround avatar-md mr-3" style="background-image: url('. $case_doctor->img_url .')"></div>
+        //                                                                 <div>
+        //                                                                     <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+        //                                                                     <small class="d-block text-muted">' . $spec . '</small>
+        //                                                                 </div>
+        //                                                                 <div class="ml-auto mr-3 text-right">
+        //                                                                     <div class="row">
+        //                                                                         <div class="col-md-12 col-sm-12">
+        //                                                                             <strong>'. $hospital_details->name .'</strong>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                     <div class="row">
+        //                                                                         <div class="col-md-12 col-sm-12">
+        //                                                                             <small>'. $branch_name .'</small>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div>
+        //                                                                     <div>
+        //                                                                         <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </li>';
+        //     } else {
+        //         '';
+        //     }
+        // }
 
-        foreach ($data['patient_materials'] as $patient_material) {
-            $document_uploader = $this->profile_model->getProfileById($patient_material->created_user_id)->username;
-            $uploader_user_group = $this->profile_model->getUsersGroupsById($patient_material->created_user_id);
-            $uploader_acc_type = $this->profile_model->getGroupsById($uploader_user_group->group_id)->name;
-            $hospital_details = $this->hospital_model->getHospitalById($patient_material->hospital_id);
-            $img = $this->getUploaderImage($uploader_acc_type, $patient_material->created_user_id);
+        // foreach ($data['patient_materials'] as $patient_material) {
+        //     $document_uploader = $this->profile_model->getProfileById($patient_material->created_user_id)->username;
+        //     $uploader_user_group = $this->profile_model->getUsersGroupsById($patient_material->created_user_id);
+        //     $uploader_acc_type = $this->profile_model->getGroupsById($uploader_user_group->group_id)->name;
+        //     $hospital_details = $this->hospital_model->getHospitalById($patient_material->hospital_id);
+        //     $img = $this->getUploaderImage($uploader_acc_type, $patient_material->created_user_id);
 
-            if ($uploader_acc_type === 'Doctor') {
-                $user_details = $this->doctor_model->getDoctorByIonUserId($patient_material->created_user_id);
-                $img = $user_details->img_url;
-                $user_specialty = [];
-                $material_doctor_specialty_explode = explode(',', $user_details->specialties);
+        //     if ($uploader_acc_type === 'Doctor') {
+        //         $user_details = $this->doctor_model->getDoctorByIonUserId($patient_material->created_user_id);
+        //         $img = $user_details->img_url;
+        //         $user_specialty = [];
+        //         $material_doctor_specialty_explode = explode(',', $user_details->specialties);
                 
-                foreach($material_doctor_specialty_explode as $material_doctor_specialty) {
-                    $material_specialties = $this->specialty_model->getSpecialtyById($material_doctor_specialty)->display_name_ph;
-                    $user_specialty[] = '<span class="badge badge-light badge-pill">'. $material_specialties .'</span>';
-                }
+        //         foreach($material_doctor_specialty_explode as $material_doctor_specialty) {
+        //             $material_specialties = $this->specialty_model->getSpecialtyById($material_doctor_specialty)->display_name_ph;
+        //             $user_specialty[] = '<span class="badge badge-light badge-pill">'. $material_specialties .'</span>';
+        //         }
 
-                if (!empty($user_specialty)) {
-                    $user_spec = implode(' ', $user_specialty);
-                } else {
-                    $user_spec = "N/A";
-                }
-            } else {
-                $user_spec = $uploader_acc_type;
-            }
+        //         if (!empty($user_specialty)) {
+        //             $user_spec = implode(' ', $user_specialty);
+        //         } else {
+        //             $user_spec = "N/A";
+        //         }
+        //     } else {
+        //         $user_spec = $uploader_acc_type;
+        //     }
 
-            if ($uploader_acc_type === 'Patient') {
-                $hospital = '';
-            } else {
-                $hospital = '<div class="ml-auto mr-3 text-right">
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12">
-                                        <strong>'. $hospital_details->name .'</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                </div>
-                            </div>';
-            }
+        //     if ($uploader_acc_type === 'Patient') {
+        //         $hospital = '';
+        //     } else {
+        //         $hospital = '<div class="ml-auto mr-3 text-right">
+        //                         <div class="row">
+        //                             <div class="col-md-12 col-sm-12">
+        //                                 <strong>'. $hospital_details->name .'</strong>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                     <div>
+        //                         <div>
+        //                             <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                         </div>
+        //                     </div>';
+        //     }
 
-            $document_date_time = $patient_material->last_modified;
-            if (empty($document_date_time)) {
-                $document_date_time = $patient_material->created_at;
-            }
-            if (!empty($patient_material->created_at)) {
-                $timeline[strtotime($document_date_time.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($document_date_time.' UTC')) . ' </span></li>
-                                                            <li>
-                                                                <i class="fa fa-download bg-secondary"></i>
-                                                                <div class="timelineleft-item">
-                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($document_date_time.' UTC')), 3) . ' </span>
-                                                                    <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
-                                                                    <div class="timelineleft-body">
-                                                                        <div class="form-group">
-                                                                            <div class="media mr-4 mb-4">
-                                                                                <div class="mr-3 mt-1 ml-3">
-                                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                                </div>
-                                                                                <div class="media-body">
-                                                                                    <strong>' . $patient_material->title . '</strong>
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-10 mb-3">
-                                                                                            <small class="text-muted">' . $this->patient_model->getDocumentCategory($patient_material->category_id)->name . '</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <div class="media mr-4 mb-4">
-                                                                                <div class="mr-3 mt-1 ml-3">
-                                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                                </div>
-                                                                                <div class="media-body">
-                                                                                    <strong>' . $patient_material->description . '</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div class="media mr-4 mb-4">
-                                                                                <img src="'. $patient_material->url .'" width="150" height="150"/>
-                                                                            </div>
-                                                                        </div>
-                                                                        <a class="btn btn-sm btn-primary" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
-                                                                        <a class="btn btn-sm btn-outline-primary text-primary" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
-                                                                    </div>
-                                                                    <div class="timelineleft-footer border-top bg-light">
-                                                                        <div class="d-flex align-items-center mt-auto">
-                                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $img .')"></div>
-                                                                            <div>
-                                                                                <p class="font-weight-semibold mb-1">'. $document_uploader .'</p>
-                                                                                <small class="d-block text-muted">'. $user_spec .'</small>
-                                                                            </div>
-                                                                            '. $hospital .'
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </li>';
-            } else {
-                '';
-            }
+        //     $document_date_time = $patient_material->last_modified;
+        //     if (empty($document_date_time)) {
+        //         $document_date_time = $patient_material->created_at;
+        //     }
+        //     if (!empty($patient_material->created_at)) {
+        //         $timeline[strtotime($document_date_time.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($document_date_time.' UTC')) . ' </span></li>
+        //                                                     <li>
+        //                                                         <i class="fa fa-download bg-secondary"></i>
+        //                                                         <div class="timelineleft-item">
+        //                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($document_date_time.' UTC')), 3) . ' </span>
+        //                                                             <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
+        //                                                             <div class="timelineleft-body">
+        //                                                                 <div class="form-group">
+        //                                                                     <div class="media mr-4 mb-4">
+        //                                                                         <div class="mr-3 mt-1 ml-3">
+        //                                                                             <i class="fa fa-file-text-o fa-2x text-primary"></i>
+        //                                                                         </div>
+        //                                                                         <div class="media-body">
+        //                                                                             <strong>' . $patient_material->title . '</strong>
+        //                                                                             <div class="row">
+        //                                                                                 <div class="col-md-10 mb-3">
+        //                                                                                     <small class="text-muted">' . $this->patient_model->getDocumentCategory($patient_material->category_id)->name . '</small>
+        //                                                                                 </div>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div class="form-group">
+        //                                                                     <div class="media mr-4 mb-4">
+        //                                                                         <div class="mr-3 mt-1 ml-3">
+        //                                                                             <i class="fa fa-file-text-o fa-2x text-primary"></i>
+        //                                                                         </div>
+        //                                                                         <div class="media-body">
+        //                                                                             <strong>' . $patient_material->description . '</strong>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div>
+        //                                                                     <div class="media mr-4 mb-4">
+        //                                                                         <img src="'. $patient_material->url .'" width="150" height="150"/>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <a class="btn btn-sm btn-primary" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
+        //                                                                 <a class="btn btn-sm btn-outline-primary text-primary" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+        //                                                             </div>
+        //                                                             <div class="timelineleft-footer border-top bg-light">
+        //                                                                 <div class="d-flex align-items-center mt-auto">
+        //                                                                     <div class="avatar brround avatar-md mr-3" style="background-image: url('. $img .')"></div>
+        //                                                                     <div>
+        //                                                                         <p class="font-weight-semibold mb-1">'. $document_uploader .'</p>
+        //                                                                         <small class="d-block text-muted">'. $user_spec .'</small>
+        //                                                                     </div>
+        //                                                                     '. $hospital .'
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </li>';
+        //     } else {
+        //         '';
+        //     }
 
-        }
+        // }
 
-        foreach ($data['diagnosis'] as $diag) {
+        // foreach ($data['diagnosis'] as $diag) {
 
-            $diagtests = $this->diagnosis_model->getPatientDiagnosisByNumber($diag->patient_diagnosis_number);
-            $diagtestdata = '';
+        //     $diagtests = $this->diagnosis_model->getPatientDiagnosisByNumber($diag->patient_diagnosis_number);
+        //     $diagtestdata = '';
 
-            foreach ($diagtests as $diagtest) {
-                $diagnosis_text = $diagtest->diagnosis_long_description;
-                if (empty($diagnosis_text)) {
-                    $diagnosis_text = $diagtest->patient_diagnosis_text;
-                }
+        //     foreach ($diagtests as $diagtest) {
+        //         $diagnosis_text = $diagtest->diagnosis_long_description;
+        //         if (empty($diagnosis_text)) {
+        //             $diagnosis_text = $diagtest->patient_diagnosis_text;
+        //         }
 
-                $diagnosis_code = 'ICD10 Code '.$diagtest->diagnosis_code;
-                if (empty($diagtest->diagnosis_code)) {
-                    $diagnosis_code = '';
-                }
+        //         $diagnosis_code = 'ICD10 Code '.$diagtest->diagnosis_code;
+        //         if (empty($diagtest->diagnosis_code)) {
+        //             $diagnosis_code = '';
+        //         }
 
-                $is_primary = $diagtest->is_primary_diagnosis;
-                if ($is_primary == 1) {
-                    $primary = '<span class="badge badge-primary badge-pill ml-3">Primary</span>';
-                } else {
-                    $primary = '';
-                }
+        //         $is_primary = $diagtest->is_primary_diagnosis;
+        //         if ($is_primary == 1) {
+        //             $primary = '<span class="badge badge-primary badge-pill ml-3">Primary</span>';
+        //         } else {
+        //             $primary = '';
+        //         }
 
-                $diagnosis_single = '<div class="mb-3"><p class="mb-0"><strong>'.$diagnosis_text.'</strong>'.$primary.'</p><p class="mb-0">'.$diagtest->diagnosis_notes.'</p><p class="mb-0">'.$diagnosis_code.'</p></div>';
-                $diagtestdata .= $diagnosis_single;
-            }
-            $alltest = $diagtestdata;
+        //         $diagnosis_single = '<div class="mb-3"><p class="mb-0"><strong>'.$diagnosis_text.'</strong>'.$primary.'</p><p class="mb-0">'.$diagtest->diagnosis_notes.'</p><p class="mb-0">'.$diagnosis_code.'</p></div>';
+        //         $diagtestdata .= $diagnosis_single;
+        //     }
+        //     $alltest = $diagtestdata;
 
-            $doctor = $this->doctor_model->getDoctorById($diag->doctor_id);
-            $diagnosis_specialty = [];
-            $diagnosis_doctor_specialty_explode = explode(',', $doctor->specialties);
+        //     $doctor = $this->doctor_model->getDoctorById($diag->doctor_id);
+        //     $diagnosis_specialty = [];
+        //     $diagnosis_doctor_specialty_explode = explode(',', $doctor->specialties);
 
-            foreach($diagnosis_doctor_specialty_explode as $diagnosis_doctor_specialty) {
-                $diagnosis_specialties = $this->specialty_model->getSpecialtyById($diagnosis_doctor_specialty)->display_name_ph;
-                $diagnosis_specialty[] = '<span class="badge badge-light badge-pill">'. $diagnosis_specialties .'</span>';
-            }
+        //     foreach($diagnosis_doctor_specialty_explode as $diagnosis_doctor_specialty) {
+        //         $diagnosis_specialties = $this->specialty_model->getSpecialtyById($diagnosis_doctor_specialty)->display_name_ph;
+        //         $diagnosis_specialty[] = '<span class="badge badge-light badge-pill">'. $diagnosis_specialties .'</span>';
+        //     }
 
-            $diagnosis_spec = implode(' ', $diagnosis_specialty);
+        //     $diagnosis_spec = implode(' ', $diagnosis_specialty);
 
-            $hospital_details = $this->hospital_model->getHospitalById($diag->hospital_id);
-            $encounter = $this->encounter_model->getEncounterById($diag->encounter_id);
-            if (!empty($encounter_location)) {
-                $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            } else {
-                $branch_name = 'Online';
-            }
+        //     $hospital_details = $this->hospital_model->getHospitalById($diag->hospital_id);
+        //     $encounter = $this->encounter_model->getEncounterById($diag->encounter_id);
+        //     if (!empty($encounter_location)) {
+        //         $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+        //     } else {
+        //         $branch_name = 'Online';
+        //     }
 
-            if (!empty($diag->created_at)) {
-                $timeline[strtotime($diag->created_at.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($diag->created_at.' UTC')) . '</span></li>
-                                                        <li><i class="fa fa-download bg-cyan"></i>
-                                                        <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($diag->created_at.' UTC')), 3) . '</span>
-                                                            <h3 class="timelineleft-header"><span>' . lang('diagnosis') . '</span></h3>
-                                                            <div class="timelineleft-body">
-                                                                '. $alltest .'
-                                                            </div>
-                                                            <div class="timelineleft-footer border-top bg-light">
-                                                                <div class="d-flex align-items-center mt-auto">
-                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
-                                                                    <div>
-                                                                        <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
-                                                                        <small class="d-block text-muted">'. $diagnosis_spec .'</small>
-                                                                    </div>
-                                                                    <div class="ml-auto mr-3 text-right">
-                                                                        <div class="row">
-                                                                            <div class="col-md-12 col-sm-12">
-                                                                                <strong>'. $hospital_details->name .'</strong>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-12 col-sm-12">
-                                                                                <small>'. $branch_name .'</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div>
-                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div></li>';
-            } else {
-                '';
-            }
-        }
+        //     if (!empty($diag->created_at)) {
+        //         $timeline[strtotime($diag->created_at.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($diag->created_at.' UTC')) . '</span></li>
+        //                                                 <li><i class="fa fa-download bg-cyan"></i>
+        //                                                 <div class="timelineleft-item">
+        //                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($diag->created_at.' UTC')), 3) . '</span>
+        //                                                     <h3 class="timelineleft-header"><span>' . lang('diagnosis') . '</span></h3>
+        //                                                     <div class="timelineleft-body">
+        //                                                         '. $alltest .'
+        //                                                     </div>
+        //                                                     <div class="timelineleft-footer border-top bg-light">
+        //                                                         <div class="d-flex align-items-center mt-auto">
+        //                                                             <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
+        //                                                             <div>
+        //                                                                 <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
+        //                                                                 <small class="d-block text-muted">'. $diagnosis_spec .'</small>
+        //                                                             </div>
+        //                                                             <div class="ml-auto mr-3 text-right">
+        //                                                                 <div class="row">
+        //                                                                     <div class="col-md-12 col-sm-12">
+        //                                                                         <strong>'. $hospital_details->name .'</strong>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div class="row">
+        //                                                                     <div class="col-md-12 col-sm-12">
+        //                                                                         <small>'. $branch_name .'</small>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                             <div>
+        //                                                                 <div>
+        //                                                                     <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div></li>';
+        //     } else {
+        //         '';
+        //     }
+        // }
 
-        foreach ($data['forms'] as $form) {
+        // foreach ($data['forms'] as $form) {
 
-            $formspecialty = [];
-            $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
-            $form_category = $this->form_model->getFormCategoryById($form->category_id)->name;
-            $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
-            $hospital_details = $this->hospital_model->getHospitalById($form->hospital_id);
-            $encounter = $this->encounter_model->getEncounterById($form->encounter_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
-                $branch_name = "Online";
-            }
-            foreach($form_doctor_specialty_explode as $form_doctor_specialty) {
-                $formspecialties = $this->specialty_model->getSpecialtyById($form_doctor_specialty)->display_name_ph;
-                $formspecialty[] = '<span class="badge badge-light badge-pill">'. $formspecialties .'</span>';
-            }
+        //     $formspecialty = [];
+        //     $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
+        //     $form_category = $this->form_model->getFormCategoryById($form->category_id)->name;
+        //     $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
+        //     $hospital_details = $this->hospital_model->getHospitalById($form->hospital_id);
+        //     $encounter = $this->encounter_model->getEncounterById($form->encounter_id);
+        //     $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+        //     if (empty($branch_name)) {
+        //         $branch_name = "Online";
+        //     }
+        //     foreach($form_doctor_specialty_explode as $form_doctor_specialty) {
+        //         $formspecialties = $this->specialty_model->getSpecialtyById($form_doctor_specialty)->display_name_ph;
+        //         $formspecialty[] = '<span class="badge badge-light badge-pill">'. $formspecialties .'</span>';
+        //     }
 
-            $formspec = implode(' ', $formspecialty);
+        //     $formspec = implode(' ', $formspecialty);
 
 
-            if (!empty($form_doctor)) {
-                $doctor_name = $form_doctor->name;
-            } else {
-                $doctor_name = '';
-            }
+        //     if (!empty($form_doctor)) {
+        //         $doctor_name = $form_doctor->name;
+        //     } else {
+        //         $doctor_name = '';
+        //     }
 
-            if (!empty($form->form_date)) {
-                $timeline[strtotime($form->form_date.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($form->form_date.' UTC')) . ' </span></li>
-                                                                <li>
-                                                                    <i class="fa fa-download bg-secondary"></i>
-                                                                    <div class="timelineleft-item">
-                                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($form->form_date.' UTC')), 3) . ' </span>
-                                                                        <h3 class="timelineleft-header"><span>' . lang('forms') . '</span></h3>
-                                                                        <div class="timelineleft-body">
-                                                                            <div class="form-group">
-                                                                                <div class="media mr-4 mb-4">
-                                                                                    <div class="mr-3 mt-1 ml-3">
-                                                                                        <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                                    </div>
-                                                                                    <div class="media-body">
-                                                                                        <strong>' . $form->name . '</strong>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-10 mb-3">
-                                                                                                <small class="text-muted">' . $form_category . '</small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->form_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="timelineleft-footer border-top bg-light">
-                                                                            <div class="d-flex align-items-center mt-auto">
-                                                                                <div class="avatar brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
-                                                                                <div>
-                                                                                    <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
-                                                                                    <small class="d-block text-muted">' . $formspec . '</small>
-                                                                                </div>
-                                                                                <div class="ml-auto mr-3 text-right">
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-12 col-sm-12">
-                                                                                            <strong>'. $hospital_details->name .'</strong>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-12 col-sm-12">
-                                                                                            <small>'. $branch_name .'</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <div>
-                                                                                        <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>';
-            } else {
-                '';
-            }
-        }
+        //     if (!empty($form->form_date)) {
+        //         $timeline[strtotime($form->form_date.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($form->form_date.' UTC')) . ' </span></li>
+        //                                                         <li>
+        //                                                             <i class="fa fa-download bg-secondary"></i>
+        //                                                             <div class="timelineleft-item">
+        //                                                                 <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($form->form_date.' UTC')), 3) . ' </span>
+        //                                                                 <h3 class="timelineleft-header"><span>' . lang('forms') . '</span></h3>
+        //                                                                 <div class="timelineleft-body">
+        //                                                                     <div class="form-group">
+        //                                                                         <div class="media mr-4 mb-4">
+        //                                                                             <div class="mr-3 mt-1 ml-3">
+        //                                                                                 <i class="fa fa-file-text-o fa-2x text-primary"></i>
+        //                                                                             </div>
+        //                                                                             <div class="media-body">
+        //                                                                                 <strong>' . $form->name . '</strong>
+        //                                                                                 <div class="row">
+        //                                                                                     <div class="col-md-10 mb-3">
+        //                                                                                         <small class="text-muted">' . $form_category . '</small>
+        //                                                                                     </div>
+        //                                                                                 </div>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                         <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->form_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div class="timelineleft-footer border-top bg-light">
+        //                                                                     <div class="d-flex align-items-center mt-auto">
+        //                                                                         <div class="avatar brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
+        //                                                                         <div>
+        //                                                                             <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+        //                                                                             <small class="d-block text-muted">' . $formspec . '</small>
+        //                                                                         </div>
+        //                                                                         <div class="ml-auto mr-3 text-right">
+        //                                                                             <div class="row">
+        //                                                                                 <div class="col-md-12 col-sm-12">
+        //                                                                                     <strong>'. $hospital_details->name .'</strong>
+        //                                                                                 </div>
+        //                                                                             </div>
+        //                                                                             <div class="row">
+        //                                                                                 <div class="col-md-12 col-sm-12">
+        //                                                                                     <small>'. $branch_name .'</small>
+        //                                                                                 </div>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                         <div>
+        //                                                                             <div>
+        //                                                                                 <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </li>';
+        //     } else {
+        //         '';
+        //     }
+        // }
 
-        foreach ($data['encounters'] as $encounter) {
+        // foreach ($data['encounters'] as $encounter) {
 
-            $encounter_doctor_details = $this->doctor_model->getDoctorByIonUserId($encounter->rendering_staff_id);
-            $encounter_doctor_profile_image = $this->getPatientProfileImageByIonUserId($encounter->created_user_id);
-            $encounter_doctor_profile_name = $this->getPatientProfileNameByIonUserId($encounter->created_user_id);
-            $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
-            // $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
-            if (!empty($encounter->appointment_id)) {
-                $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
-            } else {
-                $encounter_appointment_time = '';
-            }
+        //     $encounter_doctor_details = $this->doctor_model->getDoctorByIonUserId($encounter->rendering_staff_id);
+        //     $encounter_doctor_profile_image = $this->getPatientProfileImageByIonUserId($encounter->created_user_id);
+        //     $encounter_doctor_profile_name = $this->getPatientProfileNameByIonUserId($encounter->created_user_id);
+        //     $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
+        //     // $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
+        //     if (!empty($encounter->appointment_id)) {
+        //         $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
+        //     } else {
+        //         $encounter_appointment_time = '';
+        //     }
             
 
-            $hospital_details = $this->hospital_model->getHospitalById($encounter->hospital_id);
-            if (!empty($encounter->location_id)) {
-                $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            } else {
-                $branch_name = 'Online';
-            }
-            $encounter_specialty = [];
-            $encounter_doctor_specialty_explode = explode(',', $encounter_doctor_details->specialties);
-            foreach($encounter_doctor_specialty_explode as $encounter_doctor_specialty) {
-                $encounter_specialties = $this->specialty_model->getSpecialtyById($encounter_doctor_specialty)->display_name_ph;
-                $encounter_specialty[] = '<span class="badge badge-light badge-pill">'. $encounter_specialties .'</span>';
-            }
+        //     $hospital_details = $this->hospital_model->getHospitalById($encounter->hospital_id);
+        //     if (!empty($encounter->location_id)) {
+        //         $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+        //     } else {
+        //         $branch_name = 'Online';
+        //     }
+        //     $encounter_specialty = [];
+        //     $encounter_doctor_specialty_explode = explode(',', $encounter_doctor_details->specialties);
+        //     foreach($encounter_doctor_specialty_explode as $encounter_doctor_specialty) {
+        //         $encounter_specialties = $this->specialty_model->getSpecialtyById($encounter_doctor_specialty)->display_name_ph;
+        //         $encounter_specialty[] = '<span class="badge badge-light badge-pill">'. $encounter_specialties .'</span>';
+        //     }
 
-            $group_id = $this->db->get_where('users_groups', array('user_id' => $encounter->created_user_id))->row()->group_id;
-            $group_name = $this->db->get_where('groups', array('id' => $group_id))->row()->name;
-            if ($group_name === 'Doctor') {
-                $encounter_spec = implode(' ', $encounter_specialty);
-            } else {
-                $encounter_spec = ucfirst($group_name);
-            }
+        //     $group_id = $this->db->get_where('users_groups', array('user_id' => $encounter->created_user_id))->row()->group_id;
+        //     $group_name = $this->db->get_where('groups', array('id' => $group_id))->row()->name;
+        //     if ($group_name === 'Doctor') {
+        //         $encounter_spec = implode(' ', $encounter_specialty);
+        //     } else {
+        //         $encounter_spec = ucfirst($group_name);
+        //     }
             
             
-            if (!empty($encounter_appointment)) {
-                if (!empty($encounter_appointment->service_category_group_id)) {
-                    $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
-                } else {
-                    $encounter_appointment_service_group = '';
-                }
-                if (!empty($encounter_appointment->service_id)) {
-                    $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
-                } else {
-                    $encounter_services = '';
-                }
-                $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
-                if (!empty($encounter->started_at)) {
-                    $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
-                } else {
-                    $encounter_started_date = "_______";
-                }
-                if (!empty($encounter->ended_at)) {
-                    $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
-                } else {
-                    $encounter_ended_date = "_______";
-                }
-                $appointment_date = '<div class="form-group">
-                                        <div class="media mr-4 mb-4">
-                                            <div class="mr-3 mt-1 ml-3">
-                                                <i class="fa fa-calendar fa-2x text-primary"></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <strong>' . $encounter_appointment_date . '</strong>
-                                                <div class="row">
-                                                    <div class="col-md-10 mb-3">
-                                                        <small class="text-muted">'. $encounter_appointment_time .'</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>';
-                $encounter_appointment_details = '<div class="form-group">
-                                                        <div class="media mr-4 mb-4">
-                                                            <div class="mr-3 mt-1 ml-3">
-                                                                <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <strong>'. $encounter_appointment_service_group .'</strong>
-                                                                <div class="row">
-                                                                    <div class="col-md-10 mb-3">
-                                                                        <small class="text-muted">' . $encounter_services . '</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="ml-auto mt-1 mr-3">
-                                                                <span class="badge badge-pill badge-primary"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-                $encounter_date = '<div class="form-group">
-                                        <div class="media mr-4 mb-4">
-                                            <div class="mr-3 mt-1 ml-3">
-                                                <i class="fa fa-calendar fa-2x text-primary"></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
-                                                <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
-                                            </div>
-                                        </div>
-                                    </div>';
-                $encounter_number_type_group = "<div class='form-group'>
-                                                    <div class='media mr-4 mb-4'>
-                                                        <div class='mr-3 mt-1 ml-3'>
-                                                            <i class='fa fa-file-text-o fa-2x text-primary'></i>
-                                                        </div>
-                                                        <div class='media-body'>
-                                                            <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
-                                                            <div class='row'>
-                                                                <div class='col-md-10 mb-3'>
-                                                                    <small class='text-muted'>No Appointment</small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class='ml-auto mt-1 mr-3'>
-                                                            <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
-                                                        </div>
-                                                    </div>
-                                                </div>";
-            } else {
-                $encounter_appointment_service_group = "No Appointment";
-                $encounter_services = "No Appointment";
-                if (!empty($encounter->started_at)) {
-                    $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
-                } else {
-                    $encounter_started_date = "_______";
-                }
-                if (!empty($encounter->ended_at)) {
-                    $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
-                } else {
-                    $encounter_ended_date = "_______";
-                }
-                $encounter_appointment_time = "No Appointment";
-                $encounter_number_type_group = "<div class='form-group'>
-                                                    <div class='media mr-4 mb-4'>
-                                                        <div class='mr-3 mt-1 ml-3'>
-                                                            <i class='fa fa-file-text-o fa-2x text-primary'></i>
-                                                        </div>
-                                                        <div class='media-body'>
-                                                            <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
-                                                            <div class='row'>
-                                                                <div class='col-md-10 mb-3'>
-                                                                    <small class='text-muted'>No Appointment</small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class='ml-auto mt-1 mr-3'>
-                                                            <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
-                                                        </div>
-                                                    </div>
-                                                </div>";
-                // $encounter_ending_time = 'to _______';
-                $encounter_date = '<div class="form-group">
-                                        <div class="media mr-4 mb-4">
-                                            <div class="mr-3 mt-1 ml-3">
-                                                <i class="fa fa-calendar fa-2x text-primary"></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
-                                                <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
-                                            </div>
-                                        </div>
-                                    </div>';
-            }
-            if (!empty($encounter_doctor_details)) {
-                $encounter_doctor = $encounter_doctor_details->name;
-            } else {
-                $encounter_doctor = '';
-            }
+        //     if (!empty($encounter_appointment)) {
+        //         if (!empty($encounter_appointment->service_category_group_id)) {
+        //             $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
+        //         } else {
+        //             $encounter_appointment_service_group = '';
+        //         }
+        //         if (!empty($encounter_appointment->service_id)) {
+        //             $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
+        //         } else {
+        //             $encounter_services = '';
+        //         }
+        //         $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
+        //         if (!empty($encounter->started_at)) {
+        //             $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
+        //         } else {
+        //             $encounter_started_date = "_______";
+        //         }
+        //         if (!empty($encounter->ended_at)) {
+        //             $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
+        //         } else {
+        //             $encounter_ended_date = "_______";
+        //         }
+        //         $appointment_date = '<div class="form-group">
+        //                                 <div class="media mr-4 mb-4">
+        //                                     <div class="mr-3 mt-1 ml-3">
+        //                                         <i class="fa fa-calendar fa-2x text-primary"></i>
+        //                                     </div>
+        //                                     <div class="media-body">
+        //                                         <strong>' . $encounter_appointment_date . '</strong>
+        //                                         <div class="row">
+        //                                             <div class="col-md-10 mb-3">
+        //                                                 <small class="text-muted">'. $encounter_appointment_time .'</small>
+        //                                             </div>
+        //                                         </div>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>';
+        //         $encounter_appointment_details = '<div class="form-group">
+        //                                                 <div class="media mr-4 mb-4">
+        //                                                     <div class="mr-3 mt-1 ml-3">
+        //                                                         <i class="fa fa-file-text-o fa-2x text-primary"></i>
+        //                                                     </div>
+        //                                                     <div class="media-body">
+        //                                                         <strong>'. $encounter_appointment_service_group .'</strong>
+        //                                                         <div class="row">
+        //                                                             <div class="col-md-10 mb-3">
+        //                                                                 <small class="text-muted">' . $encounter_services . '</small>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                     <div class="ml-auto mt-1 mr-3">
+        //                                                         <span class="badge badge-pill badge-primary"></span>
+        //                                                     </div>
+        //                                                 </div>
+        //                                             </div>';
+        //         $encounter_date = '<div class="form-group">
+        //                                 <div class="media mr-4 mb-4">
+        //                                     <div class="mr-3 mt-1 ml-3">
+        //                                         <i class="fa fa-calendar fa-2x text-primary"></i>
+        //                                     </div>
+        //                                     <div class="media-body">
+        //                                         <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
+        //                                         <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>';
+        //         $encounter_number_type_group = "<div class='form-group'>
+        //                                             <div class='media mr-4 mb-4'>
+        //                                                 <div class='mr-3 mt-1 ml-3'>
+        //                                                     <i class='fa fa-file-text-o fa-2x text-primary'></i>
+        //                                                 </div>
+        //                                                 <div class='media-body'>
+        //                                                     <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
+        //                                                     <div class='row'>
+        //                                                         <div class='col-md-10 mb-3'>
+        //                                                             <small class='text-muted'>No Appointment</small>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div>
+        //                                                 <div class='ml-auto mt-1 mr-3'>
+        //                                                     <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
+        //                                                 </div>
+        //                                             </div>
+        //                                         </div>";
+        //     } else {
+        //         $encounter_appointment_service_group = "No Appointment";
+        //         $encounter_services = "No Appointment";
+        //         if (!empty($encounter->started_at)) {
+        //             $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
+        //         } else {
+        //             $encounter_started_date = "_______";
+        //         }
+        //         if (!empty($encounter->ended_at)) {
+        //             $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
+        //         } else {
+        //             $encounter_ended_date = "_______";
+        //         }
+        //         $encounter_appointment_time = "No Appointment";
+        //         $encounter_number_type_group = "<div class='form-group'>
+        //                                             <div class='media mr-4 mb-4'>
+        //                                                 <div class='mr-3 mt-1 ml-3'>
+        //                                                     <i class='fa fa-file-text-o fa-2x text-primary'></i>
+        //                                                 </div>
+        //                                                 <div class='media-body'>
+        //                                                     <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
+        //                                                     <div class='row'>
+        //                                                         <div class='col-md-10 mb-3'>
+        //                                                             <small class='text-muted'>No Appointment</small>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div>
+        //                                                 <div class='ml-auto mt-1 mr-3'>
+        //                                                     <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
+        //                                                 </div>
+        //                                             </div>
+        //                                         </div>";
+        //         // $encounter_ending_time = 'to _______';
+        //         $encounter_date = '<div class="form-group">
+        //                                 <div class="media mr-4 mb-4">
+        //                                     <div class="mr-3 mt-1 ml-3">
+        //                                         <i class="fa fa-calendar fa-2x text-primary"></i>
+        //                                     </div>
+        //                                     <div class="media-body">
+        //                                         <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
+        //                                         <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>';
+        //     }
+        //     if (!empty($encounter_doctor_details)) {
+        //         $encounter_doctor = $encounter_doctor_details->name;
+        //     } else {
+        //         $encounter_doctor = '';
+        //     }
 
-            if (empty($encounter_appointment_details)) {
-                $encounter_appointment_details = '';
-            }
-            if (empty($encounter_number_type_group)) {
-                $encounter_number_type_group = '';
-            }
-            if (empty($appointment_date)) {
-                $appointment_date = '';
-            }
+        //     if (empty($encounter_appointment_details)) {
+        //         $encounter_appointment_details = '';
+        //     }
+        //     if (empty($encounter_number_type_group)) {
+        //         $encounter_number_type_group = '';
+        //     }
+        //     if (empty($appointment_date)) {
+        //         $appointment_date = '';
+        //     }
 
-            if (!empty($encounter->created_at)) {
-                $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
-                                            <li>
-                                                <i class="fa fa-envelope bg-primary"></i>
-                                                <div class="timelineleft-item">
-                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
-                                                    <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
-                                                    <div class="timelineleft-body">
-                                                        '. $encounter_appointment_details .'
-                                                        '. $encounter_number_type_group .'
-                                                        '. $encounter->appointment_id .'
-                                                        '. $appointment_date .'
-                                                        '. $encounter_date .'
-                                                        <div class="form-group">
-                                                            <div class="media mr-4 mb-4">
-                                                                <div class="mr-3 mt-1 ml-3">
-                                                                    <i class="fa fa-file fa-2x text-primary"></i>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <strong>'. $encounter->reason .'</strong>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="timelineleft-footer border-top bg-light">
-                                                        <div class="d-flex align-items-center mt-auto">
-                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_profile_image .')"></div>
-                                                            <div>
-                                                                <p class="font-weight-semibold mb-1">'. $encounter_doctor_profile_name .'</p>
-                                                                <small class="d-block text-muted">' . $encounter_spec . '</small>
-                                                            </div>
-                                                            <div class="ml-auto mr-3 text-right">
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <strong>'. $hospital_details->name .'</strong>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <small>'. $branch_name .'</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div>
-                                                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>';
-            } else {
-                '';
-            }
-        }
+        //     if (!empty($encounter->created_at)) {
+        //         $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
+        //                                     <li>
+        //                                         <i class="fa fa-envelope bg-primary"></i>
+        //                                         <div class="timelineleft-item">
+        //                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
+        //                                             <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
+        //                                             <div class="timelineleft-body">
+        //                                                 '. $encounter_appointment_details .'
+        //                                                 '. $encounter_number_type_group .'
+        //                                                 '. $encounter->appointment_id .'
+        //                                                 '. $appointment_date .'
+        //                                                 '. $encounter_date .'
+        //                                                 <div class="form-group">
+        //                                                     <div class="media mr-4 mb-4">
+        //                                                         <div class="mr-3 mt-1 ml-3">
+        //                                                             <i class="fa fa-file fa-2x text-primary"></i>
+        //                                                         </div>
+        //                                                         <div class="media-body">
+        //                                                             <strong>'. $encounter->reason .'</strong>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div>
+        //                                             </div>
+        //                                             <div class="timelineleft-footer border-top bg-light">
+        //                                                 <div class="d-flex align-items-center mt-auto">
+        //                                                     <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_profile_image .')"></div>
+        //                                                     <div>
+        //                                                         <p class="font-weight-semibold mb-1">'. $encounter_doctor_profile_name .'</p>
+        //                                                         <small class="d-block text-muted">' . $encounter_spec . '</small>
+        //                                                     </div>
+        //                                                     <div class="ml-auto mr-3 text-right">
+        //                                                         <div class="row">
+        //                                                             <div class="col-md-12 col-sm-12">
+        //                                                                 <strong>'. $hospital_details->name .'</strong>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                         <div class="row">
+        //                                                             <div class="col-md-12 col-sm-12">
+        //                                                                 <small>'. $branch_name .'</small>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                     <div>
+        //                                                         <div>
+        //                                                             <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div>
+        //                                             </div>
+        //                                         </div>
+        //                                     </li>';
+        //     } else {
+        //         '';
+        //     }
+        // }
 
-        foreach ($data['procedures'] as $procedure) {
-            $data['procedure_performers_doctors'] = $this->procedure_model->getProcedurePerformerByDoctorByProcedureId($procedure->id, 'doctor');
-            $data['procedure_performers_nurses'] = $this->procedure_model->getProcedurePerformerByNurseByProcedureId($procedure->id, 'nurse');
-            $data['procedure_performers_midwives'] = $this->procedure_model->getProcedurePerformerByMidwifeByProcedureId($procedure->id, 'midwife');
-            $data['procedure_performers_laboratorist'] = $this->procedure_model->getProcedurePerformerByLaboratoristByProcedureId($procedure->id, 'laboratorist');
+        // foreach ($data['procedures'] as $procedure) {
+        //     $data['procedure_performers_doctors'] = $this->procedure_model->getProcedurePerformerByDoctorByProcedureId($procedure->id, 'doctor');
+        //     $data['procedure_performers_nurses'] = $this->procedure_model->getProcedurePerformerByNurseByProcedureId($procedure->id, 'nurse');
+        //     $data['procedure_performers_midwives'] = $this->procedure_model->getProcedurePerformerByMidwifeByProcedureId($procedure->id, 'midwife');
+        //     $data['procedure_performers_laboratorist'] = $this->procedure_model->getProcedurePerformerByLaboratoristByProcedureId($procedure->id, 'laboratorist');
 
-            $doctor_names = [];
-            $nurse_names = [];
-            $midwife_names = [];
-            $laboratorist_names = [];
+        //     $doctor_names = [];
+        //     $nurse_names = [];
+        //     $midwife_names = [];
+        //     $laboratorist_names = [];
 
-            foreach( $data['procedure_performers_doctors'] as $doctor) {
-                $procedure_doctor_details = $this->doctor_model->getDoctorById($doctor->performer_table_id)->name;
-                $doctor_names[] = $procedure_doctor_details;
-            }
+        //     foreach( $data['procedure_performers_doctors'] as $doctor) {
+        //         $procedure_doctor_details = $this->doctor_model->getDoctorById($doctor->performer_table_id)->name;
+        //         $doctor_names[] = $procedure_doctor_details;
+        //     }
 
-            foreach($data['procedure_performers_nurses'] as $nurse) {
-                $procedure_nurse_details = $this->nurse_model->getNurseById($nurse->performer_table_id)->name;
-                $nurse_names[]  = $procedure_nurse_details;
-            }
+        //     foreach($data['procedure_performers_nurses'] as $nurse) {
+        //         $procedure_nurse_details = $this->nurse_model->getNurseById($nurse->performer_table_id)->name;
+        //         $nurse_names[]  = $procedure_nurse_details;
+        //     }
 
-            foreach($data['procedure_performers_midwives'] as $midwife) {
-                $procedure_midwife_details  = $this->midwife_model->getMidwifeById($midwife->performer_table_id)->name;
-                $midwife_names[] = $procedure_midwife_details;
-            }
+        //     foreach($data['procedure_performers_midwives'] as $midwife) {
+        //         $procedure_midwife_details  = $this->midwife_model->getMidwifeById($midwife->performer_table_id)->name;
+        //         $midwife_names[] = $procedure_midwife_details;
+        //     }
 
-            foreach($data['procedure_performers_laboratorist'] as $laboratorist) {
-                $procedure_laboratorist_details  = $this->laboratorist_model->getLaboratoristById($laboratorist->performer_table_id)->name;
-                $laboratorist_names[] = $procedure_laboratorist_details;
-            }
+        //     foreach($data['procedure_performers_laboratorist'] as $laboratorist) {
+        //         $procedure_laboratorist_details  = $this->laboratorist_model->getLaboratoristById($laboratorist->performer_table_id)->name;
+        //         $laboratorist_names[] = $procedure_laboratorist_details;
+        //     }
 
-            $hospital_details = $this->hospital_model->getHospitalById($procedure->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($procedure->location)->display_name;
+        //     $hospital_details = $this->hospital_model->getHospitalById($procedure->hospital_id);
+        //     $branch_name = $this->branch_model->getBranchById($procedure->location)->display_name;
 
-            if(empty($branch_name)) {
-                $branch_name = 'Online';
-            }
+        //     if(empty($branch_name)) {
+        //         $branch_name = 'Online';
+        //     }
 
-            $procedure_user_group = $this->profile_model->getUsersGroupsById($procedure->recorder_user_id);
-            $procedure_user_recorder = $this->profile_model->getGroupsById($procedure_user_group->group_id)->name;
+        //     $procedure_user_group = $this->profile_model->getUsersGroupsById($procedure->recorder_user_id);
+        //     $procedure_user_recorder = $this->profile_model->getGroupsById($procedure_user_group->group_id)->name;
 
-            $procedure_recorder = $procedure->recorder_user_id;
+        //     $procedure_recorder = $procedure->recorder_user_id;
 
-            if($procedure_recorder == $procedure_doctor_details->ion_user_id) {
-                $image_user = $procedure_doctor_details->img_url;
-            }
+        //     if($procedure_recorder == $procedure_doctor_details->ion_user_id) {
+        //         $image_user = $procedure_doctor_details->img_url;
+        //     }
 
-            if($procedure_recorder == $procedure_midwife_details->ion_user_id) {
-                $image_user = $procedure_midwife_details->img_url;
-            }
+        //     if($procedure_recorder == $procedure_midwife_details->ion_user_id) {
+        //         $image_user = $procedure_midwife_details->img_url;
+        //     }
 
-            if($procedure_recorder == $procedure_laboratorist_details->ion_user_id) {
-                $image_user = $procedure_laboratorist_details->img_url;
-            }
+        //     if($procedure_recorder == $procedure_laboratorist_details->ion_user_id) {
+        //         $image_user = $procedure_laboratorist_details->img_url;
+        //     }
 
-            if($procedure_recorder == $procedure_nurse_details->ion_user_id) {
-                $image_user = $procedure_nurse_details->img_url;
-            }
+        //     if($procedure_recorder == $procedure_nurse_details->ion_user_id) {
+        //         $image_user = $procedure_nurse_details->img_url;
+        //     }
 
-           if($procedure_user_recorder === 'Doctor') {
-                $doctor_specialty = [];
-                $procedure_recorder_doctor = $this->doctor_model->getDoctorByIonUserId($procedure_recorder);
-                $procedure_recorder_doctor_specialty_explode = explode(',', $procedure_recorder_doctor->specialties);
-                foreach($procedure_recorder_doctor_specialty_explode as $procedure_recorder_doctor_specialty) {
-                    $procedure_specialties = $this->specialty_model->getSpecialtyById($procedure_recorder_doctor_specialty)->display_name_ph;
-                    $doctor_specialty[] = '<span class="badge badge-light badge-pill">'. $procedure_specialties .'</span>';
+        //    if($procedure_user_recorder === 'Doctor') {
+        //         $doctor_specialty = [];
+        //         $procedure_recorder_doctor = $this->doctor_model->getDoctorByIonUserId($procedure_recorder);
+        //         $procedure_recorder_doctor_specialty_explode = explode(',', $procedure_recorder_doctor->specialties);
+        //         foreach($procedure_recorder_doctor_specialty_explode as $procedure_recorder_doctor_specialty) {
+        //             $procedure_specialties = $this->specialty_model->getSpecialtyById($procedure_recorder_doctor_specialty)->display_name_ph;
+        //             $doctor_specialty[] = '<span class="badge badge-light badge-pill">'. $procedure_specialties .'</span>';
 
-                }
+        //         }
 
-                if(!empty($doctor_specialty)) {
-                    $user_spec = implode(' ', $doctor_specialty);
-                } else {
-                    $user_spec = 'N/A';
-                }
-           } else {
-            $user_spec = $procedure_user_recorder;
-           }
+        //         if(!empty($doctor_specialty)) {
+        //             $user_spec = implode(' ', $doctor_specialty);
+        //         } else {
+        //             $user_spec = 'N/A';
+        //         }
+        //    } else {
+        //     $user_spec = $procedure_user_recorder;
+        //    }
 
-           //procedure_recorder_user
-            if(!empty($procedure_recorder_doctor)) {
-                $doctor_recorder_name = $procedure_recorder_doctor->name;
-            } else {
-                $doctor_recorder_name= '';
-            }
+        //    //procedure_recorder_user
+        //     if(!empty($procedure_recorder_doctor)) {
+        //         $doctor_recorder_name = $procedure_recorder_doctor->name;
+        //     } else {
+        //         $doctor_recorder_name= '';
+        //     }
 
-            //all_procedure_performer_list_by_procedureID
-            if(!empty($doctor_names)) {
-                $doctor_procedure_performer = implode(', ', $doctor_names);
-            } else {
-                $doctor_procedure_performer = 'N/A';
-            }
+        //     //all_procedure_performer_list_by_procedureID
+        //     if(!empty($doctor_names)) {
+        //         $doctor_procedure_performer = implode(', ', $doctor_names);
+        //     } else {
+        //         $doctor_procedure_performer = 'N/A';
+        //     }
 
-            if(!empty($nurse_names)) {
-                $nurse_procedure_performer = implode(', ', $nurse_names);
-            } else {
-                $nurse_procedure_performer = 'N/A';
-            }
+        //     if(!empty($nurse_names)) {
+        //         $nurse_procedure_performer = implode(', ', $nurse_names);
+        //     } else {
+        //         $nurse_procedure_performer = 'N/A';
+        //     }
 
-           if(!empty($midwife_names)) {
-                $midwife_procedure_performer = implode(', ', $midwife_names);
-           } else {
-                $midwife_procedure_performer = 'N/A';
-           }
+        //    if(!empty($midwife_names)) {
+        //         $midwife_procedure_performer = implode(', ', $midwife_names);
+        //    } else {
+        //         $midwife_procedure_performer = 'N/A';
+        //    }
 
-           if(!empty($laboratorist_names)) {
-                $laboratorist_procedure_performer = implode(', ', $laboratorist_names);
-           } else {
-                $laboratorist_procedure_performer = 'N/A';
-           }
+        //    if(!empty($laboratorist_names)) {
+        //         $laboratorist_procedure_performer = implode(', ', $laboratorist_names);
+        //    } else {
+        //         $laboratorist_procedure_performer = 'N/A';
+        //    }
 
-           $procedure_status = $this->procedure_model->getStatusById($procedure->status_id)->display_name;
+        //    $procedure_status = $this->procedure_model->getStatusById($procedure->status_id)->display_name;
 
-           $arr_start_time = explode(' ', trim($procedure->performed_start_time));
-           $performed_start_time = $arr_start_time[1];
+        //    $arr_start_time = explode(' ', trim($procedure->performed_start_time));
+        //    $performed_start_time = $arr_start_time[1];
 
-           $arr_end_time = explode(' ', trim($procedure->performed_end_time));
-           $performed_end_time = $arr_end_time[1];
+        //    $arr_end_time = explode(' ', trim($procedure->performed_end_time));
+        //    $performed_end_time = $arr_end_time[1];
 
-           if(!empty($procedure->performed_start_time)) {
-            $timeline[strtotime($procedure->performed_start_time. 'UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">'. date($data['settings']->date_format_long ? $data['settings']->date_format_long: 'F j, Y', strtotime($procedure->performed_start_time.' UTC')) . '</span></li>
-                                                        <li>
-                                                            <i class="fa fa-download bg-secondary"></i>
-                                                            <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($procedure->performed_start_time.' UTC')), 5) . '</span>
-                                                                <h3 class="timelineleft-header"><span>' . lang('procedure')  .'</span></h3>
-                                                                <div class="timelineleft-body">
-                                                                    <div class"form-group">
-                                                                        <div class="media mr-4 mb-4">
-                                                                            <div class="mr-3 mt-1 ml-3">
-                                                                                <i class="fa fa-calendar fa-2x text-primary"></i>
-                                                                            </div>
-                                                                            <div class="media-body">
-                                                                                <strong>'. date($data['settings']->date_format_long ? $data['settings']->date_format_long: 'F j, Y', strtotime($procedure->performed_start_time))  .'</strong>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-10 mb-3">
-                                                                                        <small class="text-muted">'. date($performed_start_time) .' -'. date($performed_end_time) .'</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="ml-auto mt-1 mr-3">
-                                                                                <span class="badge badge-pill badge-primary">'. $procedure_status .'</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <div class="media mr-4 mb-4">
-                                                                            <div class="mr-3 mt-1 ml-3">
-                                                                                <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                            </div>
-                                                                            <div class="media-body">
-                                                                                <strong>'. $procedure->procedure_code  .'</strong>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-10 mb-3">
-                                                                                        <small class="text-muted">'. $procedure->description .'</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <div class="media mr-4 mb-4">
-                                                                            <div class="mr-3 mt-1 ml-3">
-                                                                                <i class="fa fa-user-circle-o fa-2x text-primary"></i>
-                                                                            </div>
-                                                                            <div class="media-body">
-                                                                                <strong>'. lang('performed_by') . ' </strong>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-10 mb-3 mt-1">
-                                                                                        <strong>'. lang('doctor') . '</strong>
-                                                                                        <small class="text-muted ml-2">'.  $doctor_procedure_performer .'</small>
-                                                                                        </br>
-                                                                                        <strong>'. lang('nurse') .'</strong>
-                                                                                        <small class="text-muted ml-2">'. $nurse_procedure_performer .'</small>
-                                                                                        </br>
-                                                                                        <strong>'. lang('midwife') .'</strong>
-                                                                                        <small class="text-muted ml-2">'. $midwife_procedure_performer .'</small>
-                                                                                        </br>
-                                                                                        <strong>'. lang('laboratorist') .'</strong>
-                                                                                        <small class="text-muted ml-2">'. $laboratorist_procedure_performer .'</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <div class="media mr-4 mb-4">
-                                                                            <div class="mr-3 mt-1 ml-3">
-                                                                                <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                            </div>
-                                                                            <div class="media-body">
-                                                                                <strong>'. lang('note') .'</strong>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-10 mb-3">
-                                                                                        <small class="text-muted">'. $procedure->note .'</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="timelineleft-footer border-top bg-light">
-                                                                    <div class="d-flex align-items-center mt-auto">
-                                                                        <div class="avatar brround avatar-md mr-3" style="background-image: url:('. $image_user  .')"></div>
-                                                                        <div>
-                                                                            <p class="font-weight-semibold mb-1">'. $doctor_recorder_name .'</p>
-                                                                            <small class="d-block text-muted">'. $user_spec  .'</small>
-                                                                        </div>
-                                                                        <div class="ml-auto mr-3 text-right">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12 col-sm-12">
-                                                                                    <strong>'. $hospital_details->name .'</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="col-md-12 col-sm-12">
-                                                                                    <small>'. $branch_name  .'</small>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div>
-                                                                                <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>';
-           }
-        }
+        //    if(!empty($procedure->performed_start_time)) {
+        //     $timeline[strtotime($procedure->performed_start_time. 'UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">'. date($data['settings']->date_format_long ? $data['settings']->date_format_long: 'F j, Y', strtotime($procedure->performed_start_time.' UTC')) . '</span></li>
+        //                                                 <li>
+        //                                                     <i class="fa fa-download bg-secondary"></i>
+        //                                                     <div class="timelineleft-item">
+        //                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($procedure->performed_start_time.' UTC')), 5) . '</span>
+        //                                                         <h3 class="timelineleft-header"><span>' . lang('procedure')  .'</span></h3>
+        //                                                         <div class="timelineleft-body">
+        //                                                             <div class"form-group">
+        //                                                                 <div class="media mr-4 mb-4">
+        //                                                                     <div class="mr-3 mt-1 ml-3">
+        //                                                                         <i class="fa fa-calendar fa-2x text-primary"></i>
+        //                                                                     </div>
+        //                                                                     <div class="media-body">
+        //                                                                         <strong>'. date($data['settings']->date_format_long ? $data['settings']->date_format_long: 'F j, Y', strtotime($procedure->performed_start_time))  .'</strong>
+        //                                                                         <div class="row">
+        //                                                                             <div class="col-md-10 mb-3">
+        //                                                                                 <small class="text-muted">'. date($performed_start_time) .' -'. date($performed_end_time) .'</small>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                     <div class="ml-auto mt-1 mr-3">
+        //                                                                         <span class="badge badge-pill badge-primary">'. $procedure_status .'</span>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                             <div class="form-group">
+        //                                                                 <div class="media mr-4 mb-4">
+        //                                                                     <div class="mr-3 mt-1 ml-3">
+        //                                                                         <i class="fa fa-file-text-o fa-2x text-primary"></i>
+        //                                                                     </div>
+        //                                                                     <div class="media-body">
+        //                                                                         <strong>'. $procedure->procedure_code  .'</strong>
+        //                                                                         <div class="row">
+        //                                                                             <div class="col-md-10 mb-3">
+        //                                                                                 <small class="text-muted">'. $procedure->description .'</small>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                             <div class="form-group">
+        //                                                                 <div class="media mr-4 mb-4">
+        //                                                                     <div class="mr-3 mt-1 ml-3">
+        //                                                                         <i class="fa fa-user-circle-o fa-2x text-primary"></i>
+        //                                                                     </div>
+        //                                                                     <div class="media-body">
+        //                                                                         <strong>'. lang('performed_by') . ' </strong>
+        //                                                                         <div class="row">
+        //                                                                             <div class="col-md-10 mb-3 mt-1">
+        //                                                                                 <strong>'. lang('doctor') . '</strong>
+        //                                                                                 <small class="text-muted ml-2">'.  $doctor_procedure_performer .'</small>
+        //                                                                                 </br>
+        //                                                                                 <strong>'. lang('nurse') .'</strong>
+        //                                                                                 <small class="text-muted ml-2">'. $nurse_procedure_performer .'</small>
+        //                                                                                 </br>
+        //                                                                                 <strong>'. lang('midwife') .'</strong>
+        //                                                                                 <small class="text-muted ml-2">'. $midwife_procedure_performer .'</small>
+        //                                                                                 </br>
+        //                                                                                 <strong>'. lang('laboratorist') .'</strong>
+        //                                                                                 <small class="text-muted ml-2">'. $laboratorist_procedure_performer .'</small>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                             <div class="form-group">
+        //                                                                 <div class="media mr-4 mb-4">
+        //                                                                     <div class="mr-3 mt-1 ml-3">
+        //                                                                         <i class="fa fa-file-text-o fa-2x text-primary"></i>
+        //                                                                     </div>
+        //                                                                     <div class="media-body">
+        //                                                                         <strong>'. lang('note') .'</strong>
+        //                                                                         <div class="row">
+        //                                                                             <div class="col-md-10 mb-3">
+        //                                                                                 <small class="text-muted">'. $procedure->note .'</small>
+        //                                                                             </div>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                         <div class="timelineleft-footer border-top bg-light">
+        //                                                             <div class="d-flex align-items-center mt-auto">
+        //                                                                 <div class="avatar brround avatar-md mr-3" style="background-image: url:('. $image_user  .')"></div>
+        //                                                                 <div>
+        //                                                                     <p class="font-weight-semibold mb-1">'. $doctor_recorder_name .'</p>
+        //                                                                     <small class="d-block text-muted">'. $user_spec  .'</small>
+        //                                                                 </div>
+        //                                                                 <div class="ml-auto mr-3 text-right">
+        //                                                                     <div class="row">
+        //                                                                         <div class="col-md-12 col-sm-12">
+        //                                                                             <strong>'. $hospital_details->name .'</strong>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                     <div class="row">
+        //                                                                         <div class="col-md-12 col-sm-12">
+        //                                                                             <small>'. $branch_name  .'</small>
+        //                                                                         </div>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                                 <div>
+        //                                                                     <div>
+        //                                                                         <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                                     </div>
+        //                                                                 </div>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </li>';
+        //    }
+        // }
         if (!empty($timeline)) {
             $data['timeline'] = $timeline;
         }
