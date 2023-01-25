@@ -143,6 +143,7 @@ class Admin extends MX_Controller {
                 $data['admin'] = $this->admin_model->getAdminById($id);
                 $data['admins'] = $this->admin_model->getAdmin();
                 $data['countries'] = $this->location_model->getCountry();
+                $data['redirect'] = null;
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_new', $data);
                 // $this->load->view('home/footer'); // just the footer file
@@ -152,6 +153,7 @@ class Admin extends MX_Controller {
                 $data['setval'] = 'setval';
                 $data['admins'] = $this->admin_model->getAdmin();
                 $data['countries'] = $this->location_model->getCountry();
+                $data['redirect'] = null;
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_new', $data);
                 // $this->load->view('home/footer'); // just the header file
