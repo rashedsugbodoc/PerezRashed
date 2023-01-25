@@ -99,7 +99,7 @@ class Schedule_model extends CI_model {
 
     function getAvailableSlotByDoctorByDate($date, $doctor, $location) {
         //$newDate = date("m-d-Y", strtotime($date));
-        $weekday = strftime("%A", $date);
+        $weekday = strftime("%A", intval($date));
 
         $this->db->where('date', $date);
         $this->db->where('doctor', $doctor);
