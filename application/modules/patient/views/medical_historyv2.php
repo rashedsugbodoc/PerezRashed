@@ -194,9 +194,6 @@
                                         <select class="select2-show-search w-100" name="encounter_id" id="encounter_selection" data-placeholder="<?php echo lang('select').' '.lang('encounter') ?>">
                                             <option></option>
                                             <option value="All"><?php echo lang("all").' '.lang("encounter") ?></option>
-                                            <?php /*foreach($encounter_details as $encounter_detail) {*/ ?>
-                                                <!-- <option value="<?php echo $encounter_detail->id ?>"><?php echo lang('encounter')." No. : ".$encounter_detail->encounter_number.' - '.date("M j, Y g:i A", strtotime($encounter_detail->created_at.' UTC')); ?></option> -->
-                                            <?php /*}*/ ?>
                                         </select>
                                     <?php } ?>
                                 </div>
@@ -431,7 +428,6 @@
                                                     <?php } ?>
                                                 <?php } ?>
 
-                                                <!-- <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li> -->
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                                     <?php if (in_array('patient', $this->modules)) { ?>
                                                         <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
@@ -579,17 +575,11 @@
                                                             <div class="card-options">
                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) { ?>
                                                                     <div class=" no-print">
-                                                                        <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                        </a> -->
                                                                         <a class="btn btn-primary pull-right" href="appointment/addNewView?root=patient&method=medicalHistory&patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id; ?>"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
                                                                     </div>
                                                                 <?php } ?>
                                                                 <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                                                     <div class=" no-print">
-                                                                        <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                                            <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
-                                                                        </a> -->
                                                                         <a href="appointment/bookConsultation" class="btn btn-primary">
                                                                             <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
                                                                         </a>
@@ -869,7 +859,6 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="row">
                                                                 <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
-                                                                    <!-- <a  data-target="#AddDocument" data-toggle="modal" href="" class="btn btn-primary"><i class="fe fe-plus"></i> Upload New Document</a> -->
                                                                     <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                                                     </a>
@@ -903,14 +892,12 @@
                                                                                        <div></div>
                                                                                     <?php } ?>
                                                                                     <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
-                                                                                    <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
                                                                                         <a class="btn btn-danger" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
                                                                                     <?php } ?>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="px-5 pb-5 text-center">
-                                                                                <!-- <img src="<?php echo base_url('public/assets/images/files/file2.png'); ?>" alt="img" class="w-80 mx-auto"> -->
                                                                                 <?php $ext = pathinfo($patient_material->url, PATHINFO_EXTENSION); ?>
                                                                                 <?php if ($ext === 'pdf'){ ?>
                                                                                     <div class="panel-body text-center">
@@ -1013,28 +1000,6 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <?php /*foreach ($encounters as $encounter) {*/ ?>
-                                                                                <!-- <tr class="">
-                                                                                    <td><?php /*echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC'));*/ ?></td>            
-                                                                                    <td><?php /*echo $encounter->encounter_number;*/ ?></td>
-                                                                                    <td><?php /*echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name;*/ ?></td>
-                                                                                    <td><?php
-                                                                                        /*if (!empty($encounter->location_id)) {
-                                                                                            $facility = $this->hospital_model->getHospitalById($encounter->hospital_id);
-                                                                                            echo $facility->name.'<br>'.'( '.$this->branch_model->getBranchById($encounter->location_id)->display_name.' )';
-                                                                                        } else {
-                                                                                            echo $this->hospital_model->getHospitalById($encounter->hospital_id)->name.'<br>'.'( '.lang('online').' )';
-                                                                                        }*/
-                                                                                    ?></td>
-                                                                                    <td><?php
-                                                                                        /*if (!empty($encounter->encounter_status)) {
-                                                                                            echo $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
-                                                                                        } else {
-                                                                                            echo "N/A";
-                                                                                        }*/
-                                                                                    ?></td>
-                                                                                </tr> -->
-                                                                            <?php /*}*/ ?>
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
@@ -1211,21 +1176,6 @@
                                                             <input class="form-control flatpickr" readonly name="datetime" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('time'); ?> <?php echo lang('measured'); ?></label>
-                                                            <div class="wd-150 mg-b-30">
-                                                                <div class="input-group">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">
-                                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input class="form-control" id="tpBasic" name="time" placeholder="Set time" type="text">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
@@ -1431,21 +1381,6 @@
                                                             <input class="form-control flatpickr datetime" readonly name="datetime" placeholder="MM/DD/YYYY" type="text">
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('time'); ?> <?php echo lang('measured'); ?></label>
-                                                            <div class="wd-150 mg-b-30">
-                                                                <div class="input-group">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">
-                                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input class="form-control" id="tpBasic2" name="time" placeholder="Set time" type="text">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
@@ -1820,11 +1755,6 @@
                                         </div>
                                         <form  role="form" id="medical_historyEditForm" class="clearfix" action="patient/addMedicalHistory" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction2();">
                                             <div class="modal-body">
-                                                <!-- <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <input type="text" name="encounter_id" value="<?php /*echo $encounter_id*/ ?>">
-                                                    </div>
-                                                </div> -->
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
@@ -2075,10 +2005,6 @@
                                                 <!-- Redirect Area End -->
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
-                                                        <!-- <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
-                                                            <span class="custom-control-label">Send SMS</span>
-                                                        </label> -->
                                                         
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
@@ -2191,10 +2117,6 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
-                                                        <!-- <label class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
-                                                            <span class="custom-control-label">Send SMS</span>
-                                                        </label> -->
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
@@ -2474,34 +2396,6 @@
         });
     </script>
 
-    <!-- <script type="text/javascript">
-        $(document).ready(function () {
-            var patient = "<?php echo $patient->id ?>";
-            $("#edit_encounter_vital").select2({
-                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
-                allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfoByPatientId?patient='+patient,
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
-
-            });
-        });
-    </script> -->
-
     <script type="text/javascript">
         $(document).ready(function () {
             var patient = "<?php echo $patient->id ?>";
@@ -2662,44 +2556,6 @@
             })
         });
     </script>
-
-    <script type="text/javascript">
-        // $("#encounterChange").click(function () {
-        //     const nextURL = 'sugbodoc/patient/medicalHistory?id=<?php echo $patient->id ?>';
-        //     const nextTitle = 'My new page title';
-        //     const nextState = { additionalInformation: 'Updated the URL with JS' };
-
-        //     // This will create a new entry in the browser's history, without reloading
-        //     window.history.pushState(nextState, nextTitle, nextURL);
-
-        //     // This will replace the current entry in the browser's history, without reloading
-        //     window.history.replaceState(nextState, nextTitle, nextURL);
-        // })
-    </script>
-
-    <!-- <script type="text/javascript">
-        $(document).ready(function () {
-            $("#encounterChange").click(function () {
-                var encounterBanner = $("#encounterBanner");
-                var encounterSelect = $("#encounterSelect");
-
-                var encounter_id = "<?php echo $encounter_id ?>";
-                if (encounter_id == "") {
-                    encounter_id = "empty";
-                }
-
-                if (encounter_id == "empty") {
-                    window.location.href = "patient/medicalHistory?id=<?php echo $patient->id ?>";
-                } else {
-                    window.location.href = "patient/medicalHistory?id=<?php echo $patient->id ?>";
-                }
-
-                alert(encounter_id);
-
-                // $("#encounterSelect").append('<p>zzzzzz</p>');
-            });
-        });
-    </script> -->
 
     <script>
         $('#addAppointmentForm').parsley();
