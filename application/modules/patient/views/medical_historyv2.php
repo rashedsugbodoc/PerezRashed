@@ -879,88 +879,7 @@
 
                                                     <div class="mb-0">
                                                         <div class="row myDocuments">
-                                                            <?php foreach ($patient_materials as $patient_material) { ?>
-                                                                <div class="col-xl-3 col-lg-4 col-md-6">
-                                                                    <div class="card">
-                                                                        <div class="card-body p-0">
-                                                                            <div class="todo-widget-header d-flex pb-2 p-4">
-                                                                                <div class="">
-                                                                                    <?php if ($patient_material->created_user_id == $current_user) { ?>
-                                                                                        <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fa fa-paint-brush"></i></a>
-                                                                                        <a data-target="#patientEditModal" data-toggle="modal" class="editDocumentModal btn btn-info btn-xs btn_width"  data-id="<?php echo $patient_material->id ?>" target="_blank"><i class="fa fa-edit"> </i></a>
-                                                                                        <?php } else { ?>
-                                                                                       <div></div>
-                                                                                    <?php } ?>
-                                                                                    <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
-                                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                                                        <a class="btn btn-danger" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
-                                                                                    <?php } ?>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="px-5 pb-5 text-center">
-                                                                                <?php $ext = pathinfo($patient_material->url, PATHINFO_EXTENSION); ?>
-                                                                                <?php if ($ext === 'pdf'){ ?>
-                                                                                    <div class="panel-body text-center">
-                                                                                        <a class="example-image-link" href="<?php echo $patient_material->url; ?>" target="_blank">
-                                                                                            <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" max-width="120" max-height="120"/>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                <?php } else { ?>
-                                                                                    <div class="panel-body text-center">
-                                                                                        <a class="example-image-link" href="<?php echo file_exists($patient_material->url)?$patient_material->url:base_url('public/assets/images/users/document-placeholder.jpg'); ?>" data-lightbox="example-1" target="_blank">
-                                                                                            <img class="example-image" src="<?php echo file_exists($patient_material->thumbnail_url)?$patient_material->thumbnail_url:base_url('public/assets/images/users/document-placeholder.jpg'); ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" width="auto" height="auto" style="height: 120px; width: 120px;"/>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                <?php } ?>
-                                                                                <h6 class="mb-1 font-weight-bold mt-4">
-                                                                                    <?php
-                                                                                    if (!empty($patient_material->title)) {
-                                                                                        echo $patient_material->title;
-                                                                                    }
-                                                                                    ?>
-                                                                                </h6>
-                                                                                <p class="text-dark">
-                                                                                    <?php echo lang('uploader') . ': '; ?>
-                                                                                    <?php
-                                                                                    if (!empty($patient_material->created_user_id)) {
-                                                                                        echo $this->hospital_model->getIonUserById($patient_material->created_user_id)->username;
-                                                                                    } else {
-                                                                                        echo '';
-                                                                                    }
-                                                                                    ?>
-                                                                                </p>
-                                                                                <p class="text-muted">
-                                                                                    <?php
-                                                                                    if (!empty($patient_material->created_at)) {
-                                                                                        $utcdate = date($settings->date_format_long?$settings->date_format_long:'m-d-Y' . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC'));
-                                                                                        echo $utcdate;
-                                                                                    } else {
-                                                                                        echo '';
-                                                                                    }
-                                                                                    ?>
-                                                                                </p>
-                                                                                
-                                                                            </div>
-                                                                            <div class="pb-5">
-                                                                                <button class="btn btn-light brround pull-right" id="safe_water_description" data-container="body" data-content="<?php
-                                                                                $encounter_details = $this->encounter_model->getEncounterById($patient_material->encounter_id);
-                                                                                $encounter_location = $encounter_details?$this->branch_model->getBranchById($encounter_details->location_id):'';
-                                                                                if (!empty($patient_material->encounter_id)) {
-                                                                                    if (!empty($encounter_location)) {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location->display_name . ')';
-                                                                                    } else {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                    }
-                                                                                } else {
-                                                                                    $appointment_facility = $hospital?$hospital->name:''.'<br>'.'( '.lang('online').' )';
-                                                                                }
-                                                                                echo $appointment_facility;
-                                                                                ?>" data-html="true" data-placement="top" data-popover-color="primary" title="<?php echo lang('facility') ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            <?php } ?>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3450,7 +3369,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",

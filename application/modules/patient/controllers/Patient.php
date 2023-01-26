@@ -2670,16 +2670,16 @@ class Patient extends MX_Controller {
             $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatientByEncounterId($id, $data['encounter_id']);
         }*/
 
-        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($id);
-        $data['vitals'] = $this->patient_model->getPatientVitalById($id);
+        // $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($id);
+        // $data['vitals'] = $this->patient_model->getPatientVitalById($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
-        $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
+        // $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
-        $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
-        $data['forms'] = $this->form_model->getFormByPatientId($id);
-        $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
-        $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
-        $data['procedures'] = $this->procedure_model->getProcedureByPatientId($id);
+        // $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
+        // $data['forms'] = $this->form_model->getFormByPatientId($id);
+        // $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        // $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
+        // $data['procedures'] = $this->procedure_model->getProcedureByPatientId($id);
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
