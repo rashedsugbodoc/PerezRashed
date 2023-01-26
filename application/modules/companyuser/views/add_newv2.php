@@ -743,139 +743,141 @@
         $(document).ready(function() {
             var country = $("#country").val();
             var iid = $("#companyuser_id").val();
+            console.log(iid);
+            if (iid != '') {
+                $.ajax({
+                    url: 'companyuser/editCompanyUserByJason?id=' + iid,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var company_country = response.companyuser.country_id;
+                        var company_state = response.companyuser.state_id;
+                        var company_city = response.companyuser.city_id;
+                        var company_barangay = response.companyuser.barangay_id;
 
-            $.ajax({
-                url: 'companyuser/editCompanyUserByJason?id=' + iid,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var company_country = response.companyuser.country_id;
-                    var company_state = response.companyuser.state_id;
-                    var company_city = response.companyuser.city_id;
-                    var company_barangay = response.companyuser.barangay_id;
+                        $("#state").find('option').remove();
+                        $("#city").find('option').remove();
+                        $("#barangay").find('option').remove();
 
-                    $("#state").find('option').remove();
-                    $("#city").find('option').remove();
-                    $("#barangay").find('option').remove();
+                        $("#companyuserForm").find('[name="scope_level"]').val(response.companyuser.scope_level).change();
+                        console.log('Edit CompanyUser Country');
 
-                    $("#companyuserForm").find('[name="scope_level"]').val(response.companyuser.scope_level).change();
-                    console.log('Edit CompanyUser Country');
+                        $.each(response.scopes, function (key, value) {
+                            $('#editScope').append($('<option selected>').text(value.primary_location_name+' ('+value.secondary_location_name+')').val(value.primary_location_id)).change();
+                        })
 
-                    $.each(response.scopes, function (key, value) {
-                        $('#editScope').append($('<option selected>').text(value.primary_location_name+' ('+value.secondary_location_name+')').val(value.primary_location_id)).change();
-                    })
-
-                    // $.each(response.scopes, function (key, value) {
-                    //     $('#editScope').append($('<option selected>').text(value.statename).val(value.id)).change();
-                    //     console.log(value.statename);
-                    // });
-                    // console.log(response.state);
-                    $.each(response.scopeState, function (key, value) {
-                        $('#editScope').append($('<option>').text(value.text).val(value.id)).end();
-                        // var scope_state = value.id;
-                        // console.log(scope_state);
                         // $.each(response.scopes, function (key, value) {
-                        //     // console.log(scope_state);
-                        //     if (scope_state == value.stateid) {
-                        //         // $("#companyuserForm").find('[name="scope"]').val(value.stateid).change();
-                        //         $('#editScope').append($('<option selected>').text(value.statename+' ('+value.countryname+')').val(value.stateid)).change();
-                        //         // $('#editScope').attr('selected', true).val(value.stateid).end();
-                        //         // $("#companyuserForm").find('[name="scope"]').val(value.stateid).change();
-                        //     }
-                        // })
-                        
-                    });
-
-                    console.log(company_country);
-
-                    if (company_country == null) {
-                        $("#state").attr("disabled", true);
-                    } else {
-                        $("#state").attr("disabled", false);
-                    }
-
-                    $.ajax({
-                        url: 'companyuser/getStateByCountryIdByJason?country=' + company_country,
-                        method: 'GET',
-                        data: '',
-                        dataType: 'json',
-                        success: function (response) {
-                            var state = response.state;
+                        //     $('#editScope').append($('<option selected>').text(value.statename).val(value.id)).change();
+                        //     console.log(value.statename);
+                        // });
+                        // console.log(response.state);
+                        $.each(response.scopeState, function (key, value) {
+                            $('#editScope').append($('<option>').text(value.text).val(value.id)).end();
+                            // var scope_state = value.id;
+                            // console.log(scope_state);
+                            // $.each(response.scopes, function (key, value) {
+                            //     // console.log(scope_state);
+                            //     if (scope_state == value.stateid) {
+                            //         // $("#companyuserForm").find('[name="scope"]').val(value.stateid).change();
+                            //         $('#editScope').append($('<option selected>').text(value.statename+' ('+value.countryname+')').val(value.stateid)).change();
+                            //         // $('#editScope').attr('selected', true).val(value.stateid).end();
+                            //         // $("#companyuserForm").find('[name="scope"]').val(value.stateid).change();
+                            //     }
+                            // })
                             
-                            console.log('Edit CompanyUser - Load State of Country');
+                        });
 
-                            $.each(state, function (key, value) {
-                                $('#state').append($('<option>').text(value.name).val(value.id)).end();
-                            });
+                        console.log(company_country);
 
-                            if (company_state == null) {
-                                $('#state').val("0");
-                            } else {
-                                $('#state').val(company_state);
-                            }
-
-                            if (company_state == null) {
-                                $("#city").attr("disabled", true);
-                            } else {
-                                $("#city").attr("disabled", false);
-                            }
-
-                            $.ajax({
-                                url: 'companyuser/getCityByStateIdByJason?state=' + company_state,
-                                method: 'GET',
-                                data: '',
-                                dataType: 'json',
-                                success: function (response) {
-                                    var city = response.city;
-
-                                    console.log('Edit CompanyUser - Load Cities of State');
-
-                                    $.each(city, function (key, value) {
-                                        $('#city').append($('<option>').text(value.name).val(value.id)).end();
-                                    });
-
-                                    if (company_city == null) {
-                                        $('#city').val("0");
-                                    } else {
-                                        $('#city').val(company_city);
-                                    }
-
-                                    if (company_city == null) {
-                                        $("#barangay").attr("disabled", true);
-                                    } else {
-                                        $("#barangay").attr("disabled", false);
-                                    }
-
-                                    $.ajax({
-                                        url: 'companyuser/getBarangayByCityIdByJason?city=' + company_city,
-                                        method: 'GET',
-                                        data: '',
-                                        dataType: 'json',
-                                        success: function (response) {
-                                            var barangay = response.barangay;
-
-                                            console.log('Edit CompanyUser - Load Barangays of City');
-
-                                            $.each(barangay, function (key, value) {
-                                                $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
-                                            });
-
-                                            if (company_barangay == null) {
-                                                $('#barangay').val("0");
-                                            } else {
-                                                $('#barangay').val(company_barangay);
-                                            }
-                                        }
-                                    });
-                                }
-                            })
+                        if (company_country == null) {
+                            $("#state").attr("disabled", true);
+                        } else {
+                            $("#state").attr("disabled", false);
                         }
-                    });
+
+                        $.ajax({
+                            url: 'companyuser/getStateByCountryIdByJason?country=' + company_country,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                var state = response.state;
+                                
+                                console.log('Edit CompanyUser - Load State of Country');
+
+                                $.each(state, function (key, value) {
+                                    $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                                });
+
+                                if (company_state == null) {
+                                    $('#state').val("0");
+                                } else {
+                                    $('#state').val(company_state);
+                                }
+
+                                if (company_state == null) {
+                                    $("#city").attr("disabled", true);
+                                } else {
+                                    $("#city").attr("disabled", false);
+                                }
+
+                                $.ajax({
+                                    url: 'companyuser/getCityByStateIdByJason?state=' + company_state,
+                                    method: 'GET',
+                                    data: '',
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        var city = response.city;
+
+                                        console.log('Edit CompanyUser - Load Cities of State');
+
+                                        $.each(city, function (key, value) {
+                                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                        });
+
+                                        if (company_city == null) {
+                                            $('#city').val("0");
+                                        } else {
+                                            $('#city').val(company_city);
+                                        }
+
+                                        if (company_city == null) {
+                                            $("#barangay").attr("disabled", true);
+                                        } else {
+                                            $("#barangay").attr("disabled", false);
+                                        }
+
+                                        $.ajax({
+                                            url: 'companyuser/getBarangayByCityIdByJason?city=' + company_city,
+                                            method: 'GET',
+                                            data: '',
+                                            dataType: 'json',
+                                            success: function (response) {
+                                                var barangay = response.barangay;
+
+                                                console.log('Edit CompanyUser - Load Barangays of City');
+
+                                                $.each(barangay, function (key, value) {
+                                                    $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                                });
+
+                                                if (company_barangay == null) {
+                                                    $('#barangay').val("0");
+                                                } else {
+                                                    $('#barangay').val(company_barangay);
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                            }
+                        });
 
 
-                }
-            });
+                    }
+                });
+            }
         });
     </script>
 

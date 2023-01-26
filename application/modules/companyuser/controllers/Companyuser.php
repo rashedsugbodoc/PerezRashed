@@ -107,6 +107,7 @@ class Companyuser extends MX_Controller {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 // $id = $this->input->get('id');
+                $data['id'] = $id;
                 if (!$this->ion_auth->in_group(('CompanyUser'))) {
                     $data['companies'] = $this->company_model->getCompany();
                     $data['countries'] = $this->location_model->getCountry();
@@ -121,6 +122,7 @@ class Companyuser extends MX_Controller {
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
+                $data['id'] = null;
                 if (!$this->ion_auth->in_group(('CompanyUser'))) {
                     $data['companies'] = $this->company_model->getCompany();
                     $data['countries'] = $this->location_model->getCountry();
