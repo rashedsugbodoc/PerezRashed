@@ -471,21 +471,22 @@ class Labrequest extends MX_Controller {
 
             if(!empty($patient_id)) {
                 $info[] = array(
-                    date('Y-m-d h:i A', strtotime($labrequest->request_date.' UTC')),
-                    $labrequest->lab_request_number,
+                    $labrequest?date('Y-m-d h:i A', strtotime($labrequest->request_date.' UTC')):'',
+                    $labrequest?$labrequest->lab_request_number:'',
                     $alltest,
-                    $labrequest->patientname,
-                    $doctor->name,
+                    $labrequest?$labrequest->patientname:'',
+                    $doctor?$doctor->name:'',
                     $appointment_facility,
                     $options4 . ' ' . $options5,
                 );
             } else {
                 $info[] = array(
-                    date('Y-m-d h:i A', strtotime($labrequest->request_date.' UTC')),
-                    $labrequest->lab_request_number,
+                    $labrequest?date('Y-m-d h:i A', strtotime($labrequest->request_date.' UTC')):'',
+                    $labrequest?$labrequest->lab_request_number:'',
                     $alltest,
-                    $labrequest->patientname,
-                    $doctor->name,
+                    $labrequest?$labrequest->patientname:'',
+                    $doctor?$doctor->name:'',
+                    $appointment_facility,
                     $option1 . ' ' . $option2 . ' ' . $option3,
                 );
             }
