@@ -30,6 +30,7 @@
                                                             <th class="border-bottom-0 w-40"><?php echo lang('lab').' '.lang('test'); ?></th>
                                                             <th class="border-bottom-0 w-10"><?php echo lang('patient'); ?></th>
                                                             <th class="border-bottom-0 w-10"><?php echo lang('doctors'); ?></th>
+                                                            <th class="border-bottom-0"><?php echo lang('facility'); ?></th>
                                                             <th class="border-bottom-0 w-10"><?php echo lang('actions'); ?></th>
                                                         </tr>
                                                     </thead>

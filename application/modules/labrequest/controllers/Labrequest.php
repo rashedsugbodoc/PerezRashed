@@ -453,7 +453,6 @@ class Labrequest extends MX_Controller {
                 $labtestdata .= $labtestsingle;
             }
 
-            $facility = $this->branch_model->getBranchById($labrequest->location_id);
             $hospital = $this->hospital_model->getHospitalById($labrequest->hospital_id);
             $encounter_details = $this->encounter_model->getEncounterById($labrequest->encounter_id);
             $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
