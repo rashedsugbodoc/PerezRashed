@@ -1029,6 +1029,7 @@ $lang['and'] = 'and';
 $lang['updated'] = 'Updated';
 $lang['deleted'] = 'Deleted';
 $lang['validation_error'] = 'There is an error in your submission. Please correct them.';
+$lang['validation_error_record_link'] = 'Submission Error because there is a Record Link to this Data';
 $lang['message_sent'] = 'Message Sent';
 $lang['not_sent'] = 'Not Sent';
 $lang['select_an_item'] = 'Select an Item';

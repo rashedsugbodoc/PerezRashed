@@ -272,6 +272,36 @@ class Encounter extends MX_Controller {
 
     }
 
+    function delete() {
+        if ($this->ion_auth->in_group(array('admin'))) {
+            $encounter_id = $this->input->get('id');
+            $encounter_detail = $this->encounter_model->getEncounterById($encounter_id);
+
+            if (empty($encounter_detail->appointment_id) && empty($encounter_detail->start_vital_id) && empty($encounter_detail->patient_diagnosis_id) && empty($encounter_detail->patient_deposit_id) && empty($encounter_detail->lab_request_id) && empty($encounter_detail->case_note_id) && empty($encounter_detail->prescription_id) && empty($encounter_detail->form_id) && empty($encounter_detail->service_request_id)) {
+                $this->encounter_model->deleteEncounter($encounter_id);
+
+                redirect('encounter');
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error_record_link'));
+                $data = array();
+
+                $data['branches'] = $this->branch_model->getBranches();
+                $data['encounter_types'] = $this->encounter_model->getEncounterType();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['staffs'] = $this->encounter_model->getUser();
+                $data['providers'] = $this->hospital_model->getHospital();
+                $data['templates'] = $this->form_model->getTemplate();
+                $data['categories'] = $this->form_model->getFormCategory();
+                $data['settings'] = $this->settings_model->getSettings();
+
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('encounter', $data);
+            }
+
+        }
+    }
+
     function getEncounter() {
         $requestData = $_REQUEST;
         $start = $requestData['start'];
@@ -419,6 +449,14 @@ class Encounter extends MX_Controller {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
                         $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $patient->patient_id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
                 }
+
+                $option13 = '';
+                if (empty($encounter->appointment_id) && empty($encounter->start_vital_id) && empty($encounter->patient_diagnosis_id) && empty($encounter->patient_deposit_id) && empty($encounter->lab_request_id) && empty($encounter->case_note_id) && empty($encounter->prescription_id) && empty($encounter->form_id) && empty($encounter->service_request_id)) {
+                    $option13 = '<a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>';;
+                } else {
+                    $option13 = '';
+                }
+
                 $option6 = '<div class="dropdown">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
@@ -435,7 +473,7 @@ class Encounter extends MX_Controller {
                                     '.$option11.'
                                     <a class="billbutton dropdown-item bg-info text-light" href="diagnosis/addDiagnosisView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('diagnosis') . '</a>
                                     <a class="billbutton dropdown-item bg-info text-light" href="labrequest/addLabRequestView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('lab') . ' '. lang('request') . '</a>
-                                    <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
+                                    '.$option13.'
                                 </div>
                             </div>';
             } elseif($this->ion_auth->in_group(array('Receptionist'))) {

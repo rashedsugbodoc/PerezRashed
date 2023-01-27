@@ -42,6 +42,11 @@ class Encounter_model extends CI_model {
         $this->db->update('encounter', $data);
     }
 
+    function deleteEncounter($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('encounter');
+    }
+
     function getEncounterById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
