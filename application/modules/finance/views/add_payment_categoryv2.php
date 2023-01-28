@@ -77,81 +77,6 @@
                                                         ?>' placeholder="" required>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('price').' '.lang('type'); ?> <span class="text-red">*</span></label>
-                                                        <ul class="nav nav-pills nav-pills-circle" id="tabs_2" role="tablist">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5 <?php
-                                                                if(!empty($service)) {
-                                                                    if ($service[0]->type == "fixed") {
-                                                                        echo "active";
-                                                                    } else {
-                                                                        echo "";
-                                                                    }
-                                                                } else {
-                                                                    echo "active";
-                                                                }
-                                                                ?>" id="tab1" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="<?php
-                                                                if(!empty($service)) {
-                                                                    if ($service[0]->type == "fixed") {
-                                                                        echo "true";
-                                                                    } else {
-                                                                        echo "false";
-                                                                    }
-                                                                } else {
-                                                                    echo "true";
-                                                                }
-                                                                ?>" onclick="fix();">
-                                                                    <span class="nav-link-icon d-block"><?php echo lang('fixed_amount') ?></span>
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5 <?php
-                                                                if ($service[0]->type == "variable") {
-                                                                    echo "active";
-                                                                } else {
-                                                                    echo "";
-                                                                }
-                                                                ?>" id="tab2" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="<?php
-                                                                if ($service[0]->type == "variable") {
-                                                                    echo "true";
-                                                                } else {
-                                                                    echo "false";
-                                                                }
-                                                                ?>" onclick="variable();">
-                                                                    <span class="nav-link-icon d-block"><?php echo lang('variable_amount') ?></span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                        <input type="hidden" name="price_type" value="<?php
-                                                            if (!empty($service[0]->type)) {
-                                                                echo $service[0]->type;
-                                                            } else {
-                                                                echo "fixed";
-                                                            }
-                                                            ?>">
-                                                    </div>
-                                                </div> -->
-                                                <!-- <div class="col-md-12 col-sm-12" id="c_price" <?php
-                                                    if ($service[0]->type == "variable") {
-                                                        echo "hidden";
-                                                    } else {
-                                                        echo "";
-                                                    }
-                                                ?>>
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('price'); ?> (<?php echo $settings->currency; ?>) <span class="text-red">*</span></label>
-                                                        <input type="number" class="form-control" name="c_price" id="exampleInputEmail1" oninput="validity.valid||(value='0');" value='<?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('c_price');
-                                                        }
-                                                        if (!empty($service[0]->c_price)) {
-                                                            echo $service[0]->c_price;
-                                                        }
-                                                        ?>' placeholder="" required>
-                                                    </div>
-                                                </div> -->
                                                 <div class="col-md-12 col-sm-12 hidden">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('rendering'); ?> <?php echo lang('doctors_share'); ?> (%) <span class="text-red">*</span></label>
@@ -178,65 +103,6 @@
                                                         ?>' placeholder="">
                                                     </div>
                                                 </div>
-                                                <!-- <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('tax'); ?></label>
-                                                        <select id="tax" name="tax" class="form-control w-25" data-placeholder="<?php echo lang('select_tax'); ?>">
-                                                            <option label="<?php echo lang('select_tax'); ?>"></option>
-                                                            <option value="0">None</option>
-                                                            <?php foreach($taxes as $tax) { ?>
-                                                                <option value="<?php echo $tax->id ?>"
-                                                                    <?php if($tax->id == $service[0]->tax_id) { echo 'selected'; } else { ''; } ?>
-                                                                ><?php echo $tax->name; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 tax-choice" <?php echo $service?'':'hidden'; ?>>
-                                                    <div class="form-group">
-                                                        <ul class="nav nav-pills nav-pills-circle" id="tabs_3" role="tablist">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5 <?php
-                                                                    if ($service[0]->price_includes_tax == '1') {
-                                                                        echo 'active';
-                                                                    } else {
-                                                                        echo '';
-                                                                    }
-                                                                ?>" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="<?php
-                                                                    if ($service[0]->price_includes_tax == '1') {
-                                                                        echo 'true';
-                                                                    } else {
-                                                                        echo 'false';
-                                                                    }
-                                                                ?>" onclick="include();">
-                                                                    <span class="nav-link-icon d-block"><?php echo lang('price_includes_tax') ?></span>
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5 <?php
-                                                                    if ($service[0]->price_includes_tax == '0') {
-                                                                        echo 'active';
-                                                                    } else {
-                                                                        echo '';
-                                                                    }
-                                                                ?>" id="tab4" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="<?php
-                                                                    if ($service[0]->price_includes_tax == '0') {
-                                                                        echo 'true';
-                                                                    } else {
-                                                                        echo 'false';
-                                                                    }
-                                                                ?>" onclick="exclude();">
-                                                                    <span class="nav-link-icon d-block"><?php echo lang('price_excludes_tax') ?></span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                        <input type="hidden" name="is_taxable" value="<?php
-                                                        if (!empty($service[0])) {
-                                                            echo $service[0]->price_includes_tax;
-                                                        }
-                                                        ?>">
-                                                    </div>
-                                                </div> -->
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <div class="form-check">
@@ -347,13 +213,13 @@
                                                         <label class="form-label"><?php echo lang('charge').' '.lang('type'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" id="service_select" name="service_type" required>
                                                             <option value=""><?php echo lang('select_service_type');?></option>
-                                                            <option value="<?php echo $service[0]->service_category_group_id; ?>"
+                                                            <option value="<?php echo $service?$service[0]->service_category_group_id:''; ?>"
                                                                 <?php
-                                                                    if (!empty($service[0]->service_category_group_id)) {
+                                                                    if (!empty($service?$service[0]->service_category_group_id:'')) {
                                                                         echo 'selected';
                                                                     }
                                                                 ?>
-                                                                > <?php echo $this->finance_model->getServiceCategoryGroupById($service[0]->service_category_group_id)->display_name; ?></option>
+                                                                > <?php echo $service?$this->finance_model->getServiceCategoryGroupById($service[0]->service_category_group_id)->display_name:''; ?></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -361,30 +227,25 @@
                                                     <div class="form-group">
                                                         <label class="form-label">Applies only to staff</label>
                                                         <select id="staffs" name="staffs" class="form-control">
-                                                            <option value="<?php echo $service[0]->applicable_staff_id ?>" <?php
-                                                                if (!empty($service[0]->applicable_staff_id)) {
+                                                            <option value="<?php echo $service?$service[0]->applicable_staff_id:'' ?>" <?php
+                                                                if (!empty($service?$service[0]->applicable_staff_id:'')) {
                                                                     echo 'selected';
                                                                 }
                                                             ?>>
-                                                                <?php echo $this->doctor_model->getDoctorByIonUserId($service[0]->applicable_staff_id)->name.' ('.$this->ion_auth->get_users_groups($service[0]->applicable_staff_id)->row()->name.')'; ?>
+                                                                <?php echo $service?$this->doctor_model->getDoctorByIonUserId($service[0]->applicable_staff_id)->name.' ('.$this->ion_auth->get_users_groups($service[0]->applicable_staff_id)->row()->name.')':''; ?>
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <?php echo $this->ion_auth->get_users_groups($service->applicable_staff_id)->row()->name; ?>
-                                                    </div>
-                                                </div> -->
                                                 <input type="hidden" name="id" value='<?php
-                                                if (!empty($service[0]->id)) {
-                                                    echo $service[0]->id;
+                                                if (!empty($service?$service[0]->id:'')) {
+                                                    echo $service?$service[0]->id:'';
                                                 }
                                                 ?>'>
                                                 <input type="hidden" name="deleted_company" id="deleted_company">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <?php if (!empty($service[0]->id)) { ?>
+                                                        <?php if (!empty($service?$service[0]->id:'')) { ?>
                                                             <a href="finance/editPaymentCategory?id=<?php echo $service[0]->id; ?>" class="btn btn-outline-light"><?php echo lang('cancel').' '.lang('changes'); ?></a>
                                                         <?php } ?>
                                                         <button class="btn btn-primary pull-right" type="button" id="submitbtn" name="submit"><?php echo lang('submit'); ?></button>
@@ -502,7 +363,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var setval = '<?php echo $setval ?>';
-            var group = '<?php echo $service[0]->group_id; ?>';
+            var group = '<?php echo $service?$service[0]->group_id:''; ?>';
             if (setval !== "") {
                 var n = sessionStorage.length;
                 while(n--) {
@@ -543,7 +404,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var group = '<?php echo $service[0]->group_id; ?>';
+            var group = '<?php echo $service?$service[0]->group_id:''; ?>';
             if (group != "") {
                 $.ajax({
                     url: 'finance/editPaymentCategoryByJson?group='+group,
@@ -794,7 +655,7 @@
             $(".custom-control-input").click(function() {
                 var value = $(this).val();
                 var is_company_selected = $("#company_selected"+value);
-                var group = '<?php echo $service[0]->group_id; ?>';
+                var group = '<?php echo $service?$service[0]->group_id:''; ?>';
                 var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
                 var company = $('#company').val();
 
@@ -1751,7 +1612,7 @@
                                 }
                             });
 
-                            if ('<?php echo $redirect; ?>' == '') {
+                            if ('<?php echo $redirect?$redirect:''; ?>' == '') {
                                 window.location = base_url+"finance/chargeGroupList";
                             } else {
                                 window.location = base_url+"finance/paymentCategory";
@@ -1767,7 +1628,7 @@
                             success:function(data){
                             }
                         });
-                        if ('<?php echo $redirect; ?>' == '') {
+                        if ('<?php echo $redirect?$redirect:''; ?>' == '') {
                             window.location = base_url+"finance/chargeGroupList";
                         } else {
                             window.location = base_url+"finance/paymentCategory";
@@ -1812,7 +1673,7 @@
                             success:function(data){
                             }
                         });
-                        if ('<?php echo $redirect; ?>' == '') {
+                        if ('<?php echo $redirect?$redirect:''; ?>' == '') {
                             window.location = base_url+"finance/chargeGroupList";
                         } else {
                             window.location = base_url+"finance/paymentCategory";

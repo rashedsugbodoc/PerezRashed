@@ -2306,6 +2306,9 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getServiceCategory();
         $data['payer_accounts'] = $this->company_model->getCompanyWithoutAddNewOption(null, $provider_country);
+        $data['setval'] = null;
+        $data['service'] = null;
+        $data['redirect'] = null;
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_categoryv2', $data);
         // $this->load->view('home/footer'); // just the header file
