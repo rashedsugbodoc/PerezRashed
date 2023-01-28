@@ -4254,8 +4254,8 @@ class Finance extends MX_Controller {
             $grand_total = array_sum($grand_total);
 
             $info[] = array(
-                $date,
-                $payment->invoice_group_number,
+                $date?$date:'',
+                $payment->invoice_group_number?$payment->invoice_group_number:'',
                 $patient_details,
                 $doctor,
                 '<div class="text-right">'.number_format($subtotal,2).'</div>',
@@ -4263,7 +4263,7 @@ class Finance extends MX_Controller {
                 '<div class="text-right">'.number_format($grand_total,2).'</div>',
                 '<div class="text-right">'.number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
                 '<div class="text-right">'.number_format(($grand_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
-                $payment->remarks,
+                $payment->remarks?$payment->remarks:'',
                 $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options3,
                     //  $options2
             );
