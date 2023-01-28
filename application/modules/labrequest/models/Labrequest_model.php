@@ -140,7 +140,7 @@ class Labrequest_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->group_by('lab_request_number');
         $query = $this->db->get('lab_request');
-        return $query->row();
+        return $query->result();
     }
 
     function getLabrequestByPatientIdByEncounterId($id, $encounter_id) {
