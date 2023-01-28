@@ -2683,6 +2683,11 @@ class Patient extends MX_Controller {
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+            if (file_exists($doctor_details->img_url) === true) {
+                $doctor_image = $doctor_details->img_url;
+            } else {
+                $doctor_image = DEFAULT_PLACEHOLDER_IMAGE_URL;
+            }
             $hospital_details = $this->hospital_model->getHospitalById($appointment->hospital_id);
             $branch_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
             $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
@@ -2757,7 +2762,7 @@ class Patient extends MX_Controller {
                                                         </div>
                                                         <div class="timelineleft-footer border-top bg-light">
                                                             <div class="d-flex align-items-center mt-auto">
-                                                                <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                                <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_image .')"></div>
                                                                 <div>
                                                                     <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
                                                                     <small class="d-block text-muted">' . $appointment_spec . '</small>
