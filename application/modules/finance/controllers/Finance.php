@@ -2739,6 +2739,8 @@ class Finance extends MX_Controller {
 
         if (!empty($charge_id)) {
             $data['redirect'] = 'finance/paymentCategory';
+        } elseif (!empty($group_id)) {
+            $data['redirect'] = 'finance/chargeGroupList';
         }
 
         $hospital_id = $this->session->userdata('hospital_id');
@@ -2748,6 +2750,7 @@ class Finance extends MX_Controller {
         $data['categories'] = $this->finance_model->getServiceCategory();
         $data['settings'] = $this->settings_model->getSettings();
         $data['taxes'] = $this->finance_model->getTax();
+        $data['setval'] = null;
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_categoryv2', $data);
         // $this->load->view('home/footer'); // just the footer file

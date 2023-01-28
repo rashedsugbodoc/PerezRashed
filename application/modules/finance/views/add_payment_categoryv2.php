@@ -362,7 +362,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var setval = '<?php echo $setval ?>';
+            var setval = '<?php echo $setval?$setval:'' ?>';
             var group = '<?php echo $service?$service[0]->group_id:''; ?>';
             if (setval !== "") {
                 var n = sessionStorage.length;
