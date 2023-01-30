@@ -478,32 +478,26 @@
                                                           <!--*** CONTENT GOES HERE ***-->
                                                             <div class="pagez prescription-opacity">
                                                             <br/>
-                                                                <?php
-                                                                $medicine = $prescription->medicine;
-                                                                $medicine = explode('###', $medicine);
-                                                                $i = 0;
-                                                                foreach ($medicine as $key => $value) {
-                                                                ?>
-                                                                <?php $single_medicine = explode('***', $value); ?>
-                                                                <div class="region">
-                                                                    <div class="d-flex">
-                                                                        <div class="pr-3">
-                                                                            <h4><?php echo $i += 1; ?>.</h4>
-                                                                        </div>
-                                                                        <div class="flex-grow-1 pr-5">
-                                                                            <h4>
-                                                                            <p class="mb-2"><strong><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
-                                                                            <p class="mb-2">Sig: <?php echo $single_medicine[3] ?></p>
-                                                                            <p class="mb-2">(<?php echo $single_medicine[4] ?>)</p></h4>
-                                                                        </div>
-                                                                        <div class="">
-                                                                            <h4><p>#<?php echo $single_medicine[2] ?></p></h4>
+                                                                
+                                                                <?php $i = 0; ?>
+                                                                <?php foreach($medication_request_item as $mri) { ?>
+                                                                    <div class="region">
+                                                                        <div class="d-flex">
+                                                                            <div class="pr-3">
+                                                                                <h4><?php echo $i += 1; ?>.</h4>
+                                                                            </div>
+                                                                            <div class="flex-grow-1 pr-5">
+                                                                                <h4>
+                                                                                <p class="mb-2"><strong><?php echo $this->medicine_model->getMedicineById($mri->medicine_id)->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($mri->medicine_id)->name; ?> ) <?php echo $this->medicine_model->getMedicineById($mri->medicine_id)->form; ?></p>
+                                                                                <p class="mb-2">Sig: <?php echo $mri->sig; ?></p>
+                                                                                <p class="mb-2">(<?php echo $mri->uses; ?>)</p></h4>
+                                                                            </div>
+                                                                            <div class="">
+                                                                                <h4><p>#<?php echo $mri->quantity; ?></p></h4>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <?php
-                                                                }
-                                                                ?>
+                                                                <?php } ?>
                                                             </div>
                                                         </td>
                                                     </tr>
