@@ -17,6 +17,35 @@ class Prescription_model extends CI_model {
         return $this->db->affected_rows() > 0;
     }
 
+    function insertMedicationRequestItem($data) {
+        $this->db->insert('medication_request_item', $data);
+    }
+
+    function getMedicationRequestItemListByMedicationRequestId($id) {
+        $this->db->where('medication_request_id', $id);
+        $query = $this->db->get('medication_request_item');
+        return $query->result();
+    }
+
+    function checkMedicationRequestItemExist($medication_request_id, $medicine_id) {
+        $this->db->where('medication_request_id', $medication_request_id);
+        $this->db->where('medicine_id', $medicine_id);
+        $query = $this->db->get('medication_request_item');
+        return $query->row();
+    }
+
+    function updateMedicationRequestItem($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('medication_request_item', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+    function deleteMedicationRequestItemByMedicationRequestId($id) {
+        $this->db->where('medication_request_id', $id);
+        $this->db->delete('medication_request_item');
+        return $this->db->affected_rows() > 0;
+    }
+
     function getPrescription() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');

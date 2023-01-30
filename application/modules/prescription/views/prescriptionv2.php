@@ -30,12 +30,11 @@
                                         <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
                                             <thead>
                                                 <tr>
-                                                    <th> <?php echo lang('date'); ?></th>                                  
-                                                    <th> <?php echo lang('prescription'); ?> <?php echo lang('number'); ?> </th>
-                                                    <th> <?php echo lang('patient'); ?></th>
-                                                    <th> <?php echo lang('patient'); ?> <?php echo lang('number'); ?> </th>
-                                                    <th> <?php echo lang('medicine'); ?> </th>
-                                                    <th> <?php echo lang('options'); ?></th>
+                                                    <th class="w-10"> <?php echo lang('date'); ?></th>                                  
+                                                    <th class="w-15"> <?php echo lang('prescription'); ?> <?php echo lang('number'); ?> </th>
+                                                    <th class="w-15"> <?php echo lang('patient'); ?></th>
+                                                    <th class="w-40"> <?php echo lang('medicine'); ?> </th>
+                                                    <th class="w-20"> <?php echo lang('options'); ?></th>
                                                 </tr>
                                             </thead>
                                             <tbody>

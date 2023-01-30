@@ -231,7 +231,7 @@ class Prescription extends MX_Controller {
                 $this->load->view('home/dashboardv2', $data); // just the header file
                 $this->load->view('add_new_prescription_viewv2', $data);
                 // $this->load->view('home/footer'); // just the header file
-            }
+            }   
         } else {
             $data = array();
             $patientname = $this->patient_model->getPatientById($patient)->name;
@@ -240,28 +240,74 @@ class Prescription extends MX_Controller {
                 $data = array('prescription_date' => $date,
                     'patient' => $patient,
                     'doctor' => $doctor,
-                    'medicine' => $final_report,
+                    // 'medicine' => $final_report,
                     'patientname' => $patientname,
                     'doctorname' => $doctorname,
                     'encounter_id' => $encounter_id,
                     'prescription_number' => $prescription_number,
                 );
                 if ($this->prescription_model->insertPrescription($data)) {
+                    $inserted_id = $this->db->insert_id();
+
+                    if (!empty($medicine)) {
+                        foreach ($medicine as $medicine_key => $medicine_value) {
+                            $medicine_details = $this->medicine_model->getMedicineById($medicine_value);
+                            $medication_item = array(
+                                'name' => $medicine_details->generic . ' ( ' . $medicine_details->name . ' ) ' . $medicine_details->form,
+                                'medicine_id' => $medicine_details->id,
+                                'medication_request_id' => $inserted_id,
+                                'quantity' => $quantity[$medicine_key],
+                                'sig' => $instruction[$medicine_key],
+                                'uses' => $uses[$medicine_key]
+                            );
+
+                            $this->prescription_model->insertMedicationRequestItem($medication_item);
+                        }
+                    }
+
                     $this->session->set_flashdata('success', lang('record_added'));    
                 } else {
                     $this->session->set_flashdata('error', lang('error_adding_record'));    
                 }
                 
             } else {
-                $data = array('prescription_date' => $date,
+                $data = array('last_modified' => gmdate('Y-m-d H:i:s'),
+                    'prescription_date' => $date,
                     'patient' => $patient,
                     'doctor' => $doctor,
-                    'medicine' => $final_report,
+                    // 'medicine' => $final_report,
                     'patientname' => $patientname,
                     'doctorname' => $doctorname,
                     'encounter_id' => $encounter_id,
                 );
+
                 if ($this->prescription_model->updatePrescription($id, $data)) {
+                    foreach($medicine as $medicine_key => $medicine_value) {
+                        $check_medication_request_item = $this->prescription_model->checkMedicationRequestItemExist($id, $medicine_value);
+                        if (!empty($check_medication_request_item)) {
+                            $updated_medication_item = array(
+                                'medicine_id' => $check_medication_request_item->medicine_id,
+                                'medication_request_id' => $id,
+                                'quantity' => $quantity[$medicine_key],
+                                'sig' => $instruction[$medicine_key],
+                                'uses' => $uses[$medicine_key]
+                            );
+
+                            $this->prescription_model->updateMedicationRequestItem($check_medication_request_item->id, $updated_medication_item);
+                        } else {
+                            $medicine_details = $this->medicine_model->getMedicineById($medicine_value);
+                            $new_medication_item = array(
+                                'name' => $medicine_details->generic . ' ( ' . $medicine_details->name . ' ) ' . $medicine_details->form,
+                                'medicine_id' => $medicine_details->id,
+                                'medication_request_id' => $id,
+                                'quantity' => $quantity[$medicine_key],
+                                'sig' => $instruction[$medicine_key],
+                                'uses' => $uses[$medicine_key]
+                            );
+                            $this->prescription_model->insertMedicationRequestItem($new_medication_item);
+                        }
+                    }
+
                     $this->session->set_flashdata('success', lang('record_updated'));    
                 } else {
                     $this->session->set_flashdata('error', lang('error_updating_record'));  
@@ -390,6 +436,7 @@ class Prescription extends MX_Controller {
         $data['encounter_id'] = $this->input->get('encounter_id');
         $data['medicines'] = $this->medicine_model->getMedicine();
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
+        $data['medication_request_item'] = $this->prescription_model->getMedicationRequestItemListByMedicationRequestId($data['prescription']->id);
         $data['prescription_date'] = $data['prescription']->prescription_date;
         $data['settings'] = $this->settings_model->getSettings();
         $data['patient'] = $this->patient_model->getPatientById($data['prescription']->patient);
@@ -455,6 +502,7 @@ class Prescription extends MX_Controller {
             } else {
                 
                 if ($this->prescription_model->deletePrescription($id)) {
+                    $this->prescription_model->deleteMedicationRequestItemByMedicationRequestId($id);
                     $this->session->set_flashdata('success', lang('record_deleted'));    
                 } else {
                     $this->session->set_flashdata('success', lang('error_deleting_record'));
@@ -611,19 +659,18 @@ class Prescription extends MX_Controller {
                 $options8 = '<a class="btn btn-info btn-xs" title="'.lang('print').'" style="color: #fff;" href="prescription/viewPrescriptionPrint?id='.$prescription->id.'"target="_blank"> <i class="fa fa-print"></i></a>';
             }
 
-            if (!empty($prescription->medicine)) {
-                $medicine = explode('###', $prescription->medicine);
+            $medication_request_item = $this->prescription_model->getMedicationRequestItemListByMedicationRequestId($prescription->id);
+
+            if (!empty($medication_request_item)) {
                 $medicinelist = '';
-                foreach ($medicine as $key => $value) {
-                    $medicine_id = explode('***', $value);
-                    $medicine_name_with_dosage = $this->medicine_model->getMedicineById($medicine_id[0])->name . ' -' . $medicine_id[1];
-                    $medicine_name_with_dosage = $medicine_name_with_dosage . ' | ' . $medicine_id[3] . '<br>';
-                    rtrim($medicine_name_with_dosage, ',');
-                    $medicinelist .= '<p>' . $medicine_name_with_dosage . '</p>';
+                foreach($medication_request_item as $mri) {
+                    $medicine_details = $this->medicine_model->getMedicineById($mri->medicine_id);
+                    $medicinelist .= '<div class="row"><div class="col-md-9 col-sm-8"><span class="text-wrap">' . $mri->name . ' ' . '|' . ' ' . $mri->sig . '</span></div>' . '<div class="col-md-3 col-sm-4 text-right"><span class="badge badge-info">' . $mri->quantity . '</span></div></div>';
                 }
             } else {
                 $medicinelist = '';
             }
+
             $patientdetails = $this->patient_model->getPatientById($prescription->patient);
             if (!empty($patientdetails)) {
                 $patientname = $patientdetails->name;
@@ -657,8 +704,7 @@ class Prescription extends MX_Controller {
                 $info[] = array(
                     date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
                     $prescription->prescription_number,
-                    $patientname,
-                    $this->patient_model->getPatientById($prescription->patient)->patient_id,
+                    '<span class="text-wrap">'.$patientname.'</span><br>ID: '.$this->patient_model->getPatientById($prescription->patient)->patient_id,
                     $medicinelist,
                     $option1 . ' ' . $option3 . ' ' . $option2
                 );

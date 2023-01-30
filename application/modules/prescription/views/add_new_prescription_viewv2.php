@@ -152,25 +152,23 @@
                                         <div class="col-md-12 medicine_block">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('select_medicine'); ?> <span class="text-red">*</span></label>
-                                                <?php if (empty($prescription->medicine)) { ?>
+                                                <?php if (empty($medication_request_item)) { ?>
                                                     <select class="form-control medicinee select2-show-search"  id="my_select1_disabled" name="category" value=''>
                                                     </select>
                                                 <?php } else { ?>
                                                     <select name="category"  class="form-control medicinee select2-show-search"  multiple="multiple" id="my_select1_disabled" >
                                                         <?php
-                                                        if (!empty($prescription->medicine)) {
+                                                        if (!empty($medication_request_item)) {
 
-                                                            // $category_name = $payment->category_name;
-                                                            $prescription_medicine = explode('###', $prescription->medicine);
-                                                            foreach ($prescription_medicine as $key => $value) {
-                                                                $prescription_medicine_extended = explode('***', $value);
-                                                                $medicine = $this->medicine_model->getMedicineById($prescription_medicine_extended[0]);
+                                                            foreach ($medication_request_item as $key => $value) {
+                                                                $medicine = $this->medicine_model->getMedicineById($value->medicine_id);
                                                                 ?>
-                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name . '*' . $medicine->uses . '*' . $medicine->form . '*' . $medicine->generic; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
+                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name . '*' . $medicine->uses . '*' . $medicine->form . '*' . $medicine->generic; ?>"  <?php echo 'data-form="' . $medicine->form . '"' . 'data-qty="' . $value->quantity . '"data-instruction="' . $value->sig . '"data-uses="' . $value->uses . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
                                                                     <?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
                                                                 </option>                
                                                                 <?php
                                                             }
+
                                                         }
                                                         /*foreach ($medicines as $medicine) {
                                                             $prescription_medicine = explode('###', $prescription->medicine);
