@@ -140,3 +140,10 @@ define('INVOICE_DUE_TYPE_CUSTOM', 'custom');
 
 /*Default Images*/
 define('DEFAULT_PLACEHOLDER_IMAGE_URL', 'public/assets/images/users/placeholder.jpg');
+
+/*Service_Request_Category*/
+define('SERVICE_REQUEST_CATEGORY_LABORATORY_PROCEDURE', 'laboratory_procedure');
+define('SERVICE_REQUEST_CATEGORY_IMAGING', 'imaging');
+define('SERVICE_REQUEST_CATEGORY_COUNSELLING', 'counselling');
+define('SERVICE_REQUEST_CATEGORY_EDUCATION', 'education');
+define('SERVICE_REQUEST_CATEGORY_SURGICAL_PROCEDURE', 'surgical_procedure');
