@@ -121,7 +121,7 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                
+                "serverSide": true,
                 "ajax": {
                     url: "labrequest/getLabrequest",
                     type: 'POST',

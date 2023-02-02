@@ -19,7 +19,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" id="labrequestForm" action="labrequest/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('labrequestForm');">
+                                        <form role="form" id="labrequestForm" action="labrequest/addNew2" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('labrequestForm');">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <?php echo validation_errors(); ?>
@@ -150,7 +150,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
                                                         <select class="form-control select2-show-search" name="encounter_id" required id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
-                                                            <?php if (!empty($encounter_id)) { ?>
+                                                            <?php if (!empty($encounter_id)) { ?>   
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
                                                             <!-- <?php if (!empty($encounter->id)) { ?>
@@ -168,9 +168,52 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('request').' '.lang('type'); ?></label>
+                                                        <select class="form-control select2-show-search" id="request_type" disabled>
+                                                            
+                                                        </select>
+                                                        <input type="hidden" name="request_type" id="request_type_input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-8 col-sm-12">
+                                                    <div class="form-group" id="request_block">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('procedures'); ?></label>
+                                                        <div class="table-responsive">
+                                                            <table class="table nowrap text-nowrap border mt-5">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="w-15"></th>
+                                                                        <th class="w-70"></th>
+                                                                        <th class="w-15"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="request_table">
+                                                                    
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td><button type="button" class="btn btn-primary w-100" id="new_record"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-lg-10 col-md-8 col-sm-12 labrequest_block">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('select') . ' ' . lang('lab') . ' ' . lang('test') ?></label>
+                                                        <!-- <label class="form-label"><?php //echo lang('select') . ' ' . lang('lab') . ' ' . lang('test') ?></label> -->
                                                         <?php /*if (empty($labrequest->lab_loinc_id)) { ?>
                                                             <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
 
@@ -186,9 +229,9 @@
                                                         <?php }*/ ?>
 
                                                         <?php if (empty($labrequests)) { ?>
-                                                            <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
+                                                            <!-- <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
 
-                                                            </select>
+                                                            </select> -->
                                                         <?php } else { ?>
                                                             <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="" multiple>
                                                                 <?php $i; ?>
@@ -204,12 +247,12 @@
                                                         <?php } ?>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-md-4 col-sm-12 labrequest_block">
+                                                <!-- <div class="col-lg-2 col-md-4 col-sm-12 labrequest_block">
                                                     <div class="form-group">
                                                         <label class="form-label">or Type Manually</label>
                                                         <button class="btn btn-primary" id="add_manual" type="button">Add Lab Test</button>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="row mt-5">
                                                 <div class="col-md-12 lab_request_block">
@@ -304,6 +347,20 @@
         <script src="<?php echo base_url('public/assets/plugins/date-picker/date-picker.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/date-picker/jquery-ui.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/input-mask/jquery.maskedinput.js'); ?>"></script>
+
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/jquery.dataTables.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/dataTables.bootstrap4.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/dataTables.buttons.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.bootstrap4.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/jszip.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/pdfmake.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/vfs_fonts.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.html5.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.print.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.colVis.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/dataTables.responsive.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/datatables.js') ?>"></script>
 
         <!--File-Uploads Js-->
         <script src="<?php echo base_url('public/assets/plugins/fancyuploder/jquery.ui.widget.js'); ?>"></script>
@@ -401,15 +458,16 @@
 
     <script type="text/javascript">
         var request_number = "<?php echo $request_number?$request_number:''; ?>";
-        if ($request_number != '') {
+        if (request_number != '') {
             $.ajax({
                 url: 'labrequest/editLabrequestByJason?id='+request_number,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    var request_patient = response.labrequests.patient_id;
-                    var request_encounter = response.labrequests.encounter_id;
+                    var request_patient = response.service_request.patient_id;
+                    var request_encounter = response.service_request.encounter_id;
+                    console.log(request_encounter);
                     $.each(response.patients, function (key, value) {
                         $("#pos_select").append($('<option>').text(value.name).val(value.id)).end();
                     });
@@ -588,6 +646,38 @@
                     cache: true
                 }
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // $("#request_type").select2({
+            //     placeholder: '<?php echo lang('select_patient'); ?>',
+            //     allowClear: true,
+            //     ajax: {
+            //         // url: 'patient/getPatientinfo',
+            //         url: 'labrequest/getServiceRequestCategorySelect2',
+            //         type: "post",
+            //         dataType: 'json',
+            //         delay: 250,
+            //         data: function (params) {
+            //             return {
+            //                 searchTerm: params.term // search term
+            //             };
+            //         },
+            //         processResults: function (response) {
+            //             return {
+            //                 results: response
+            //             };
+            //         },
+            //         success: function (response) {
+            //             $.each(response, function(key, value) {
+            //                 console.log(value.id)
+            //             })
+            //         },
+            //         cache: true
+            //     }
+            // });
         });
     </script>
 
@@ -860,6 +950,369 @@
             });
 
         });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var service_request_category_id = '<?php echo $service_request_category_id?$service_request_category_id:'' ?>';
+            var id = '<?php echo $request_number?$request_number:'' ?>';
+            $.ajax({
+                url: 'labrequest/getServiceRequestCategoryDisplaysById?service_request_category_id='+service_request_category_id+'&request_number='+id,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    $.each(response.service_request_category_list, function(key, value) {
+                        if (service_request_category_id == value.id) {
+                            $('#request_type').append($('<option selected>').text(value.hl7_display).val(value.id)).end();
+                            $("#request_type_input").val(value.id);
+                        } else {
+                            $('#request_type').append($('<option>').text(value.hl7_display).val(value.id)).end();
+                        }
+                    })
+
+                    if (id) {
+                        $('#request_table').append(response.request_display);
+
+                        var count = 0;
+                        $.each(response.service_request_items, function(key, value) {
+                            $("#servicerequest"+count).select2({
+                                placeholder: '<?php echo lang('request'); ?>',
+                                multiple: false,
+                                allowClear: false,
+                                ajax: {
+                                    url: response.url['controller']+'/'+response.url['method'],
+                                    type: "post",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function (params) {
+                                        return {
+                                            searchTerm: params.term // search term
+                                        };
+                                    },
+                                    processResults: function (response) {
+                                        return {
+                                            results: response
+                                        };
+                                    },
+                                    cache: true
+                                }
+
+                            });
+
+                            // $("#code"+count).val(response.code[key]);
+                            // $("#request_id_"+count).val(response.service_request_id[key]);
+
+                            count++;
+                        })
+                        // console.log(response.service_request_item);
+                    }
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#new_record").click(function() {
+                var service_request_category_id = '<?php echo $service_request_category_id ?>';
+                var request_select_count = $(".request_select").length;
+
+                if ($('#labrequest'+request_select_count).length) {
+                    request_select_count++
+                }
+
+                $.ajax({
+                    url: 'labrequest/getServiceRequestCategoryDisplaysById?service_request_category_id='+service_request_category_id+'&row_count='+request_select_count,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#request_table').append(response.request_display);
+
+                        $("#servicerequest"+response.row_count).select2({
+                            placeholder: '<?php echo lang('request'); ?>',
+                            multiple: false,
+                            allowClear: false,
+                            ajax: {
+                                url: response.url['controller']+'/'+response.url['method'],
+                                type: "post",
+                                dataType: 'json',
+                                delay: 250,
+                                data: function (params) {
+                                    return {
+                                        searchTerm: params.term // search term
+                                    };
+                                },
+                                processResults: function (response) {
+                                    return {
+                                        results: response
+                                    };
+                                },
+                                cache: true
+                            }
+
+                        });
+
+                        // if (service_request_category_id == 1) {
+                        //     selectLabrequestItemFromRequestDropDown(); 
+                        // } else if (service_request_category_id == 5) {
+                        //     selectLabrequestItemFromRequestDropDown(); 
+                        // }
+                    }
+                })
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        function selectLabrequest(count) {
+            var value = $("#servicerequest"+count).val();
+            var res = value.split("*");
+            var id = res[0];
+            var long_common = res[1];
+            var loinc_num = res[2];
+            var selected = $("#labrequest").find('')
+
+            $("#code"+count).val(loinc_num);
+            $("#request_id_"+count).val(id);
+        }
+
+        function selectProcedure(count) {
+            var value = $("#servicerequest"+count).val();
+            var res = value.split("*");
+            var id = res[0];
+            var description = res[1];
+            var cpt_code = res[2];
+            var selected = $("#labrequest").find('')
+
+            console.log(value);
+
+            $("#code"+count).val(cpt_code);
+            $("#request_id_"+count).val(id);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function removeRecord(count) {
+            $(".record_row_"+count).remove();
+        }
+    </script>
+
+    <script type="text/javascript">
+        // $(document).ready(function () {
+            $("#request_type").change(function () {
+                var service_request_category_id = $(this).val();
+                $.ajax({
+                    url: 'labrequest/getServiceRequestCategoryDisplaysById?service_request_category_id='+service_request_category_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#request_block').append(response.request_display);
+
+                        $("#labrequest").select2({
+                            placeholder: '<?php echo lang('request'); ?>',
+                            multiple: true,
+                            allowClear: false,
+                            ajax: {
+                                url: 'labrequest/getLabrequestSelect2',
+                                type: "post",
+                                dataType: 'json',
+                                delay: 250,
+                                data: function (params) {
+                                    return {
+                                        searchTerm: params.term // search term
+                                    };
+                                },
+                                processResults: function (response) {
+                                    return {
+                                        results: response
+                                    };
+                                },
+                                cache: true
+                            }
+
+                        });
+
+                        selectItemFromRequestDropDown();
+                    }
+                });
+            })
+        // })
+    </script>
+
+    <script type="text/javascript">
+        function selectLabrequestItemFromRequestDropDown() {
+            $(".labrequest").change(function () {
+                var count = 1;
+
+                var selected = $('#labrequest').find('option:selected');
+                var unselected = $('#labrequest').find('option:not(:selected)');
+                selected.attr('data-selected', '1');
+                var num = 0;
+                var countlabReq = $(".labreq_selected").length;
+                $.each(unselected, function (index, value1) {
+                    num--;
+                    var count = parseInt(countlabReq) - 1;
+                    // console.log(count);
+                    if ($(this).attr('data-selected') == '1') {
+                        var value = $(this).val();
+                        var res = value.split("*");
+                        // var unit_price = res[1];
+                        var id = res[0];
+
+                        // console.log(id);
+                        $('#labreq_selected_section-' + id).remove();
+                        // $('#removediv' + $(this).val() + '').remove();
+                        //this option was selected before
+
+                    }
+                });
+
+                
+                $.each($('select.labrequest option:selected'), function ( index ) {
+                    num++;
+                    var count = parseInt(countlabReq) + 1;
+                    console.log(count);
+                    var value = $(this).val();
+                    var res = value.split("*");
+                    var id = res[0];
+                    var long_common = res[1];
+                    var loinc_num = res[2];
+
+                    
+                    console.log(value);
+                    if ($('#labreq_id-' + id).length)
+                    {
+
+                    } else {
+                        $(".labreq").append(
+                            '<section class="labreq_selected remove'+ count +'" id="labreq_selected_section-' + id + '">\n\
+                                <div class="row">\n\
+                                    <div class="col-sm-1">\n\
+                                        <button class="btn btn-danger" hidden onclick="removeElem('+ count + ', ' + id +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                                    </div>\n\
+                                    <div class="col-sm-11">\n\
+                                        <div class="form-group labrequest_sect">\n\
+                                            <div class="row">\n\
+                                                <div class="col-sm-8">\n\
+                                                    <div class="form-group">\n\
+                                                        <input type="text" hidden name="labrequest_id[]" value="">\n\
+                                                        <input type="text" class = "form-control labreq-div" name = "labrequest_long[]" value = "' + long_common + '" placeholder="" required readonly>\n\
+                                                        <input type="hidden" id="labreq_id-' + id + '" class = "labreq-div" name = "labrequest[]" value = "' + id + '" placeholder="" required disabled>\n\
+                                                        <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                        <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" hidden>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                                <div class="col-sm-4">\n\
+                                                    <div class="form-group">\n\
+                                                        <input type="text" name="loinc_num[]" class="form-control" value="' + loinc_num + '" readonly>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                            <div class="row">\n\
+                                                <div class="col-sm-12">\n\
+                                                    <div class="form-group">\n\
+                                                        <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                <div>\n\
+                            </section>\n\
+                        ');
+                    }
+                });
+            });
+        }
+        function selectProcedureItemFromRequestDropDown() {
+            $(".labrequest").change(function () {
+                var count = 1;
+
+                var selected = $('#labrequest').find('option:selected');
+                var unselected = $('#labrequest').find('option:not(:selected)');
+                selected.attr('data-selected', '1');
+                var num = 0;
+                var countlabReq = $(".labreq_selected").length;
+                $.each(unselected, function (index, value1) {
+                    num--;
+                    var count = parseInt(countlabReq) - 1;
+                    // console.log(count);
+                    if ($(this).attr('data-selected') == '1') {
+                        var value = $(this).val();
+                        var res = value.split("*");
+                        // var unit_price = res[1];
+                        var id = res[0];
+
+                        // console.log(id);
+                        $('#labreq_selected_section-' + id).remove();
+                        // $('#removediv' + $(this).val() + '').remove();
+                        //this option was selected before
+
+                    }
+                });
+
+                
+                $.each($('select.labrequest option:selected'), function ( index ) {
+                    num++;
+                    var count = parseInt(countlabReq) + 1;
+                    console.log(count);
+                    var value = $(this).val();
+                    var res = value.split("*");
+                    var id = res[0];
+                    var long_common = res[1];
+                    var loinc_num = res[2];
+
+                    
+                    console.log(value);
+                    if ($('#labreq_id-' + id).length)
+                    {
+
+                    } else {
+                        $(".labreq").append(
+                            '<section class="labreq_selected remove'+ count +'" id="labreq_selected_section-' + id + '">\n\
+                                <div class="row">\n\
+                                    <div class="col-sm-1">\n\
+                                        <button class="btn btn-danger" hidden onclick="removeElem('+ count + ', ' + id +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                                    </div>\n\
+                                    <div class="col-sm-11">\n\
+                                        <div class="form-group labrequest_sect">\n\
+                                            <div class="row">\n\
+                                                <div class="col-sm-8">\n\
+                                                    <div class="form-group">\n\
+                                                        <input type="text" hidden name="labrequest_id[]" value="">\n\
+                                                        <input type="text" class = "form-control labreq-div" name = "labrequest_long[]" value = "' + long_common + '" placeholder="" required readonly>\n\
+                                                        <input type="hidden" id="labreq_id-' + id + '" class = "labreq-div" name = "labrequest[]" value = "' + id + '" placeholder="" required disabled>\n\
+                                                        <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                        <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" hidden>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                                <div class="col-sm-4">\n\
+                                                    <div class="form-group">\n\
+                                                        <input type="text" name="loinc_num[]" class="form-control" value="' + loinc_num + '" readonly>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                            <div class="row">\n\
+                                                <div class="col-sm-12">\n\
+                                                    <div class="form-group">\n\
+                                                        <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                <div>\n\
+                            </section>\n\
+                        ');
+                    }
+                });
+            });
+        }
     </script>
 
     <script type="text/javascript">

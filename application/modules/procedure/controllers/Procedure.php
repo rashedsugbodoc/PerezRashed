@@ -517,6 +517,14 @@ class Procedure extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getProcedureCptCodeAndDescriptionForServiceRequest() {
+        //searchInTheInput
+        $searchTerm = $this->input->post('searchTerm');
+
+        $response = $this->procedure_model->getProcedureCptCodeAndDescriptionForServiceRequest($searchTerm);
+
+        echo json_encode($response);
+    }
 
     public function getUserWithoutAddNewOption() {
         //searchInTheInput

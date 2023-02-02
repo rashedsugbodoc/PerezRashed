@@ -75,6 +75,26 @@ class Procedure_model extends CI_model {
         return $mergedCptCodeAndCptDescs;
     }
 
+    function getProcedureCptCodeAndDescriptionForServiceRequest($searchTerm) {
+        if(!empty($searchTerm)) {   
+            $query = $this->db->select('*')
+                   ->from('procedure_cpt_code')
+                   ->where("(cpt_code LIKE '%". $searchTerm . "%' OR description LIKE '%". $searchTerm . "%')", NULL, FALSE)
+                   ->get();
+            $cptCodesAndDescs = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('procedure_cpt_code');
+            $cptCodesAndDescs = $fetched_records->result_array();
+        }
+        $mergedCptCodeAndCptDescs = array();
+
+        foreach ($cptCodesAndDescs as $cptCodeAndDesc ) {
+            $mergedCptCodeAndCptDescs[]  = array("id" => $cptCodeAndDesc['id'] . '*' . $cptCodeAndDesc['description'] . '*' . $cptCodeAndDesc['cpt_code'], "text" => $cptCodeAndDesc['cpt_code']. ' - ' .$cptCodeAndDesc['description']) ;
+        }
+        return $mergedCptCodeAndCptDescs;
+    }
 
     function getStatusWithoutAddNewOption($searchTerm) {
         if(!empty($searchTerm)) {
