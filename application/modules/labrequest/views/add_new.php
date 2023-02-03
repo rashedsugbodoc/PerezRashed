@@ -1018,7 +1018,7 @@
                 var service_request_category_id = '<?php echo $service_request_category_id ?>';
                 var request_select_count = $(".request_select").length;
 
-                if ($('#labrequest'+request_select_count).length) {
+                if ($('#servicerequest'+request_select_count).length) {
                     request_select_count++
                 }
 
