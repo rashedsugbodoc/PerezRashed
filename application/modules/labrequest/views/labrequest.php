@@ -11,12 +11,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang("lab") . ' ' . lang("requests"); ?>
-                                        </div>
-                                        <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
-                                                <a href="labrequest/addLabRequestView" class="btn btn-primary"><?php echo lang('add') . ' ' . lang("lab") . ' ' . lang("requests"); ?></a>
-                                            <?php } ?>
+                                            <?php echo lang("service") . ' ' . lang("requests"); ?>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -25,12 +20,12 @@
                                                 <table class="table table-bordered text-nowrap key-buttons" id="editable-sample">
                                                     <thead>
                                                         <tr>
-                                                            <th class="border-bottom-0 w-20"><?php echo lang('date'); ?></th>
-                                                            <th class="border-bottom-0 w-10"><?php echo lang('lab').''.lang('request').' '.lang('number'); ?></th>
-                                                            <th class="border-bottom-0 w-40"><?php echo lang('lab').' '.lang('test'); ?></th>
-                                                            <th class="border-bottom-0 w-10"><?php echo lang('patient'); ?></th>
-                                                            <th class="border-bottom-0 w-10"><?php echo lang('doctors'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('facility'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('date'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('service').''.lang('request').' '.lang('number'); ?></th>
+                                                            <th class="border-bottom-0 w-50"><?php echo lang('service').' '.lang('items'); ?></th>
+                                                            <th class="border-bottom-0 w-5"><?php echo lang('patient'); ?></th>
+                                                            <th class="border-bottom-0 w-5"><?php echo lang('doctors'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('facility'); ?></th>
                                                             <th class="border-bottom-0 w-10"><?php echo lang('actions'); ?></th>
                                                         </tr>
                                                     </thead>
