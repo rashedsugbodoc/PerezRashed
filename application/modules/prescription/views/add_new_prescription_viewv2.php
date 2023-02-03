@@ -27,7 +27,7 @@
                             </div>
                             <div class="card-body">
                                 <?php echo validation_errors(); ?>
-                                <form role="form" id="prescriptionForm" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('prescriptionForm');">
+                                <form role="form" id="prescriptionForm" action="prescription/addNewPrescription2" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('prescriptionForm');">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="redirect" value="<?php
@@ -149,54 +149,63 @@
                                                 <?php } ?>
                                             </div>
                                         </div>
-                                        <div class="col-md-12 medicine_block">
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('select_medicine'); ?> <span class="text-red">*</span></label>
-                                                <?php if (empty($medication_request_item)) { ?>
-                                                    <select class="form-control medicinee select2-show-search"  id="my_select1_disabled" name="category" value=''>
-                                                    </select>
-                                                <?php } else { ?>
-                                                    <select name="category"  class="form-control medicinee select2-show-search"  multiple="multiple" id="my_select1_disabled" >
-                                                        <?php
-                                                        if (!empty($medication_request_item)) {
-
-                                                            foreach ($medication_request_item as $key => $value) {
-                                                                $medicine = $this->medicine_model->getMedicineById($value->medicine_id);
-                                                                ?>
-                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name . '*' . $medicine->uses . '*' . $medicine->form . '*' . $medicine->generic; ?>"  <?php echo 'data-form="' . $medicine->form . '"' . 'data-qty="' . $value->quantity . '"data-instruction="' . $value->sig . '"data-uses="' . $value->uses . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
-                                                                    <?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
-                                                                </option>                
-                                                                <?php
-                                                            }
-
-                                                        }
-                                                        /*foreach ($medicines as $medicine) {
-                                                            $prescription_medicine = explode('###', $prescription->medicine);
-                                                            foreach ($prescription_medicine as $key => $value) {
-                                                                $prescription_medicine_extended = explode('***', $value);
-                                                                if ($medicine->id === $prescription_medicine_extended[0]) {
-                                                                    ?>
-                                                                    <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
-                                                                        <?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
-                                                                    </option>                
-                                                                    <?php
-                                                                } else {
-                                                                    ?><option value="<?php echo $medicine->id . '*' . $medicine->name ?>"><?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?></option><?php
-                                                                }
-                                                            }
-                                                        }*/
-                                                        ?>
-                                                    </select>
-                                                <?php } ?>
+                                                <label class="form-label"><?php echo lang('medicine').' '.lang('list'); ?></label>
+                                                <div class="table-responsive">
+                                                    <table class="table nowrap text-nowrap border mt-5">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="w-15"></th>
+                                                                <th class="w-70"></th>
+                                                                <th class="w-15"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="medicine_table">
+                                                            
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td><button type="button" class="btn btn-primary w-100" id="new_record"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12 medicine_block">
+                                        <!-- <div class="col-md-12 medicine_block">
+                                            <div class="form-group">
+                                                <label class="form-label"><?php //echo lang('select_medicine'); ?> <span class="text-red">*</span></label>
+                                                <?php //if (empty($medication_request_item)) { ?>
+                                                    <select class="form-control medicinee select2-show-search"  id="my_select1_disabled" name="category" value=''>
+                                                    </select>
+                                                <?php //} else { ?>
+                                                    <select name="category"  class="form-control medicinee select2-show-search"  multiple="multiple" id="my_select1_disabled" >
+                                                        <?php
+                                                        //if (!empty($medication_request_item)) {
+
+                                                            //foreach ($medication_request_item as $key => $value) {
+                                                                //$medicine = $this->medicine_model->getMedicineById($value->medicine_id);
+                                                                ?>
+                                                                <option value="<?php //echo $medicine->id . '*' . $medicine->name . '*' . $medicine->uses . '*' . $medicine->form . '*' . $medicine->generic; ?>"  <?php //echo 'data-form="' . $medicine->form . '"' . 'data-qty="' . $value->quantity . '"data-instruction="' . $value->sig . '"data-uses="' . $value->uses . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
+                                                                    <?php //echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
+                                                                </option>                
+                                                                <?php
+                                                            //}
+
+                                                        //}
+                                                        ?>
+                                                    </select>
+                                                <?php //} ?>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="col-md-12 medicine_block">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('medicine_list'); ?></label>
                                                 <div class="medicine">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <input type="hidden" name="admin" value='admin'>
                                         <input type="hidden" name="id" id="prescription_id" value='<?php
                                         if (!empty($prescription->id)) {
@@ -609,6 +618,117 @@
 
 
     </script> 
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var id = '<?php echo $prescription?$prescription->id:'' ?>';
+            var medicine_select_count = $(".medicine_select").length;
+
+            $.ajax({
+                url: 'prescription/getPrescriptionMedicineDisplay?id='+id+'&row_count='+medicine_select_count,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+
+                    if (id) {
+                        $("#medicine_table").append(response.medicine_display);
+                        var count = 0;
+                        $.each(response.medication_request_items, function(key, value) {
+                            $("#medicine_select"+count).select2({
+                                placeholder: '<?php echo lang('medicine'); ?>',
+                                multiple: false,
+                                allowClear: true,
+                                ajax: {
+                                    url: 'medicine/getMedicineListForSelect2',
+                                    type: "post",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function (params) {
+                                        return {
+                                            searchTerm: params.term // search term
+                                        };
+                                    },
+                                    processResults: function (response) {
+                                        return {
+                                            results: response
+                                        };
+                                    },
+                                    cache: true
+                                }
+
+                            });
+
+                            count++;
+
+                        })
+                    }
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#new_record").click(function() {
+                var medicine_select_count = $(".medicine_select").length;
+
+                $.ajax({
+                    url: 'prescription/getPrescriptionMedicineDisplay?row_count='+medicine_select_count,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#medicine_table").append(response.medicine_display);
+
+                        $("#medicine_select"+response.row_count).select2({
+                            placeholder: '<?php echo lang('medicine'); ?>',
+                            multiple: false,
+                            allowClear: true,
+                            ajax: {
+                                url: 'medicine/getMedicineListForSelect2',
+                                type: "post",
+                                dataType: 'json',
+                                delay: 250,
+                                data: function (params) {
+                                    return {
+                                        searchTerm: params.term // search term
+                                    };
+                                },
+                                processResults: function (response) {
+                                    return {
+                                        results: response
+                                    };
+                                },
+                                cache: true
+                            }
+
+                        });
+                    }
+                })
+
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        function removeRecord(count) {
+            $(".record_row_"+count).remove();
+        }
+
+        function selectMedicine(count) {
+            var value = $("#medicine_select"+count).val();
+            var res = value.split("*");
+            var id = res[0];
+            var name = res[1];
+            var uses = res[2];
+            var form = res[3];
+            var generic = res[4];
+
+            $("#medicine_id_"+count).val(id);
+            $("#uses"+count).val(uses);
+        }
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

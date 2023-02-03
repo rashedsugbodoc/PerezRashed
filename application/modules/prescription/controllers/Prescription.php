@@ -87,6 +87,7 @@ class Prescription extends MX_Controller {
         if (empty($data['patient_details'])) {
             $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient_id']);
         }
+        $data['prescription'] = null;
         $data['medicines'] = $this->medicine_model->getMedicine();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -337,6 +338,143 @@ class Prescription extends MX_Controller {
                 }
             }
         }
+    }
+
+    public function addNewPrescription2() {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse', 'Clerk'))) {
+            redirect('home/permission');
+        }
+
+        $redirect = $this->input->post('redirect');
+        $medical_redirect = $this->input->post('medical_history_redirect');
+        $id = $this->input->post('id');
+        $encounter_id = $this->input->post('encounter_id');
+        $date = $this->input->post('date');
+        $date = gmdate('Y-m-d H:i:s', strtotime($date));
+        $patient = $this->input->post('patient');
+        $patient_details = $this->patient_model->getPatientById($patient);
+        $doctor = $this->input->post('doctor');
+        $medicine = $this->input->post('medicine_id');
+        $instruction = $this->input->post('instruction');
+        $quantity = $this->input->post('quantity');
+        $uses = $this->input->post('uses');
+        $admin = $this->input->post('admin');
+
+        do {
+            $raw_prescription_number = 'P'.random_string('alnum', 6);
+            $validate_number = $this->prescription_model->validatePrescriptionNumber($raw_prescription_number);
+        } while($validate_number != 0);
+
+        $prescription_number = strtoupper($raw_prescription_number);
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+        // Validating Date Field
+        $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Patient Field
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Doctor Field
+        $this->form_validation->set_rules('doctor', 'Doctor', 'trim|min_length[1]|max_length[100]|xss_clean');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                // $id = $this->input->get('id');
+                // $data['patients'] = $this->patient_model->getPatient();
+                // $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['medicines'] = $this->medicine_model->getMedicine();
+                $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['patients'] = $this->patient_model->getPatientById($data['prescription']->patient);
+                $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
+                if (!empty($data['prescription']->hospital_id)) {
+                    if ($data['prescription']->hospital_id != $this->session->userdata('hospital_id')) {
+                        $this->load->view('home/permission');
+                    } else {
+                        $data['settings'] = $this->settings_model->getSettings();
+                        $this->load->view('home/dashboardv2', $data); // just the header file
+                        $this->load->view('add_new_prescription_viewv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file 
+                    }
+                } else {
+                    $this->load->view('home/permission');
+                }
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['setval'] = 'setval';
+                $data['medicines'] = $this->medicine_model->getMedicine();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_prescription_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
+            }   
+        } else {
+            $data = array();
+            $patientname = $this->patient_model->getPatientById($patient)->name;
+            $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
+
+            if (empty($id)) {
+                $data = array('prescription_date' => $date,
+                    'patient' => $patient,
+                    'doctor' => $doctor,
+                    'patientname' => $patientname,
+                    'doctorname' => $doctorname,
+                    'encounter_id' => $encounter_id,
+                    'prescription_number' => $prescription_number,
+                );
+
+                if ($this->prescription_model->insertPrescription($data)) {
+                    $inserted_id = $this->db->insert_id();
+
+                    if (!empty($medicine)) {
+                        foreach ($medicine as $medicine_key => $medicine_value) {
+                            $medicine_details = $this->medicine_model->getMedicineById($medicine_value);
+                            $medication_item = array(
+                                'name' => $medicine_details->generic . ' ( ' . $medicine_details->name . ' ) ' . $medicine_details->form,
+                                'medicine_id' => $medicine_details->id,
+                                'medication_request_id' => $inserted_id,
+                                'quantity' => $quantity[$medicine_key],
+                                'sig' => $instruction[$medicine_key],
+                                'uses' => $uses[$medicine_key]
+                            );
+
+                            $this->prescription_model->insertMedicationRequestItem($medication_item);
+                        }
+                    }
+
+                    $this->session->set_flashdata('success', lang('record_added'));    
+                } else {
+                    $this->session->set_flashdata('error', lang('error_adding_record'));    
+                }
+            }
+        }
+
+        if (!empty($admin)) {
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if (!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('prescription');
+                }
+            } else {
+                if (!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('prescription/all');
+                }
+            }
+        } else {
+            if (!empty($redirect)) {
+                redirect($redirect);
+            } else {
+                redirect('prescription');
+            }
+        }
+
     }
 
     function viewPrescription() {
@@ -845,6 +983,68 @@ class Prescription extends MX_Controller {
         $data['encounter'] = $this->encounter_model->getEncounterByPatientIdForDropdown($patient->id);
 
         echo json_encode($data);
+    }
+
+    public function getPrescriptionMedicineDisplay() {
+        $data['row_count'] = $this->input->get('row_count');
+        $id = $this->input->get('id');
+
+        if (empty($id)) {
+            $data['medicine_display'] = '<tr class="record_row_'.$data['row_count'].'">
+                                            <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['row_count'].'" onclick="removeRecord('.$data['row_count'].')"><i class="fe fe-trash-2"></i></button><input type="hidden" name="medicine_id[]" id="medicine_id_'.$data['row_count'].'"></td>
+                                            <td><select class="select2-show-search form-control medicine_select" name="medicine_select[]" id="medicine_select'.$data['row_count'].'" value="" onchange="selectMedicine('.$data['row_count'].')"></select></td>
+                                            <td><input type="text" class="form-control" name="quantity[]" id="quantity'.$data['row_count'].'"></td>
+                                        </tr>
+                                        <tr class="record_row_'.$data['row_count'].'">
+                                            <td></td>
+                                            <td colspan="2"><input type="text" class="form-control" name="instruction[]" id="instruction'.$data['row_count'].'"></td>
+                                        </tr>
+                                        <tr class="record_row_'.$data['row_count'].'">
+                                            <td></td>
+                                            <td colspan="2"><input type="text" class="form-control" name="uses[]" id="uses'.$data['row_count'].'"></td>
+                                        </tr>';
+        } else {
+            // $prescription_details = $this->prescription_model->getPrescriptionByPrescriptionNumber($prescription_number);
+            $data['medication_request_items'] = $this->prescription_model->getMedicationRequestItemListByMedicationRequestId($id);
+            $data['medicine_display'] = '';
+            $data['count'] = 0;
+            foreach($data['medication_request_items'] as $mri) {
+                $medicine_details = $this->medicine_model->getMedicineById($mri->medicine_id);
+                $medicine_select_option = '<option value="'.$mri->medicine_id.'*'.$medicine_details->name.'*'.$mri->uses.'*'.$medicine_details->form.'*'.$medicine_details->generic.'" selected>'.$medicine_details->generic.' ( '.$medicine_details->name.' ) '.$medicine_details->form.'</option>';
+                $data['medicine_display'] .= '<tr class="record_row_'.$data['count'].'">
+                                            <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['count'].'" onclick="removeRecord('.$data['count'].')"><i class="fe fe-trash-2"></i></button><input type="hidden" name="medicine_id[]" id="medicine_id_'.$data['count'].'" value="'.$mri->medicine_id.'"></td>
+                                            <td><select class="select2-show-search form-control medicine_select" name="medicine_select[]" id="medicine_select'.$data['count'].'" value="" onchange="selectMedicine('.$data['count'].')">'.$medicine_select_option.'</select></td>
+                                            <td><input type="text" class="form-control" name="quantity[]" id="quantity'.$data['count'].'" value="'.$mri->quantity.'"></td>
+                                        </tr>
+                                        <tr class="record_row_'.$data['count'].'">
+                                            <td></td>
+                                            <td colspan="2"><input type="text" class="form-control" name="instruction[]" id="instruction'.$data['count'].'" value="'.$mri->sig.'"></td>
+                                        </tr>
+                                        <tr class="record_row_'.$data['count'].'">
+                                            <td></td>
+                                            <td colspan="2"><input type="text" class="form-control" name="uses[]" id="uses'.$data['count'].'" value="'.$mri->uses.'"></td>
+                                        </tr>';
+
+                $data['count']++;
+            }
+
+            // $data['medicine_display'] = '<tr class="record_row_'.$data['row_count'].'">
+            //                                 <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['row_count'].'" onclick="removeRecord('.$data['row_count'].')"><i class="fe fe-trash-2"></i></button><input type="text" name="medicine_id[]" id="medicine_id_'.$data['row_count'].'"></td>
+            //                                 <td><select class="select2-show-search form-control medicine_select" name="medicine_select[]" id="medicine_select'.$data['row_count'].'" value="" onchange="selectMedicine('.$data['row_count'].')"></select></td>
+            //                                 <td><input type="text" class="form-control" name="quantity[]" id="quantity'.$data['row_count'].'"></td>
+            //                             </tr>
+            //                             <tr class="record_row_'.$data['row_count'].'">
+            //                                 <td></td>
+            //                                 <td colspan="2"><input type="text" class="form-control" name="instruction[]" id="instruction'.$data['row_count'].'"></td>
+            //                             </tr>
+            //                             <tr class="record_row_'.$data['row_count'].'">
+            //                                 <td></td>
+            //                                 <td colspan="2"><input type="text" class="form-control" name="uses[]" id="uses'.$data['row_count'].'"></td>
+            //                             </tr>';
+        }
+
+        echo json_encode($data);
+
     }
 
 }
