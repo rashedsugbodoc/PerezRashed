@@ -337,4 +337,10 @@ class Labrequest_model extends CI_model {
         return $query->row();
     }
 
+    function getServiceRequestCategoryByName($name) {
+        $this->db->where('name', $name);
+        $query = $this->db->get('service_request_category');
+        return $query->row();
+    }
+
 }

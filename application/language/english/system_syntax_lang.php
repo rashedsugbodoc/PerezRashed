@@ -525,6 +525,7 @@ $lang['s2'] = 'S2';
 $lang['view'] = 'View';
 $lang['note'] = 'Note';
 $lang['laboratory'] = 'Laboratory';
+$lang['surgical'] = 'Surgical';
 $lang['medication'] = 'Medication';
 $lang['add_prescription'] = 'Add Prescription';
 $lang['edit_prescription'] = 'Edit Prescription';

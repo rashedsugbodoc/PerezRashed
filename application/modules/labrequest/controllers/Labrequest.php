@@ -37,7 +37,8 @@ class Labrequest extends MX_Controller {
         $data = array();
 
         $patient = $this->input->get('patient_id');
-        $data['service_request_category_id'] = $this->input->get('service_request_category_id');
+        $service_request_category_name = $this->input->get('service_request_category_id');
+        $data['service_request_category_id'] = $this->labrequest_model->getServiceRequestCategoryByName($service_request_category_name)->id;
         $data['patient_id'] = $this->patient_model->getPatientByPatientNumber($patient)->id;
         $data['encounter_id'] = $this->input->get('encounter_id');
         $data['request_number'] = null;

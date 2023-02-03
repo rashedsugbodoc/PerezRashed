@@ -604,10 +604,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <ul class="slide-menu">
 
                                         <li><a href="labrequest" class="slide-item"><?php echo lang('service_request').' '.lang('list'); ?></a></li>
-                                        <?php $service_request_category = $this->labrequest_model->getServiceRequestCategoryList(); ?>
-                                        <?php foreach ($service_request_category as $src) { ?>
-                                            <li><a href="labrequest/addLabRequestView?service_request_category_id=<?php echo $src->id; ?>" class="slide-item"><?php echo lang('add').' '.$src->hl7_display.' '.lang('request'); ?></a></li>
-                                        <?php } ?>
+                                        <li><a href="labrequest/addLabRequestView?service_request_category_id=<?php echo SERVICE_REQUEST_CATEGORY_LABORATORY_PROCEDURE; ?>" class="slide-item"><?php echo lang('add').' '.lang('laboratory').' '.lang('procedure').' '.lang('request'); ?></a></li>
+                                        <li><a href="labrequest/addLabRequestView?service_request_category_id=<?php echo SERVICE_REQUEST_CATEGORY_SURGICAL_PROCEDURE; ?>" class="slide-item"><?php echo lang('add').' '.lang('surgical').' '.lang('procedure').' '.lang('request'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
