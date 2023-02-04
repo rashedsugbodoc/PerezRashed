@@ -673,6 +673,10 @@
             $("#new_record").click(function() {
                 var medicine_select_count = $(".medicine_select").length;
 
+                if ($('#medicine_select'+medicine_select_count).length) {
+                    medicine_select_count++
+                }
+
                 $.ajax({
                     url: 'prescription/getPrescriptionMedicineDisplay?row_count='+medicine_select_count,
                     method: 'GET',

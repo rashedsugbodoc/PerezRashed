@@ -46,6 +46,12 @@ class Prescription_model extends CI_model {
         return $this->db->affected_rows() > 0;
     }
 
+    function deleteMedicationRequestItemById($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('medication_request_item');
+        return $this->db->affected_rows() > 0;
+    }
+
     function getPrescription() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -231,6 +237,13 @@ class Prescription_model extends CI_model {
     function validatePrescriptionNumber($prescription_number) {
         $this->db->where('prescription_number', $prescription_number);
         $query = $this->db->get('prescription');
+        return $query->row();
+    }
+
+    function checkMedicationRequestItemByMedicationRequestIdByMedicineId($medication_request_id, $medicine_id) {
+        $this->db->where('medication_request_id', $medication_request_id);
+        $this->db->where('medicine_id', $medicine_id);
+        $query = $this->db->get('medication_request_item');
         return $query->row();
     }
 

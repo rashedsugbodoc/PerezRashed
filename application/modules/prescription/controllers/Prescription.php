@@ -351,6 +351,7 @@ class Prescription extends MX_Controller {
         $encounter_id = $this->input->post('encounter_id');
         $date = $this->input->post('date');
         $date = gmdate('Y-m-d H:i:s', strtotime($date));
+        $datetime = gmdate('Y-m-d H:i:s');
         $patient = $this->input->post('patient');
         $patient_details = $this->patient_model->getPatientById($patient);
         $doctor = $this->input->post('doctor');
@@ -419,6 +420,7 @@ class Prescription extends MX_Controller {
 
             if (empty($id)) {
                 $data = array('prescription_date' => $date,
+                    'created_at' => $datetime,
                     'patient' => $patient,
                     'doctor' => $doctor,
                     'patientname' => $patientname,
@@ -449,6 +451,60 @@ class Prescription extends MX_Controller {
                     $this->session->set_flashdata('success', lang('record_added'));    
                 } else {
                     $this->session->set_flashdata('error', lang('error_adding_record'));    
+                }
+            } else {
+                $medication_details = $this->prescription_model->getPrescriptionById($id);
+
+                $data = array(
+                    'prescription_date' => $date,
+                    'patient' => $patient,
+                    'doctor' => $doctor,
+                    'patientname' => $patientname,
+                    'doctorname' => $doctorname,
+                    'encounter_id' => $encounter_id,
+                    'prescription_number' => $medication_details->prescription_number,
+                    'last_modified' => $datetime,
+                );
+
+                if ($this->prescription_model->updatePrescription($medication_details->id, $data)) {
+                    $medication_item_list = $this->prescription_model->getMedicationRequestItemListByMedicationRequestId($medication_details->id);
+
+                    foreach($medicine as $med_key => $med_value) {
+                        $check_medication_request_item = $this->prescription_model->checkMedicationRequestItemByMedicationRequestIdByMedicineId($medication_details->id, $med_value);
+
+                        if (!empty($check_medication_request_item)) { //UPDATE MEDICATION ITEM
+                            $medicine_details = $this->medicine_model->getMedicineById($check_medication_request_item->medicine_id);
+                            $update_data = array(
+                                'name' => $medicine_details->generic . ' ( ' . $medicine_details->name . ' ) ' . $medicine_details->form,
+                                'medicine_id' => $medicine_details->id,
+                                'quantity' => $quantity[$med_key],
+                                'sig' => $instruction[$med_key],
+                                'uses' => $uses[$med_key]
+                            );
+
+                            $this->prescription_model->updateMedicationRequestItem($check_medication_request_item->id, $update_data);
+                        } else { //ADD MEDICATION ITEM IN EDIT MODE
+                            $medicine_details = $this->medicine_model->getMedicineById($med_value);
+                            $add_data = array(
+                                'name' => $medicine_details->generic . ' ( ' . $medicine_details->name . ' ) ' . $medicine_details->form,
+                                'medicine_id' => $medicine_details->id,
+                                'medication_request_id' => $medication_details->id,
+                                'quantity' => $quantity[$med_key],
+                                'sig' => $instruction[$med_key],
+                                'uses' => $uses[$med_key]
+                            );
+
+                            $this->prescription_model->insertMedicationRequestItem($add_data);
+                        }
+                    }
+
+                    foreach($medication_item_list as $mil) {
+                        if (in_array($mil->medicine_id, $medicine) == FALSE) {
+                            $this->prescription_model->deleteMedicationRequestItemById($mil->id);
+                        }
+                    }
+                } else {
+                    $this->session->set_flashdata('error', lang('error_adding_record'));
                 }
             }
         }
@@ -1012,7 +1068,7 @@ class Prescription extends MX_Controller {
                 $medicine_details = $this->medicine_model->getMedicineById($mri->medicine_id);
                 $medicine_select_option = '<option value="'.$mri->medicine_id.'*'.$medicine_details->name.'*'.$mri->uses.'*'.$medicine_details->form.'*'.$medicine_details->generic.'" selected>'.$medicine_details->generic.' ( '.$medicine_details->name.' ) '.$medicine_details->form.'</option>';
                 $data['medicine_display'] .= '<tr class="record_row_'.$data['count'].'">
-                                            <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['count'].'" onclick="removeRecord('.$data['count'].')"><i class="fe fe-trash-2"></i></button><input type="hidden" name="medicine_id[]" id="medicine_id_'.$data['count'].'" value="'.$mri->medicine_id.'"></td>
+                                            <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['count'].'" onclick="removeRecord('.$data['count'].')"><i class="fe fe-trash-2"></i></button><input type="text" name="medicine_id[]" id="medicine_id_'.$data['count'].'" value="'.$mri->medicine_id.'"></td>
                                             <td><select class="select2-show-search form-control medicine_select" name="medicine_select[]" id="medicine_select'.$data['count'].'" value="" onchange="selectMedicine('.$data['count'].')">'.$medicine_select_option.'</select></td>
                                             <td><input type="text" class="form-control" name="quantity[]" id="quantity'.$data['count'].'" value="'.$mri->quantity.'"></td>
                                         </tr>
