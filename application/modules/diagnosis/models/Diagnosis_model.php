@@ -61,6 +61,49 @@ class Diagnosis_model extends CI_model {
         return $data;
     }
 
+    function getDiagnosisRoleInfo($searchTerm, $encounter_type_id) {
+
+        if (!empty($searchTerm)) {
+            $this->db->select('*');
+            $this->db->where("hl7_code LIKE '%" . $searchTerm . "%' OR hl7_display LIKE '%" . $searchTerm . "%'");
+            $this->db->where("FIND_IN_SET($encounter_type_id, applicable_encounter_types)");
+            $fetched_records = $this->db->get('diagnosis_role');
+            $diagnosis = $fetched_records->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where("FIND_IN_SET($encounter_type_id, applicable_encounter_types)");
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('diagnosis_role');
+            $diagnosis = $fetched_records->result_array();
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($diagnosis as $diag) {
+            $data[] = array("id" => $diag['id'], "text" => $diag['hl7_display']);
+        }
+        return $data;
+    }
+
+    function getDiagnosisRoleList($encounter_type) {
+        $query = $this->db->get('diagnosis_role');
+        return $query->result();
+    }
+
+    function getPatientDiagnosisByIdByEncounterIdByRoleId($id, $encounter_id, $role_id){
+        $this->db->where('patient_id', $id);
+        $this->db->where('encounter_id', $encounter_id);
+        $this->db->where('diagnosis_role_id', $role_id);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->result();
+    }
+
+    function getPatientDiagnosisByIdByEncounterId($id, $encounter_id) {
+        $this->db->where('patient_id', $id);
+        $this->db->where('encounter_id', $encounter_id);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->result();
+    }
+
     function getDiagnosis() {
         $this->db->select('*');
         $this->db->where("header_indicator", 1);

@@ -41,6 +41,7 @@ class Diagnosis extends MX_Controller {
         $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
         $data['patient'] = $this->input->get('patient');
         $data['diagnosis'] = null;
+        $data['id'] = null;
         if (empty($data['patient'])) {
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
             $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient']->patient_id);
@@ -258,7 +259,7 @@ class Diagnosis extends MX_Controller {
         $diagnosis_number = $this->input->get('id');
 
         $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);
-        $data['id'] = $data['diagnosis']->id;
+        $data['id'] = $data['diagnosis'][0]->id;
         $data['encounter'] = $this->encounter_model->getEncounterById($data['diagnosis'][0]->encounter_id);
         $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
         $data['patient'] = $this->patient_model->getPatientById($data['diagnosis'][0]->patient_id);
@@ -437,6 +438,144 @@ class Diagnosis extends MX_Controller {
         }
 
         echo json_encode($output);
+    }
+
+    public function getDiagnosisDisplay() {
+        $id = $this->input->get('id');
+
+        $encounter = $this->input->get('encounter');
+        $encounter_details = $this->encounter_model->getEncounterById($encounter);
+
+        $data['diagnosis_role'] = $this->diagnosis_model->getDiagnosisRoleList($encounter_details->encounter_type_id);
+
+        // $diagnosis = $this->diagnosis_model->getPatientDiagnosisByIdByEncounterId($encounter, $encounter_detail->patient_id);
+
+        $diagnosis_grouping = [];
+        foreach($data['diagnosis_role'] as $diagnosis_role) {
+            $patient_diagnosis = $this->diagnosis_model->getPatientDiagnosisByIdByEncounterIdByRoleId($encounter, $encounter_details->patient_id, $diagnosis_role->id);
+            $doctor_detail = $this->doctor_model->getDoctorById($encounter_details->doctor);
+            $diagnosis = $this->diagnosis_model->getDiagnosisById($patient_diagnosis->diagnosis_id);
+
+            if (!empty($patient_diagnosis)) {
+                // $diagnosis_grouping[] = array(
+                //     'diagnosis_id' => $patient_diagnosis->id,
+                //     'diagnosis_description' => $patient_diagnosis->diagnosis_long_description,
+                //     'icd_code' => $diagnosis->code,
+                //     'role' => $diagnosis_role->id,
+                //     'role_display' => $diagnosis_role->hl7_display,
+                //     'doctor' => $doctor_detail->professional_display_name,
+                // );
+                $diagnosis_grouping[$diagnosis_role->id] = array(
+                    'role_id' => $diagnosis_role->id,
+                    'role_display' => $diagnosis_role->hl7_display,
+                    'diagnosis_details' => $patient_diagnosis,
+                    'doctor' => $doctor_detail->professional_display_name,
+                );
+            }
+        }
+
+        $data['diagnosis_grouping'] = $diagnosis_grouping;
+
+        // $ad = [];
+        // $dd = [];
+        // $cc = [];
+        // $cm = [];
+        // $pre = [];
+        // $post = [];
+        // $billing = [];
+
+        // foreach($diagnosis as $diag) {
+
+        // }
+
+        // $diagnosis_grouping = array(
+
+        // );
+
+        if (empty($id)) {
+            $form_t_body_information = '<tr>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.lang('date').'</label><input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date"></td>
+                                        <td><label class="form-label">'.lang('onset').' '.lang('date').'</label><input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="form-label">'.lang('asserter').'</label><select class="select2-show-search form-control doctor" id="doctor"></td>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.lang('role').'</label><select class="select2-show-search form-control role" id="role"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="form-label">'.lang('diagnosis').'</label><select class="select2-show-search form-control diagnosis_select" name="diagnosis_select[]" id="diagnosis_select" value=""></select></td>
+                                        <td><label class="form-label">'.lang('rank').' '.lang('date').'</label><select class="select2-show-search form-control ranking_select" name="ranking" id="ranking">
+                                            <option label="'.lang("rank").'"></option>
+                                            <option value="1">Primary</option>
+                                            <option value="2">Secondary</option>
+                                            <option value="3">Tertiary</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><label class="form-label">'.lang('diagnosis').' '.lang('note').'</label><input type="text" class="form-control" name="instruction[]" id="instruction"></td>
+                                    </tr>';
+            $form_submit_btn_text = lang("add").' '.("diagnosis");
+
+        } else {
+            $form_submit_btn_text = lang("edit").' '.("diagnosis");
+        }
+
+        $data['diagnosis_display'] = '<div class="table-responsive">
+                                        <table class="table nowrap text-nowrap border mt-5">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-70"></th>
+                                                    <th class="w-30"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                '.$form_t_body_information.'
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><button type="button" class="btn btn-primary pull-right" id="new_record">'.$form_submit_btn_text.'</button></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>';
+
+        $data['diagnosis_list'] = '<div class="table-responsive">
+                                        <table class="table nowrap text-nowrap border mt-5">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-40"></th>
+                                                    <th class="w-10"></th>
+                                                    <th class="w-5"></th>
+                                                    <th class="w-20"></th>
+                                                    <th class="w-25"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><button type="button" class="btn btn-primary pull-right" id="new_record">'.$form_submit_btn_text.'</button></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>';
+
+        echo json_encode($data);
+    }
+
+    public function getDiagnosisRoleSelect2() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $encounter_id = $this->input->get('encounter');
+
+        $encounter_detail = $this->encounter_model->getEncounterById($encounter_id);
+
+// Get users
+        $response = $this->diagnosis_model->getDiagnosisRoleInfo($searchTerm, $encounter_detail->encounter_type_id);
+
+        echo json_encode($response);
     }
 
 }

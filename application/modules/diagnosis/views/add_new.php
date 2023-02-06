@@ -52,9 +52,9 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label>
+                                                        <!-- <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label> -->
                                                         <?php if (empty($diagnosis->diagnosis_date)) { ?>
-                                                            <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date">
+                                                            <!-- <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date"> -->
                                                         <?php } else { ?>
                                                             <input type="text" class="form-control flatpickr" id="date" required readonly placeholder="MM/DD/YYYY" name="date" value="<?php
                                                                 echo date('Y-m-d H:i', strtotime($diagnosis->diagnosis_date.' UTC'));
@@ -64,9 +64,9 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('onset') . '  ' . lang('date') ?></label>
+                                                        <!-- <label class="form-label"><?php echo lang('onset') . '  ' . lang('date') ?></label> -->
                                                         <?php if (empty($diagnosis->onset_date)) { ?>
-                                                            <input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date">
+                                                            <!-- <input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date"> -->
                                                         <?php } else { ?>
                                                             <input type="text" class="form-control flatpickr" id="on_date" required readonly placeholder="MM/DD/YYYY" name="on_date" value="<?php
                                                                 echo date('Y-m-d H:i', strtotime($diagnosis->onset_date.' UTC'));
@@ -145,34 +145,46 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <div id="diagnosis_list"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <div id="diagnosis_form"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
                                                 <div class="col-md-6 col-sm-12 col-lg-9 diagnosis_block">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('select') . ' ' . lang('diagnosis') ?></label>
-                                                        <?php if (empty($diagnosis)) { ?>
+                                                        <label class="form-label"><?php //echo lang('select') . ' ' . lang('diagnosis') ?></label>
+                                                        <?php //if (empty($diagnosis)) { ?>
                                                             <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="">
                                                                 
                                                             </select>
-                                                        <?php } else { ?>
+                                                        <?php //} else { ?>
                                                             <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="" multiple>
-                                                                <?php foreach($diagnosis as $diag) { ?>
-                                                                    <?php if (!empty($diag->diagnosis_code)) { ?>
-                                                                        <?php $i += 1; ?>
-                                                                        <option value="<?php echo $diag->diagnosis_id . '*' . $diag->diagnosis_long_description . '*' . $diag->diagnosis_code . '*' . $diag->diagnosis_notes . '*' . $diag->is_primary_diagnosis; ?>" <?php echo 'data-notes="' . $diag->diagnosis_notes . '"data-request="' . $diag->id . '"' ?> selected="selected">
-                                                                            <?php echo $diag->diagnosis_long_description; ?>
+                                                                <?php //foreach($diagnosis as $diag) { ?>
+                                                                    <?php //if (!empty($diag->diagnosis_code)) { ?>
+                                                                        <?php //$i += 1; ?>
+                                                                        <option value="<?php //echo $diag->diagnosis_id . '*' . $diag->diagnosis_long_description . '*' . $diag->diagnosis_code . '*' . $diag->diagnosis_notes . '*' . $diag->is_primary_diagnosis; ?>" <?php //echo 'data-notes="' . $diag->diagnosis_notes . '"data-request="' . $diag->id . '"' ?> selected="selected">
+                                                                            <?php //echo $diag->diagnosis_long_description; ?>
                                                                         </option>
-                                                                    <?php } ?>
-                                                                <?php } ?>
+                                                                    <?php //} ?>
+                                                                <?php //} ?>
                                                             </select>
-                                                        <?php } ?>
+                                                        <?php //} ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12 col-lg-3 diagnosis_block">
                                                     <div class="form-group">
                                                         <label class="form-label">or Type Manually</label>
-                                                        <button class="btn btn-primary" id="add_manual" type="button"><?php echo lang('add').' '.lang('diagnosis'); ?></button>
+                                                        <button class="btn btn-primary" id="add_manual" type="button"><?php //echo lang('add').' '.lang('diagnosis'); ?></button>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="row mt-5">
                                                 <div class="col-md-12 diagnosis_block">
                                                     <div class="form-group">
@@ -181,6 +193,7 @@
                                                             <?php if (!empty($diagnosis)) { ?>
                                                                 <?php foreach($diagnosis as $diag) { ?>
                                                                     <?php if (empty($diag->diagnosis_code)) { ?>
+                                                                        <?php $i = 0; ?>
                                                                         <?php $i += 1; ?>
                                                                         <input type="text" hidden name="manual_item[]" class="manual_item" value="<?php echo $diag->id.'*'.$diag->patient_diagnosis_text.'*'.$diag->diagnosis_notes.'*'.$i.'*'.$diag->is_primary_diagnosis; ?>">
                                                                     <?php } ?>
@@ -252,6 +265,21 @@
         <!-- Daterangepicker js-->
         <script src="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.js') ?>"></script>
         <script src="<?php echo base_url('public/assets/js/daterange.js') ?>"></script>
+
+        <!-- Data tables js-->
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/jquery.dataTables.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/dataTables.bootstrap4.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/dataTables.buttons.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.bootstrap4.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/jszip.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/pdfmake.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/vfs_fonts.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.html5.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.print.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.colVis.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/dataTables.responsive.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/datatables.js') ?>"></script>
 
         <!--Select2 js -->
         <script src="<?php echo base_url('public/assets/plugins/select2/select2.full.min.js'); ?>"></script>
@@ -444,6 +472,7 @@
     <script type="text/javascript">
         $("#pos_select").change(function() {
             var patient = $("#pos_select").val();
+            var id = '<?php echo $id?$id:'' ?>'
             $("#encounter").find('option').remove();
 
             $.ajax({
@@ -456,6 +485,8 @@
                     $.each(encounter, function (key, value) {
                         $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
                     });
+
+                    DiagnosisUIDisplay(id, $("#encounter").val());
                 }
             })
         });
@@ -538,6 +569,189 @@
                 }
             });
         });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var id = '<?php echo $id?$id:'' ?>'
+            $("#encounter").change(function() {
+                var encounter = $("#encounter").val();
+                
+                DiagnosisUIDisplay(id, encounter);
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        function DiagnosisUIDisplay(id, encounter) {
+            $("#diagnosis_form").empty();
+            $("#diagnosis_list").empty();
+
+            $.ajax({
+                url: 'diagnosis/getDiagnosisDisplay?id='+id+'&encounter='+encounter,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+
+                    $("#diagnosis_form").html(response.diagnosis_display);
+
+                    $.each(response.diagnosis_grouping, function(key, value) {
+                        $("#diagnosis_list").append('<div class="table-responsive">\n\
+                                    <table class="table nowrap text-nowrap border mt-5">\n\
+                                        <thead>\n\
+                                            <tr>\n\
+                                                <th class="w-35">'+value.role_display+'</th>\n\
+                                                <th class="w-10">Code</th>\n\
+                                                <th class="w-10">Rank</th>\n\
+                                                <th class="w-20">Asserting Doctor</th>\n\
+                                                <th class="w-25">Actions</th>\n\
+                                            </tr>\n\
+                                        </thead>\n\
+                                        <tbody id="items'+value.role_id+'">\n\
+                                            \n\
+                                        </tbody>\n\
+                                    </table>\n\
+                                </div>');
+
+                        $.each(value.diagnosis_details, function(k, val) {
+                            if (val.diagnosis_rank == 1) {
+                                var rank = 'Primary'
+                            } else if (val.diagnosis_rank == 2) {
+                                var rank = 'Secondary'
+                            } else if (val.diagnosis_rank == 3) {
+                                var rank = 'Tertiary'
+                            } else {
+                                var rank = 'None'
+                            }
+                            $("#items"+value.role_id).append('<tr>\n\
+                                <td>'+val.diagnosis_long_description+'</td>\n\
+                                <td>'+val.diagnosis_code+'</td>\n\
+                                <td>'+rank+'</td>\n\
+                                <td>'+value.doctor+'</td>\n\
+                                <td></td>\n\
+                            </tr>');
+                        })
+
+                    })
+
+
+                    JqueryFunctionCall();
+                    
+                }
+            })
+        }
+
+        function JqueryFunctionCall() {
+            var encounter_value = $("#encounter").val();
+            /*FlatPicker Element*/
+                var date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')):'today'?>";
+                var diag = "<?php echo $diagnosis ?>";
+                console.log(diag);
+                if (diag === "") {
+                    var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                    var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                } else {
+                    var timenow = date;
+                    var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                }
+                flatpickr(".flatpickr", {
+                    disable: [maxdate],
+                    maxDate: maxdate,
+                    altInput: true,
+                    altFormat: "F j, Y h:i K",
+                    dateFormat: "Y-m-d h:i K",
+                    disableMobile: "true",
+                    enableTime: true,
+                    defaultDate: timenow,
+                });
+            /*FlatPicker Element*/
+
+            /*Doctor DropDown*/
+                $("#doctor").select2({
+                    placeholder: '<?php echo lang('select_doctor'); ?>',
+                    allowClear: true,
+                    ajax: {
+                        url: 'doctor/getDoctorInfo',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+                });
+            /*Doctor DropDown*/
+
+            /*Diagnosis DropDown*/
+                $("#diagnosis_select").select2({
+                    placeholder: '<?php echo lang('diagnosis'); ?>',
+                    multiple: false,
+                    allowClear: false,
+                    ajax: {
+                        url: 'diagnosis/getDiagnosisIcd10Select2',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+            /*Diagnosis DropDown*/
+
+            /*Diagnosis Role DropDown*/
+                $("#role").select2({
+                    placeholder: '<?php echo lang('role'); ?>',
+                    multiple: false,
+                    allowClear: false,
+                    ajax: {
+                        url: 'diagnosis/getDiagnosisRoleSelect2?encounter='+encounter_value,
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+            /*Diagnosis Role DropDown*/
+
+            /*Diagnosis Rank DropDown*/
+                $("#ranking").select2({
+                    placeholder: '<?php echo lang('rank'); ?>',
+                    multiple: false,
+                    allowClear: false,
+                });
+            /*Diagnosis Rank DropDown*/
+
+        }
     </script>
 
     
