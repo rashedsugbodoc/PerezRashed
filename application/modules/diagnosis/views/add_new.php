@@ -15,7 +15,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" id="branchForm" action="diagnosis/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="diagnosisForm" action="" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <?php echo validation_errors(); ?>
@@ -42,13 +42,11 @@
                                                     ?>">
                                                 </div>
                                             </div>
-                                            <?php if (!empty($diagnosis[0]->patient_diagnosis_number)) { ?>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <input type="hidden" name="id" value="<?php echo $diagnosis[0]->patient_diagnosis_number; ?>">
-                                                    </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <input type="hidden" name="id" id="id">
                                                 </div>
-                                            <?php } ?>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
@@ -76,7 +74,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
+                                                <div class="col-md-12 col-sm-12">
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
@@ -94,26 +92,6 @@
                                                                     <input type="hidden" name="patient" value="<?php echo $encounter->patient_id ?>">
                                                                 <?php } elseif(!empty($patient)) { ?>
                                                                     <input type="hidden" name="patient" value="<?php echo $patient_details->id ?>">
-                                                                <?php } ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
-                                                                <select class="select2-show-search form-control add_doctor" required id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
-                                                                    <?php if (!empty($encounter->doctor)) { ?>
-                                                                        <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
-                                                                    <?php } ?>
-                                                                    <?php if (!empty($diagnosis[0]->doctor_id)) { ?>
-                                                                        <option value="<?php echo $diagnosis[0]->doctor_id; ?>" selected><?php echo $this->doctor_model->getDoctorById($diagnosis[0]->doctor_id)->name ?></option>
-                                                                    <?php } ?>
-                                                                </select>
-                                                                <?php if (!empty($encounter->doctor)) { ?>
-                                                                    <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
@@ -185,29 +163,6 @@
                                                     </div>
                                                 </div>
                                             </div> -->
-                                            <div class="row mt-5">
-                                                <div class="col-md-12 diagnosis_block">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('diagnosis'); ?></label>
-                                                        <div class="diag">
-                                                            <?php if (!empty($diagnosis)) { ?>
-                                                                <?php foreach($diagnosis as $diag) { ?>
-                                                                    <?php if (empty($diag->diagnosis_code)) { ?>
-                                                                        <?php $i = 0; ?>
-                                                                        <?php $i += 1; ?>
-                                                                        <input type="text" hidden name="manual_item[]" class="manual_item" value="<?php echo $diag->id.'*'.$diag->patient_diagnosis_text.'*'.$diag->diagnosis_notes.'*'.$i.'*'.$diag->is_primary_diagnosis; ?>">
-                                                                    <?php } ?>
-                                                                <?php } ?>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12 text-right">
-                                                    <button type="submit" name="submit" id="submit" class="btn btn-primary"><?php echo lang('submit') ?></button>
-                                                </div>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -409,25 +364,25 @@
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var date = $('#date').parsley();
-                var on_date = $('#on_date').parsley();
-                var patient = $('#pos_select').parsley();
-                var doctor = $('#add_doctor').parsley();
-                var encounter = $('#encounter').parsley();
+        // $(document).ready(function () {
+        //     $("#submit").click(function () {
+        //         var date = $('#date').parsley();
+        //         var on_date = $('#on_date').parsley();
+        //         var patient = $('#pos_select').parsley();
+        //         var doctor = $('#add_doctor').parsley();
+        //         var encounter = $('#encounter').parsley();
 
-                if (date.isValid() && on_date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
-                    return true;
-                } else {
-                    date.validate();
-                    on_date.validate();
-                    patient.validate();
-                    doctor.validate();
-                    encounter.validate();
-                }
-            })
-        })
+        //         if (date.isValid() && on_date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
+        //             return true;
+        //         } else {
+        //             date.validate();
+        //             on_date.validate();
+        //             patient.validate();
+        //             doctor.validate();
+        //             encounter.validate();
+        //         }
+        //     })
+        // })
     </script>
 
     <script type="text/javascript">
@@ -485,7 +440,6 @@
                     $.each(encounter, function (key, value) {
                         $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
                     });
-
                     DiagnosisUIDisplay(id, $("#encounter").val());
                 }
             })
@@ -573,20 +527,27 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var id = '<?php echo $id?$id:'' ?>'
+            var id = $("#id").val();
             $("#encounter").change(function() {
                 var encounter = $("#encounter").val();
-                
                 DiagnosisUIDisplay(id, encounter);
             })
         })
     </script>
 
     <script type="text/javascript">
+        function selectUser() {
+            var selected = $('#staff').find('option:selected');
+            var user_type = selected.data('user_type');
+
+            // alert(user_type);
+        }
+    </script>
+
+    <script type="text/javascript">
         function DiagnosisUIDisplay(id, encounter) {
             $("#diagnosis_form").empty();
             $("#diagnosis_list").empty();
-
             $.ajax({
                 url: 'diagnosis/getDiagnosisDisplay?id='+id+'&encounter='+encounter,
                 method: 'GET',
@@ -596,15 +557,17 @@
 
                     $("#diagnosis_form").html(response.diagnosis_display);
 
+                    // console.log(response.diagnosis_grouping);
+
                     $.each(response.diagnosis_grouping, function(key, value) {
-                        $("#diagnosis_list").append('<div class="table-responsive">\n\
+                        $("#diagnosis_list").append('<div class="table-responsive pl-5">\n\
                                     <table class="table nowrap text-nowrap border mt-5">\n\
                                         <thead>\n\
                                             <tr>\n\
                                                 <th class="w-35">'+value.role_display+'</th>\n\
-                                                <th class="w-10">Code</th>\n\
-                                                <th class="w-10">Rank</th>\n\
-                                                <th class="w-20">Asserting Doctor</th>\n\
+                                                <th class="w-5">Code</th>\n\
+                                                <th class="w-15">Rank</th>\n\
+                                                <th class="w-20">Diagnosed By</th>\n\
                                                 <th class="w-25">Actions</th>\n\
                                             </tr>\n\
                                         </thead>\n\
@@ -616,11 +579,11 @@
 
                         $.each(value.diagnosis_details, function(k, val) {
                             if (val.diagnosis_rank == 1) {
-                                var rank = 'Primary'
+                                var rank = '<span class="badge badge-pill badge-primary">Primary Diagnosis<span>'
                             } else if (val.diagnosis_rank == 2) {
-                                var rank = 'Secondary'
+                                var rank = '<span class="badge badge-pill badge-info">Secondary Diagnosis</span>'
                             } else if (val.diagnosis_rank == 3) {
-                                var rank = 'Tertiary'
+                                var rank = '<span class="badge badge-pill badge-light">Tertiary Diagnosis</span>'
                             } else {
                                 var rank = 'None'
                             }
@@ -628,8 +591,8 @@
                                 <td>'+val.diagnosis_long_description+'</td>\n\
                                 <td>'+val.diagnosis_code+'</td>\n\
                                 <td>'+rank+'</td>\n\
-                                <td>'+value.doctor+'</td>\n\
-                                <td></td>\n\
+                                <td>'+value.asserter[k].asserter+'</td>\n\
+                                <td>'+value.options[k].options+'</td>\n\
                             </tr>');
                         })
 
@@ -640,6 +603,28 @@
                     
                 }
             })
+        }
+
+        function editDiagnosis(id) {
+            $("#id").val(id);
+            var id = $("#id").val();
+            var group = $("#editBtn"+id).data('group_type');
+            var staff = $("#editBtn"+id).data('staff_id');
+            // alert(group);
+            $.ajax({
+                url: 'diagnosis/editDiagnosisByJson?id='+id+'&group='+group,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    $("#instruction").val(response.diagnosis_details.diagnosis_notes);
+                    $("#ranking").val(response.diagnosis_details.diagnosis_rank).trigger("change");
+                    $("#"+group).find('[id="'+group+response.user.id+'"]').prop("selected", true).trigger("change");
+                    $("#role").append($('<option selected>').text(response.role.hl7_display).val(response.role.id)).end();
+                    $("#diagnosis_select").append($('<option selected>').text(response.diagnosis.long_description).val(response.diagnosis.id)).end();
+                    $("#new_record").text("<?php echo lang('edit').' '.lang('diagnosis'); ?>")
+                }
+            });
         }
 
         function JqueryFunctionCall() {
@@ -668,26 +653,26 @@
             /*FlatPicker Element*/
 
             /*Doctor DropDown*/
-                $("#doctor").select2({
+                $("#staff").select2({
                     placeholder: '<?php echo lang('select_doctor'); ?>',
                     allowClear: true,
-                    ajax: {
-                        url: 'doctor/getDoctorInfo',
-                        type: "post",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function (params) {
-                            return {
-                                searchTerm: params.term // search term
-                            };
-                        },
-                        processResults: function (response) {
-                            return {
-                                results: response
-                            };
-                        },
-                        cache: true
-                    }
+                    // ajax: {
+                    //     url: 'doctor/getDoctorInfo',
+                    //     type: "post",
+                    //     dataType: 'json',
+                    //     delay: 250,
+                    //     data: function (params) {
+                    //         return {
+                    //             searchTerm: params.term // search term
+                    //         };
+                    //     },
+                    //     processResults: function (response) {
+                    //         return {
+                    //             results: response
+                    //         };
+                    //     },
+                    //     cache: true
+                    // }
                 });
             /*Doctor DropDown*/
 
@@ -752,6 +737,30 @@
             /*Diagnosis Rank DropDown*/
 
         }
+    </script>
+
+    <script type="text/javascript">
+        $('#diagnosisForm').submit(function(e) {
+            e.preventDefault();
+            var data = $('#diagnosisForm').serialize();
+            var base_url='<?php echo base_url(); ?>'
+            var selected = $('#staff').find('option:selected');
+            var user_type = selected.data('user_type');
+            var id = '<?php echo $id?$id:'' ?>'
+            var encounter = $("#encounter").val();
+
+            $.ajax({
+                url:base_url+'diagnosis/addNew2?group='+user_type,
+                type:'POST',
+                data:data,
+                success:function(data) {
+                    // $("#diagnosis_form").empty();
+                    $("#id").val('');
+                    DiagnosisUIDisplay(id, encounter);
+
+                }
+            });
+        })
     </script>
 
     

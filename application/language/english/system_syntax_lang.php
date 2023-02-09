@@ -976,6 +976,7 @@ $lang['twitter_username'] = 'Twitter Username';
 $lang['search'] = 'Search';
 $lang['filter'] = 'Filter';
 $lang['diagnosis'] = 'Diagnosis';
+$lang['diagnosed_by'] = 'Diagnosed By';
 $lang['rank'] = 'Rank';
 $lang['icd'] = 'ICD';
 $lang['p/s'] = 'P/S';

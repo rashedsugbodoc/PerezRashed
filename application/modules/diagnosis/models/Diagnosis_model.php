@@ -56,7 +56,7 @@ class Diagnosis_model extends CI_model {
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'] . '*' . $user['long_description'], "text" => $user['long_description']);
+            $data[] = array("id" => $user['id'], "text" => $user['long_description']);
         }
         return $data;
     }
@@ -95,6 +95,12 @@ class Diagnosis_model extends CI_model {
         $this->db->where('diagnosis_role_id', $role_id);
         $query = $this->db->get('patient_diagnosis');
         return $query->result();
+    }
+
+    function getDiagnsosiRoleById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('diagnosis_role');
+        return $query->row();
     }
 
     function getPatientDiagnosisByIdByEncounterId($id, $encounter_id) {
@@ -285,6 +291,22 @@ class Diagnosis_model extends CI_model {
             ;
         }
         return $query->num_rows();            
+    }
+
+    function getListOfStafffByGroupName($group_name_array) {
+        $user = [];
+        $optionGroup = '';
+        foreach ($group_name_array as $group_name_key => $group_name_value) {
+            $group_name_lowercase = strtolower($group_name_value);
+            $users[$group_name_value] = $this->db->get_where($group_name_lowercase, array('hospital_id' => $this->session->userdata('hospital_id')))->result();
+            $option = '';
+            foreach($users[$group_name_value] as $user) {
+                $option .= '<option value="'.$user->id.'" data-user_type="'.$group_name_value.'" id="'.$group_name_lowercase.$user->id.'">'.$user->firstname.' '.$user->middlename.' '.$user->lastname.' '.$user->suffix.' ( '.$group_name_value.' ) '.'</option>';
+            }
+            $optionGroup .= '<optgroup label="'.$group_name_value.'" id="'.$group_name_lowercase.'">'.$option.'</optgroup>';
+        }
+
+        return $optionGroup;
     }
 
 }

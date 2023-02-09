@@ -11,9 +11,13 @@ class Diagnosis extends MX_Controller {
         $this->load->model('diagnosis_model');
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('midwife/midwife_model');
+        $this->load->model('nurse/nurse_model');
         $this->load->model('encounter/encounter_model');
         $this->load->model('branch/branch_model');
         $this->load->model('hospital/hospital_model');
+        $this->load->model('ion_auth_model');
+        $this->load->model('settings/settings_model');
         $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
@@ -67,6 +71,111 @@ class Diagnosis extends MX_Controller {
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
+    }
+
+    function addNew2() {
+        $encounter_id = $this->input->post('encounter_id');
+        $patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
+        $patient_name = $this->patient_model->getPatientById($patient)->name;
+        $patient_address = $this->patient_model->getPatientById($patient)->address;
+        $patient_phone = $this->patient_model->getPatientById($patient)->phone;
+        $nowtime = date('H:i:s');
+        $diag_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date')));
+        $on_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('on_date')));
+        $diagnosis = $this->input->post('diag');
+        $diagnosis_detail = $this->diagnosis_model->getDiagnosisById($diagnosis);
+        $rank = $this->input->post('rank');
+        $role = $this->input->post('role');
+        $instruction = $this->input->post('instruction');
+        $staff = $this->input->post('staff');
+        $group = $this->input->get('group');
+        $redirect = $this->input->post('redirect');
+        $id = $this->input->post('id');
+        $user = $this->ion_auth->get_user_id();
+        $date = gmdate('Y-m-d H:i:s');
+
+        do {
+            $raw_diagnosis_number = 'D'.random_string('alnum', 6);
+            $validate_number = $this->diagnosis_model->validateDiagnosisNumber($raw_diagnosis_number);
+        } while($validate_number != 0);
+
+        $diagnosis_number = strtoupper($raw_diagnosis_number);
+
+        if (empty($id)) {
+            if ($group === "Doctor") {
+                $asserter_group_array = array('asserter_doctor_id' => $staff);
+            } elseif ($group === "Midwife") {
+                $asserter_group_array = array('asserter_midwife_id' => $staff);
+            } elseif ($group === "Nurse") {
+                $asserter_group_array = array('asserter_nurse_id' => $staff);
+            }
+
+            $data = array(
+                'patient_id' => $patient,
+                'diagnosis_id' => $diagnosis,
+                'diagnosis_long_description' => $diagnosis_detail->long_description,
+                'patient_name' => $patient_name,
+                'patient_address' => $patient_address,
+                'patient_phone' => $patient_phone,
+                'diagnosis_notes' => $instruction,
+                'onset_date' => $on_date,
+                'diagnosis_date' => $diag_date,
+                'created_at' => $date,
+                'encounter_id' => $encounter_id,
+                'diagnosis_role_id' => $role,
+                'diagnosis_code' => $diagnosis_detail->code,
+                'patient_diagnosis_number' => $diagnosis_number,
+                'diagnosis_rank' => $rank,
+                'recorder_user_id' => $user
+            );
+
+            $add_data = array_merge($data, $asserter_group_array);
+
+            $this->diagnosis_model->insertDiagnosis($add_data);
+        } else {
+
+            if ($group === "Doctor") {
+                $asserter_group_array = array(
+                    'asserter_doctor_id' => $staff,
+                    'asserter_midwife_id' => null,
+                    'asserter_nurse_id' => null,
+                );
+            } elseif ($group === "Midwife") {
+                $asserter_group_array = array(
+                    'asserter_doctor_id' => null,
+                    'asserter_midwife_id' => $staff,
+                    'asserter_nurse_id' => null,
+                );
+            } elseif ($group === "Nurse") {
+                $asserter_group_array = array(
+                    'asserter_doctor_id' => null,
+                    'asserter_midwife_id' => null,
+                    'asserter_nurse_id' => $staff,
+                );
+            }
+
+            $data = array(
+                'patient_id' => $patient,
+                'diagnosis_id' => $diagnosis,
+                'diagnosis_long_description' => $diagnosis_detail->long_description,
+                'patient_name' => $patient_name,
+                'patient_address' => $patient_address,
+                'patient_phone' => $patient_phone,
+                'diagnosis_notes' => $instruction,
+                'onset_date' => $on_date,
+                'diagnosis_date' => $diag_date,
+                'updated_at' => $date,
+                'encounter_id' => $encounter_id,
+                'diagnosis_role_id' => $role,
+                'diagnosis_code' => $diagnosis_detail->code,
+                'diagnosis_rank' => $rank,
+                'updater_user_id' => $user
+            );
+
+            $update_data = array_merge($data, $asserter_group_array);
+
+            $this->diagnosis_model->updateDiagnosis($id, $update_data);
+        }
     }
 
     function addNew() {
@@ -448,12 +557,45 @@ class Diagnosis extends MX_Controller {
 
         $data['diagnosis_role'] = $this->diagnosis_model->getDiagnosisRoleList($encounter_details->encounter_type_id);
 
+        $users = $this->getAsserterListSelect2();
+
         // $diagnosis = $this->diagnosis_model->getPatientDiagnosisByIdByEncounterId($encounter, $encounter_detail->patient_id);
 
         $diagnosis_grouping = [];
         foreach($data['diagnosis_role'] as $diagnosis_role) {
             $patient_diagnosis = $this->diagnosis_model->getPatientDiagnosisByIdByEncounterIdByRoleId($encounter, $encounter_details->patient_id, $diagnosis_role->id);
             $doctor_detail = $this->doctor_model->getDoctorById($encounter_details->doctor);
+            // $doctor_asserter = '';
+            // $asserter_display_name = '';
+            $options = [];
+            $asserter_merged = [];
+            foreach ($patient_diagnosis as $patient_diag) {
+                if (!empty($patient_diag->asserter_doctor_id)) {
+                    $asserter = $this->doctor_model->getDoctorById($patient_diag->asserter_doctor_id);
+                    $asserter_display_name = $asserter->professional_display_name;
+                    $group_type = 'doctor';
+                } elseif (!empty($patient_diag->asserter_midwife_id)) {
+                    $asserter = $this->midwife_model->getMidwifeById($patient_diag->asserter_midwife_id);
+                    $asserter_display_name = $asserter->firstname . ' ' . $asserter->middlename . ' ' . $asserter->lastname . ' ' . $asserter->suffix;
+                    $group_type = 'midwife';
+                } elseif (!empty($patient_diag->asserter_nurse_id)) {
+                    $asserter = $this->nurse_model->getNurseById($patient_diag->asserter_nurse_id);
+                    $asserter_display_name = $asserter->firstname . ' ' . $asserter->middlename . ' ' . $asserter->lastname . ' ' . $asserter->suffix;
+                    $group_type = 'nurse';
+                } else {
+                    $asserter_display_name = '';
+                    $group_type = '';
+                }
+                $asserter_merged[] = array(
+                    'asserter' => $asserter_display_name,
+                    'diagnosis_long_description' => $patient_diag->diagnosis_long_description,
+                    'diagnosis_code' => $patient_diag->diagnosis_code,
+                    'diagnosis_rank' => $patient_diag->diagnosis_rank
+                );
+                $options[] = array(
+                    'options' => '<button type="button" class="btn btn-info" id="editBtn'.$patient_diag->id.'" data-staff_id="'.$asserter->id.'" data-group_type="'.$group_type.'" onclick="editDiagnosis('.$patient_diag->id.');"><i class="fe fe-edit"><i></button>',
+                );
+            }
             $diagnosis = $this->diagnosis_model->getDiagnosisById($patient_diagnosis->diagnosis_id);
 
             if (!empty($patient_diagnosis)) {
@@ -469,7 +611,8 @@ class Diagnosis extends MX_Controller {
                     'role_id' => $diagnosis_role->id,
                     'role_display' => $diagnosis_role->hl7_display,
                     'diagnosis_details' => $patient_diagnosis,
-                    'doctor' => $doctor_detail->professional_display_name,
+                    'asserter' => $asserter_merged,
+                    'options' => $options,
                 );
             }
         }
@@ -498,20 +641,20 @@ class Diagnosis extends MX_Controller {
                                         <td><label class="form-label">'.lang('onset').' '.lang('date').'</label><input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date"></td>
                                     </tr>
                                     <tr>
-                                        <td><label class="form-label">'.lang('asserter').'</label><select class="select2-show-search form-control doctor" id="doctor"></td>
-                                        <td><label class="form-label">'.lang('diagnosis').' '.lang('role').'</label><select class="select2-show-search form-control role" id="role"></td>
+                                        <td><label class="form-label">'.lang('diagnosed_by').'</label><select class="select2-show-search form-control doctor" name="staff" id="staff" placeholder="'.lang('select_user').'" onchange="selectUser();"><option label="'.lang('select_user').'"></option>'.$users.'</td>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.lang('role').'</label><select class="select2-show-search form-control role" id="role" name="role"></td>
                                     </tr>
                                     <tr>
-                                        <td><label class="form-label">'.lang('diagnosis').'</label><select class="select2-show-search form-control diagnosis_select" name="diagnosis_select[]" id="diagnosis_select" value=""></select></td>
-                                        <td><label class="form-label">'.lang('rank').' '.lang('date').'</label><select class="select2-show-search form-control ranking_select" name="ranking" id="ranking">
+                                        <td><label class="form-label">'.lang('diagnosis').'</label><select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select></td>
+                                        <td><label class="form-label">'.lang('rank').'</label><select class="select2-show-search form-control ranking_select" name="rank" id="ranking">
                                             <option label="'.lang("rank").'"></option>
-                                            <option value="1">Primary</option>
-                                            <option value="2">Secondary</option>
-                                            <option value="3">Tertiary</option>
+                                            <option value="1">Primary Diagnosis</option>
+                                            <option value="2">Secondary Diagnosis</option>
+                                            <option value="3">Tertiary Diagnosis</option>
                                         </select></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><label class="form-label">'.lang('diagnosis').' '.lang('note').'</label><input type="text" class="form-control" name="instruction[]" id="instruction"></td>
+                                        <td colspan="2"><label class="form-label">'.lang('diagnosis').' '.lang('note').'</label><input type="text" class="form-control" name="instruction" id="instruction"></td>
                                     </tr>';
             $form_submit_btn_text = lang("add").' '.("diagnosis");
 
@@ -533,30 +676,7 @@ class Diagnosis extends MX_Controller {
                                             <tfoot>
                                                 <tr>
                                                     <td></td>
-                                                    <td><button type="button" class="btn btn-primary pull-right" id="new_record">'.$form_submit_btn_text.'</button></td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>';
-
-        $data['diagnosis_list'] = '<div class="table-responsive">
-                                        <table class="table nowrap text-nowrap border mt-5">
-                                            <thead>
-                                                <tr>
-                                                    <th class="w-40"></th>
-                                                    <th class="w-10"></th>
-                                                    <th class="w-5"></th>
-                                                    <th class="w-20"></th>
-                                                    <th class="w-25"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td></td>
-                                                    <td><button type="button" class="btn btn-primary pull-right" id="new_record">'.$form_submit_btn_text.'</button></td>
+                                                    <td><button type="submit" class="btn btn-primary pull-right" id="new_record">'.$form_submit_btn_text.'</button></td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -576,6 +696,36 @@ class Diagnosis extends MX_Controller {
         $response = $this->diagnosis_model->getDiagnosisRoleInfo($searchTerm, $encounter_detail->encounter_type_id);
 
         echo json_encode($response);
+    }
+
+    public function getAsserterListSelect2() {
+        $settings = $this->settings_model->getSettings();
+        $allowed_diagnosis_asserter = explode(',', $settings->allowed_diagnosis_asserter);
+        $staff = $this->diagnosis_model->getListOfStafffByGroupName($allowed_diagnosis_asserter);
+
+        return $staff;
+    }
+
+    public function editDiagnosisByJson() {
+        $id = $this->input->get('id');
+        $group = $this->input->get('group');
+        $data['diagnosis_details'] = $this->diagnosis_model->getPatientDiagnosisById($id);
+        $data['role'] = $this->diagnosis_model->getDiagnsosiRoleById($data['diagnosis_details']->diagnosis_role_id);
+        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisById($data['diagnosis_details']->diagnosis_id);
+        $user = '';
+        if ($group === "doctor") {
+            $user = $this->db->get_where($group, array('hospital_id' => $this->session->userdata('hospital_id'), 'id' => $data['diagnosis_details']->asserter_doctor_id))->row();
+        } elseif ($group === "midwife") {
+            $user = $this->db->get_where($group, array('hospital_id' => $this->session->userdata('hospital_id'), 'id' => $data['diagnosis_details']->asserter_midwife_id))->row();
+        } elseif ($group === "nurse") {
+            $user = $this->db->get_where($group, array('hospital_id' => $this->session->userdata('hospital_id'), 'id' => $data['diagnosis_details']->asserter_nurse_id))->row();
+        } else {
+            $user = '';
+        }
+
+        $data['user'] = $user;
+        
+        echo json_encode($data);
     }
 
 }
