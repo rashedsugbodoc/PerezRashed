@@ -544,8 +544,10 @@
         $(document).ready(function() {
             var id = $("#id").val();
             var encounter = $("#encounter").val();
-            DiagnosisUIDisplay(id, encounter);
-            editDiagnosis(id);
+            if (id) {
+                DiagnosisUIDisplay(id, encounter);
+                editDiagnosis(id);
+            }
         })
     </script>
 
