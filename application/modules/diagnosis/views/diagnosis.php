@@ -131,7 +131,40 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        function deleteDiagnosis(diagnosis_id) {
+            console.log(diagnosis_id);
+            swal({
+                title: "Delete Diagnosis?",
+                text: "This will Remove the Record",
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+            }, function (isConfirm) {
+                if (!isConfirm) return;
+                $.ajax({
+                    url: "diagnosis/deleteDiagnosis?id="+diagnosis_id,
+                    type: "GET",
+                    data: '',
+                    dataType: "json",
+                    success: function (response) {
+                        swal("Done!", "You Successfully Remove a Diagnosis", "success");
+                        location.reload();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        swal("Error on Removing Diagnosis!", "Please try again", "error");
+                    }
+                });
+            });
+        }
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

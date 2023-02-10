@@ -11,7 +11,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('add'); ?> <?php echo lang('diagnosis'); ?>
+                                            <?php echo $id?lang('edit'):lang('add'); ?> <?php echo lang('diagnosis'); ?>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -44,7 +44,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <input type="hidden" name="id" id="id">
+                                                    <input type="hidden" name="id" id="id" value=<?php echo $id?$id:''; ?>>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -54,9 +54,9 @@
                                                         <?php if (empty($diagnosis->diagnosis_date)) { ?>
                                                             <!-- <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date"> -->
                                                         <?php } else { ?>
-                                                            <input type="text" class="form-control flatpickr" id="date" required readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                            <!-- <input type="text" class="form-control flatpickr" id="date" required readonly placeholder="MM/DD/YYYY" name="date" value="<?php
                                                                 echo date('Y-m-d H:i', strtotime($diagnosis->diagnosis_date.' UTC'));
-                                                            ?>">
+                                                            ?>"> -->
                                                         <?php } ?>
                                                     </div>
                                                 </div>
@@ -66,9 +66,9 @@
                                                         <?php if (empty($diagnosis->onset_date)) { ?>
                                                             <!-- <input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date"> -->
                                                         <?php } else { ?>
-                                                            <input type="text" class="form-control flatpickr" id="on_date" required readonly placeholder="MM/DD/YYYY" name="on_date" value="<?php
+                                                            <!-- <input type="text" class="form-control flatpickr" id="on_date" required readonly placeholder="MM/DD/YYYY" name="on_date" value="<?php
                                                                 echo date('Y-m-d H:i', strtotime($diagnosis->onset_date.' UTC'));
-                                                            ?>">
+                                                            ?>"> -->
                                                         <?php } ?>
                                                     </div>
                                                 </div>
@@ -82,16 +82,16 @@
                                                                 <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } elseif (!empty($patient)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->patient_id)) { ?>
                                                                         <option value="<?php echo $encounter->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($encounter->patient_id)->name; ?></option>
-                                                                    <?php } elseif (!empty($diagnosis[0]->patient_id)) { ?>
-                                                                        <option value="<?php echo $diagnosis[0]->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($diagnosis[0]->patient_id)->name; ?></option>
+                                                                    <?php } elseif (!empty($diagnosis->patient_id)) { ?>
+                                                                        <option value="<?php echo $diagnosis->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($diagnosis->patient_id)->name; ?></option>
                                                                     <?php } elseif (!empty($patient)) { ?>
                                                                         <option value="<?php echo $patient; ?>" selected><?php echo $this->patient_model->getPatientByPatientNumber($patient)->name; ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter->patient_id)) { ?>
-                                                                    <input type="hidden" name="patient" value="<?php echo $encounter->patient_id ?>">
+                                                                    <input type="hidden" name="patient" id="patient_input" value="<?php echo $encounter->patient_id ?>">
                                                                 <?php } elseif(!empty($patient)) { ?>
-                                                                    <input type="hidden" name="patient" value="<?php echo $patient_details->id ?>">
+                                                                    <input type="hidden" name="patient" id="patient_input" value="<?php echo $patient_details->id ?>">
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
@@ -104,14 +104,14 @@
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
                                                         <select class="form-control select2-show-search" required name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter->id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                <option value="<?php echo $encounter?$encounter->id:''; ?>" selected><?php echo $encounter?$encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')):''; ?></option>
                                                             <?php } ?>
                                                             <?php if (!empty($id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                <option value="<?php echo $encounter?$encounter->id:''; ?>" selected><?php echo $encounter?$encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')):''; ?></option>
                                                             <?php } ?>
                                                         </select>
                                                         <?php if (!empty($encounter->id)) { ?>
-                                                            <input type="hidden" name="encounter_id" value="<?php
+                                                            <input type="hidden" name="encounter_id" id="encounter_input" value="<?php
                                                             if (!empty($encounter_id)) {
                                                                 echo $encounter_id;
                                                             } elseif (!empty($encounter->id)) {
@@ -283,9 +283,6 @@
         <script src="<?php echo base_url('public/assets/js/form-elements.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/file-upload.js'); ?>"></script>
 
-        <!-- popover js -->
-        <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
-
         <!-- Forn-wizard js-->
         <script src="<?php echo base_url('public/assets/plugins/formwizard/jquery.smartWizard.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/formwizard/fromwizard.js'); ?>"></script>
@@ -299,6 +296,9 @@
 
         <!-- Prism js -->
         <script src="<?php echo base_url('public/assets/plugins/prism/prism.js'); ?>"></script>
+
+        <!-- popover js -->
+        <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
 
         <!--Accordion-Wizard-Form js-->
         <script src="<?php echo base_url('public/assets/plugins/accordion-Wizard-Form/jquery.accordion-wizard.min.js'); ?>"></script>
@@ -315,6 +315,11 @@
 
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
 
@@ -385,17 +390,17 @@
         // })
     </script>
 
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         $(document).ready(function () {
-            var date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')):'today'?>";
-            var diag = "<?php echo $diagnosis ?>";
+            var date = "<?php //echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')):'today'?>";
+            var diag = "<?php //echo $diagnosis ?>";
             console.log(diag);
             if (diag === "") {
-                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
-                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                var timenow = "<?php //echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php //echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             } else {
                 var timenow = date;
-                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                var maxdate = "<?php //echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             }
             flatpickr(".flatpickr", {
                 disable: [maxdate],
@@ -408,7 +413,7 @@
                 defaultDate: timenow,
             });
         });
-    </script>
+    </script> -->
 
     <script type="text/javascript">
         $('.fc-datepicker1').datepicker({
@@ -529,9 +534,18 @@
         $(document).ready(function() {
             var id = $("#id").val();
             $("#encounter").change(function() {
-                var encounter = $("#encounter").val();
+                var encounter = $("#encounter_input").val();
                 DiagnosisUIDisplay(id, encounter);
             })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var id = $("#id").val();
+            var encounter = $("#encounter").val();
+            DiagnosisUIDisplay(id, encounter);
+            editDiagnosis(id);
         })
     </script>
 
@@ -557,8 +571,6 @@
 
                     $("#diagnosis_form").html(response.diagnosis_display);
 
-                    // console.log(response.diagnosis_grouping);
-
                     $.each(response.diagnosis_grouping, function(key, value) {
                         $("#diagnosis_list").append('<div class="table-responsive pl-5">\n\
                                     <table class="table nowrap text-nowrap border mt-5">\n\
@@ -566,7 +578,8 @@
                                             <tr>\n\
                                                 <th class="w-35">'+value.role_display+'</th>\n\
                                                 <th class="w-5">Code</th>\n\
-                                                <th class="w-15">Rank</th>\n\
+                                                <th class="w-5">Note</th>\n\
+                                                <th class="w-10">Rank</th>\n\
                                                 <th class="w-20">Diagnosed By</th>\n\
                                                 <th class="w-25">Actions</th>\n\
                                             </tr>\n\
@@ -587,13 +600,30 @@
                             } else {
                                 var rank = 'None'
                             }
-                            $("#items"+value.role_id).append('<tr>\n\
+                            $("#items"+value.role_id).append('<tr id="tr_'+val.id+'">\n\
                                 <td>'+val.diagnosis_long_description+'</td>\n\
                                 <td>'+val.diagnosis_code+'</td>\n\
+                                <td><button class="btn btn-icon btn-info" data-container="body" data-content="'+val.diagnosis_notes+'" data-placement="bottom" data-popover-color="default" data-toggle="popover" title="Diagnosis Note" type="button"><i class="fe fe-file"></i></button></td>\n\
                                 <td>'+rank+'</td>\n\
                                 <td>'+value.asserter[k].asserter+'</td>\n\
                                 <td>'+value.options[k].options+'</td>\n\
                             </tr>');
+
+                            // $("#note_popover_"+val.id).popover({
+                            //     trigger: "click",
+                            //     html: true,
+                            //     title: 'Notes',
+                            //     content: "<p>"+val.diagnosis_notes+"</p>",
+                            //     position: {
+                            //       my: "center top",
+                            //       at: "center bottom",
+                            //       of: "#note_popover_"+val.id,
+                            //       collision: "fit"
+                            //     },
+                            //     template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
+                            // });
+
+                            $('[data-toggle="popover"]').popover();
                         })
 
                     })
@@ -606,32 +636,93 @@
         }
 
         function editDiagnosis(id) {
+            var old_id = $("#id").val();
             $("#id").val(id);
             var id = $("#id").val();
             var group = $("#editBtn"+id).data('group_type');
+            if (group) {
+                var group = group;
+            } else {
+                var group = "<?php echo $group_name?$group_name:'' ?>";
+            }
             var staff = $("#editBtn"+id).data('staff_id');
-            // alert(group);
             $.ajax({
                 url: 'diagnosis/editDiagnosisByJson?id='+id+'&group='+group,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    $("#instruction").val(response.diagnosis_details.diagnosis_notes);
-                    $("#ranking").val(response.diagnosis_details.diagnosis_rank).trigger("change");
-                    $("#"+group).find('[id="'+group+response.user.id+'"]').prop("selected", true).trigger("change");
-                    $("#role").append($('<option selected>').text(response.role.hl7_display).val(response.role.id)).end();
-                    $("#diagnosis_select").append($('<option selected>').text(response.diagnosis.long_description).val(response.diagnosis.id)).end();
-                    $("#new_record").text("<?php echo lang('edit').' '.lang('diagnosis'); ?>")
+                    /*Remove OLD ELement*/
+                        $("#tr_"+old_id).removeClass("bg-gray-200");
+                        $("#cancel_change_td").empty();
+                    /*Remove Old Element*/
+
+                    /*Add New Element*/
+                        $("#instruction").val(response.diagnosis_details.diagnosis_notes);
+                        $("#ranking").val(response.diagnosis_details.diagnosis_rank).trigger("change");
+                        $("#"+group).find('[id="'+group+response.user.id+'"]').prop("selected", true).trigger("change");
+                        $("#role").append($('<option selected>').text(response.role.hl7_display).val(response.role.id)).end();
+                        $("#diagnosis_select").append($('<option selected>').text(response.diagnosis.long_description).val(response.diagnosis.id)).end();
+                        $("#new_record").text("<?php echo lang('save').' '.lang('changes'); ?>");
+                        $("#cancel_change_td").append('<button type="button" class="btn btn-danger" id="cancel_changes" onclick="cancelChanges();">'+"<?php echo lang('cancel').' '.lang('changes') ?>"+'</button>');
+                        $("#tr_"+id).addClass("bg-gray-200");
+                        $("#form_header").text("<?php echo lang("edit").' '.("diagnosis") ?>");
+                    /*Add New Element*/
                 }
+            });
+        }
+
+        function cancelChanges() {
+            swal({
+                title: "Cancel Changes?",
+                text: "This will clear all the changes made.",
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Continue Editing',
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $("#id").val('');
+                    var id = $("#id").val();
+                    var encounter = $("#encounter").val();
+                    DiagnosisUIDisplay(id, encounter);
+                } else {
+                    return;
+                }
+            })
+        }
+
+        function deleteDiagnosis(diagnosis_id) {
+            var id = $("#id").val();
+            var encounter = $("#encounter").val();
+            swal({
+                title: "Delete Diagnosis?",
+                text: "This will Remove the Record",
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+            }, function (isConfirm) {
+                if (!isConfirm) return;
+                $.ajax({
+                    url: "diagnosis/deleteDiagnosis?id="+diagnosis_id,
+                    type: "GET",
+                    data: '',
+                    dataType: "json",
+                    success: function (response) {
+                        swal("Done!", "You Successfully Remove a Diagnosis", "success");
+                        DiagnosisUIDisplay(id, encounter);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        swal("Error on Removing Diagnosis!", "Please try again", "error");
+                    }
+                });
             });
         }
 
         function JqueryFunctionCall() {
             var encounter_value = $("#encounter").val();
             /*FlatPicker Element*/
-                var date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')):'today'?>";
-                var diag = "<?php echo $diagnosis ?>";
+                var date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->diagnosis_date.' UTC')):'today'?>";
+                var diag = "<?php echo $id?$id:'' ?>";
                 console.log(diag);
                 if (diag === "") {
                     var timenow = "<?php echo date('Y-m-d H:i'); ?>";
@@ -656,23 +747,6 @@
                 $("#staff").select2({
                     placeholder: '<?php echo lang('select_doctor'); ?>',
                     allowClear: true,
-                    // ajax: {
-                    //     url: 'doctor/getDoctorInfo',
-                    //     type: "post",
-                    //     dataType: 'json',
-                    //     delay: 250,
-                    //     data: function (params) {
-                    //         return {
-                    //             searchTerm: params.term // search term
-                    //         };
-                    //     },
-                    //     processResults: function (response) {
-                    //         return {
-                    //             results: response
-                    //         };
-                    //     },
-                    //     cache: true
-                    // }
                 });
             /*Doctor DropDown*/
 

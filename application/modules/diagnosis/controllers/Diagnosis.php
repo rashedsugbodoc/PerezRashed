@@ -365,14 +365,17 @@ class Diagnosis extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
-        $diagnosis_number = $this->input->get('id');
+        // $diagnosis_number = $this->input->get('id');
 
-        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);
-        $data['id'] = $data['diagnosis'][0]->id;
-        $data['encounter'] = $this->encounter_model->getEncounterById($data['diagnosis'][0]->encounter_id);
+        // $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);
+        // $data['id'] = $data['diagnosis'][0]->id;
+        $data['id'] = $this->input->get('id');
+        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisById($data['id']);
+        $data['encounter'] = $this->encounter_model->getEncounterById($data['diagnosis']->encounter_id);
         $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
-        $data['patient'] = $this->patient_model->getPatientById($data['diagnosis'][0]->patient_id);
-        $data['doctor'] = $this->doctor_model->getDoctorById($data['diagnosis'][0]->doctor_id);
+        $data['patient'] = $this->patient_model->getPatientById($data['diagnosis']->patient_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['diagnosis']->doctor_id);
+        $data['patient_details'] = null;
         // $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisById($data['id']);
         $data['diagnosis_list'] = $this->diagnosis_model->getDiagnosis();
         $data['root'] = $this->input->get('root');
@@ -380,6 +383,23 @@ class Diagnosis extends MX_Controller {
         if (!empty($data['root']) && !empty($data['method'])) {
             $data['redirect'] = $data['root'].'/'.$data['method'].'?encounter_id='.$data['encounter']->id;
         }
+        if (!empty($data['diagnosis']->asserter_doctor_id)) {
+            $doctor = $this->doctor_model->getDoctorById($data['diagnosis']->asserter_doctor_id);
+            $group_name = $this->ion_auth->get_users_groups($user->id)->row($doctor->ion_user_id)->name;
+            $group_name = strtolower($group_name);
+        } elseif (!empty($data['diagnosis']->asserter_nurse_id)) {
+            $nurse = $this->nurse_model->getNurseById($data['diagnosis']->asserter_nurse_id);
+            $group_name = $this->ion_auth->get_users_groups($user->id)->row($nurse->ion_user_id)->name;
+            $group_name = strtolower($group_name);
+        } elseif (!empty($data['diagnosis']->asserter_midwife_id)) {
+            $midwife = $this->midwife_model->getMidwifeById($data['diagnosis']->asserter_midwife_id);
+            $group_name = $this->ion_auth->get_users_groups($user->id)->row($midwife->ion_user_id)->name;
+            $group_name = strtolower($group_name);
+        } else {
+            $group_name = "";
+        }
+
+        $data['group_name'] = $group_name;
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
@@ -503,11 +523,12 @@ class Diagnosis extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
                 if(!empty($patient_id)) {
-                    $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                    $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->id.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
                     $options2 = '<a href="" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fe fe-trash-2"></i></a>';
                 } else {
-                    $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&redirect=diagnosis" class="btn btn-info"><i class="fe fe-edit"></i></a>';
-                    $options2 = '<a href="" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fe fe-trash-2"></i></a>';
+                    $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->id.'&redirect=diagnosis" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                    // $options2 = '<a href="" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fe fe-trash-2"></i></a>';
+                    $options2 = '<button type="button" class="btn btn-danger" onclick="deleteDiagnosis('.$diag->id.');"><i class="fe fe-trash-2"></i></button>';
                 }
             } else {
                 $options1 = '';
@@ -593,7 +614,7 @@ class Diagnosis extends MX_Controller {
                     'diagnosis_rank' => $patient_diag->diagnosis_rank
                 );
                 $options[] = array(
-                    'options' => '<button type="button" class="btn btn-info" id="editBtn'.$patient_diag->id.'" data-staff_id="'.$asserter->id.'" data-group_type="'.$group_type.'" onclick="editDiagnosis('.$patient_diag->id.');"><i class="fe fe-edit"><i></button>',
+                    'options' => '<button type="button" class="btn btn-info" id="editBtn'.$patient_diag->id.'" data-staff_id="'.$asserter->id.'" data-group_type="'.$group_type.'" onclick="editDiagnosis('.$patient_diag->id.');"><i class="fe fe-edit"></i></button> <button type="button" class="btn btn-danger" onclick="deleteDiagnosis('.$patient_diag->id.');"><i class="fe fe-trash-2"></i></button>',
                 );
             }
             $diagnosis = $this->diagnosis_model->getDiagnosisById($patient_diagnosis->diagnosis_id);
@@ -657,16 +678,39 @@ class Diagnosis extends MX_Controller {
                                         <td colspan="2"><label class="form-label">'.lang('diagnosis').' '.lang('note').'</label><input type="text" class="form-control" name="instruction" id="instruction"></td>
                                     </tr>';
             $form_submit_btn_text = lang("add").' '.("diagnosis");
-
+            $form_cancel_change = '';
+            $form_header_text = lang("add").' '.("diagnosis");
         } else {
+            $form_t_body_information = '<tr>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.lang('date').'</label><input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date"></td>
+                                        <td><label class="form-label">'.lang('onset').' '.lang('date').'</label><input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="form-label">'.lang('diagnosed_by').'</label><select class="select2-show-search form-control doctor" name="staff" id="staff" placeholder="'.lang('select_user').'" onchange="selectUser();"><option label="'.lang('select_user').'"></option>'.$users.'</td>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.lang('role').'</label><select class="select2-show-search form-control role" id="role" name="role"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="form-label">'.lang('diagnosis').'</label><select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select></td>
+                                        <td><label class="form-label">'.lang('rank').'</label><select class="select2-show-search form-control ranking_select" name="rank" id="ranking">
+                                            <option label="'.lang("rank").'"></option>
+                                            <option value="1">Primary Diagnosis</option>
+                                            <option value="2">Secondary Diagnosis</option>
+                                            <option value="3">Tertiary Diagnosis</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><label class="form-label">'.lang('diagnosis').' '.lang('note').'</label><input type="text" class="form-control" name="instruction" id="instruction"></td>
+                                    </tr>';
             $form_submit_btn_text = lang("edit").' '.("diagnosis");
+            $form_cancel_change = '<button type="submit" class="btn btn-danger" id="cancel_changes">'.lang('cancel').' '.lang('changes').'</button>';
+            $form_header_text = lang("edit").' '.("diagnosis");
         }
 
         $data['diagnosis_display'] = '<div class="table-responsive">
                                         <table class="table nowrap text-nowrap border mt-5">
                                             <thead>
                                                 <tr>
-                                                    <th class="w-70"></th>
+                                                    <th class="w-70" id="form_header">'.$form_header_text.'</th>
                                                     <th class="w-30"></th>
                                                 </tr>
                                             </thead>
@@ -675,7 +719,7 @@ class Diagnosis extends MX_Controller {
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td></td>
+                                                    <td id="cancel_change_td">'.$form_cancel_change.'</td>
                                                     <td><button type="submit" class="btn btn-primary pull-right" id="new_record">'.$form_submit_btn_text.'</button></td>
                                                 </tr>
                                             </tfoot>
@@ -726,6 +770,17 @@ class Diagnosis extends MX_Controller {
         $data['user'] = $user;
         
         echo json_encode($data);
+    }
+
+    public function deleteDiagnosis() {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
+            redirect('home/permission');
+        }
+        $id = $this->input->get('id');
+
+        $this->diagnosis_model->deleteDiagnosis($id);
+
+        echo json_encode($id);
     }
 
 }

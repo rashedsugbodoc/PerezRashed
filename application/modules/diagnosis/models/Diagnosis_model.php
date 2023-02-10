@@ -309,4 +309,9 @@ class Diagnosis_model extends CI_model {
         return $optionGroup;
     }
 
+    function deleteDiagnosis($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('patient_diagnosis');
+    }
+
 }
