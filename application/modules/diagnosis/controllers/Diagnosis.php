@@ -95,6 +95,19 @@ class Diagnosis extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
         $date = gmdate('Y-m-d H:i:s');
 
+        if (empty($diagnosis)) {
+            $diagnosis = $this->input->post('diag_manual');
+            $diagnosis_obj = array(
+                'patient_diagnosis_text' => $diagnosis,
+            );
+        } else {
+            $diagnosis_obj = array(
+                'diagnosis_id' => $diagnosis,
+                'diagnosis_long_description' => $diagnosis_detail->long_description,
+                'diagnosis_code' => $diagnosis_detail->code,
+            );
+        }
+
         do {
             $raw_diagnosis_number = 'D'.random_string('alnum', 6);
             $validate_number = $this->diagnosis_model->validateDiagnosisNumber($raw_diagnosis_number);
@@ -113,8 +126,6 @@ class Diagnosis extends MX_Controller {
 
             $data = array(
                 'patient_id' => $patient,
-                'diagnosis_id' => $diagnosis,
-                'diagnosis_long_description' => $diagnosis_detail->long_description,
                 'patient_name' => $patient_name,
                 'patient_address' => $patient_address,
                 'patient_phone' => $patient_phone,
@@ -124,13 +135,12 @@ class Diagnosis extends MX_Controller {
                 'created_at' => $date,
                 'encounter_id' => $encounter_id,
                 'diagnosis_role_id' => $role,
-                'diagnosis_code' => $diagnosis_detail->code,
                 'patient_diagnosis_number' => $diagnosis_number,
                 'diagnosis_rank' => $rank,
                 'recorder_user_id' => $user
             );
 
-            $add_data = array_merge($data, $asserter_group_array);
+            $add_data = array_merge(array_merge($data, $diagnosis_obj), $asserter_group_array);
 
             $this->diagnosis_model->insertDiagnosis($add_data);
         } else {
@@ -157,8 +167,6 @@ class Diagnosis extends MX_Controller {
 
             $data = array(
                 'patient_id' => $patient,
-                'diagnosis_id' => $diagnosis,
-                'diagnosis_long_description' => $diagnosis_detail->long_description,
                 'patient_name' => $patient_name,
                 'patient_address' => $patient_address,
                 'patient_phone' => $patient_phone,
@@ -168,12 +176,11 @@ class Diagnosis extends MX_Controller {
                 'updated_at' => $date,
                 'encounter_id' => $encounter_id,
                 'diagnosis_role_id' => $role,
-                'diagnosis_code' => $diagnosis_detail->code,
                 'diagnosis_rank' => $rank,
                 'updater_user_id' => $user
             );
 
-            $update_data = array_merge($data, $asserter_group_array);
+            $update_data = array_merge(array_merge($data, $diagnosis_obj), $asserter_group_array);
 
             $this->diagnosis_model->updateDiagnosis($id, $update_data);
         }
@@ -592,6 +599,18 @@ class Diagnosis extends MX_Controller {
             $options = [];
             $asserter_merged = [];
             foreach ($patient_diagnosis as $patient_diag) {
+                if (empty($patient_diag->diagnosis_code)) {
+                    $code = 'N/A';
+                } else {
+                    $code = $patient_diag->diagnosis_code;
+                }
+
+                if (empty($patient_diag->diagnosis_long_description)) {
+                    $description = $patient_diag->patient_diagnosis_text;
+                } else {
+                    $description = $patient_diag->diagnosis_long_description;
+                }
+
                 if (!empty($patient_diag->asserter_doctor_id)) {
                     $asserter = $this->doctor_model->getDoctorById($patient_diag->asserter_doctor_id);
                     $asserter_display_name = $asserter->professional_display_name;
@@ -610,8 +629,8 @@ class Diagnosis extends MX_Controller {
                 }
                 $asserter_merged[] = array(
                     'asserter' => $asserter_display_name,
-                    'diagnosis_long_description' => $patient_diag->diagnosis_long_description,
-                    'diagnosis_code' => $patient_diag->diagnosis_code,
+                    'diagnosis_long_description' => $description,
+                    'diagnosis_code' => $code,
                     'diagnosis_rank' => $patient_diag->diagnosis_rank
                 );
                 $options[] = array(
@@ -667,7 +686,7 @@ class Diagnosis extends MX_Controller {
                                         <td><label class="form-label">'.lang('diagnosis').' '.lang('role').'</label><select class="select2-show-search form-control role" id="role" name="role"></td>
                                     </tr>
                                     <tr>
-                                        <td><label class="form-label">'.lang('diagnosis').'</label><select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select></td>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.'<button type="button" class="btn btn-light btn-sm" id="switchDiagnosisType" onclick="switchDiagnosisFieldType();">'.lang("enter").' '.lang("manually").'</button>'.'</label><div id="diagnosis_div"><select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select></div></td>
                                         <td><label class="form-label">'.lang('rank').'</label><select class="select2-show-search form-control ranking_select" name="rank" id="ranking">
                                             <option label="'.lang("rank").'"></option>
                                             <option value="1">Primary Diagnosis</option>
@@ -691,7 +710,7 @@ class Diagnosis extends MX_Controller {
                                         <td><label class="form-label">'.lang('diagnosis').' '.lang('role').'</label><select class="select2-show-search form-control role" id="role" name="role"></td>
                                     </tr>
                                     <tr>
-                                        <td><label class="form-label">'.lang('diagnosis').'</label><select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select></td>
+                                        <td><label class="form-label">'.lang('diagnosis').' '.'<button type="button" class="btn btn-light btn-sm" id="switchDiagnosisType" onclick="switchDiagnosisFieldType();">'.lang('enter').' '.lang('manually').'</button>'.'</label><div id="diagnosis_div"><select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select></div></td>
                                         <td><label class="form-label">'.lang('rank').'</label><select class="select2-show-search form-control ranking_select" name="rank" id="ranking">
                                             <option label="'.lang("rank").'"></option>
                                             <option value="1">Primary Diagnosis</option>
@@ -702,7 +721,7 @@ class Diagnosis extends MX_Controller {
                                     <tr>
                                         <td colspan="2"><label class="form-label">'.lang('diagnosis').' '.lang('note').'</label><input type="text" class="form-control" name="instruction" id="instruction"></td>
                                     </tr>';
-            $form_submit_btn_text = lang("edit").' '.("diagnosis");
+            $form_submit_btn_text = lang("save").' '.("changes");
             $form_cancel_change = '<button type="submit" class="btn btn-danger" id="cancel_changes">'.lang('cancel').' '.lang('changes').'</button>';
             $form_header_text = lang("edit").' '.("diagnosis");
         }

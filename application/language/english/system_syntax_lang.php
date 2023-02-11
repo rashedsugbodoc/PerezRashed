@@ -1081,6 +1081,7 @@ $lang['package'] = 'Package';
 $lang['packages'] = 'Packages';
 $lang['restricted_modules'] = 'Restricted Modules';
 $lang['select_manually'] = 'Select Manually';
+$lang['manually'] = 'Manually';
 $lang['modules'] = 'Modules';
 $lang['subscription'] = 'Subscription';
 $lang['enable'] = 'Enable';

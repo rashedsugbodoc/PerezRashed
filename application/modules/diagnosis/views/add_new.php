@@ -542,11 +542,11 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var id = $("#id").val();
+            var id = "<?php echo $id?$id:'' ?>";
             var encounter = $("#encounter").val();
             if (id) {
+                console.log('Success');
                 DiagnosisUIDisplay(id, encounter);
-                editDiagnosis(id);
             }
         })
     </script>
@@ -602,9 +602,21 @@
                             } else {
                                 var rank = 'None'
                             }
+
+                            if (val.diagnosis_long_description) {
+                                var description = val.diagnosis_long_description;
+                            } else {
+                                var description = val.patient_diagnosis_text;
+                            }
+
+                            if (val.diagnosis_code) {
+                                var code = val.diagnosis_code;
+                            } else {
+                                var code = 'N/A';
+                            }
                             $("#items"+value.role_id).append('<tr id="tr_'+val.id+'">\n\
-                                <td>'+val.diagnosis_long_description+'</td>\n\
-                                <td>'+val.diagnosis_code+'</td>\n\
+                                <td>'+description+'</td>\n\
+                                <td>'+code+'</td>\n\
                                 <td><button class="btn btn-icon btn-info" data-container="body" data-content="'+val.diagnosis_notes+'" data-placement="bottom" data-popover-color="default" data-toggle="popover" title="Diagnosis Note" type="button"><i class="fe fe-file"></i></button></td>\n\
                                 <td>'+rank+'</td>\n\
                                 <td>'+value.asserter[k].asserter+'</td>\n\
@@ -630,11 +642,29 @@
 
                     })
 
+                    if (id) {
+                        editDiagnosis(id);
+                    }
+
 
                     JqueryFunctionCall();
                     
                 }
             })
+        }
+
+        function switchDiagnosisFieldType() {
+            // alert($("#diagnosis_select1").length);
+            if ($("#diagnosis_select").length > 0) {
+                $("#switchDiagnosisType").text('Select from List');
+                $("#diagnosis_div").empty();
+                $("#diagnosis_div").append('<input type="text" class="form-control" id="diagnosis_input" name="diag_manual">');
+            } else {
+                $("#switchDiagnosisType").text('Enter Manually');
+                $("#diagnosis_div").empty();
+                $("#diagnosis_div").append('<select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select>');
+                JqueryFunctionCall();
+            }
         }
 
         function editDiagnosis(id) {
@@ -664,7 +694,17 @@
                         $("#ranking").val(response.diagnosis_details.diagnosis_rank).trigger("change");
                         $("#"+group).find('[id="'+group+response.user.id+'"]').prop("selected", true).trigger("change");
                         $("#role").append($('<option selected>').text(response.role.hl7_display).val(response.role.id)).end();
-                        $("#diagnosis_select").append($('<option selected>').text(response.diagnosis.long_description).val(response.diagnosis.id)).end();
+                        if (response.diagnosis_details.diagnosis_id) {
+                            $("#switchDiagnosisType").text('Enter Manually');
+                            $("#diagnosis_div").empty();
+                            $("#diagnosis_div").append('<select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select>');
+                            $("#diagnosis_select").append($('<option selected>').text(response.diagnosis.long_description).val(response.diagnosis.id)).end();
+                            JqueryFunctionCall();
+                        } else {
+                            $("#switchDiagnosisType").text('Select from List');
+                            $("#diagnosis_div").empty();
+                            $("#diagnosis_div").append('<input type="text" class="form-control" id="diagnosis_input" name="diag_manual" value="'+response.diagnosis_details.patient_diagnosis_text+'">');
+                        }
                         $("#new_record").text("<?php echo lang('save').' '.lang('changes'); ?>");
                         $("#cancel_change_td").append('<button type="button" class="btn btn-danger" id="cancel_changes" onclick="cancelChanges();">'+"<?php echo lang('cancel').' '.lang('changes') ?>"+'</button>');
                         $("#tr_"+id).addClass("bg-gray-200");
@@ -723,17 +763,20 @@
         function JqueryFunctionCall() {
             var encounter_value = $("#encounter").val();
             /*FlatPicker Element*/
-                var date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->diagnosis_date.' UTC')):'today'?>";
+                var diag_date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->diagnosis_date.' UTC')):'today'?>";
+                var onset_date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->onset_date.' UTC')):'today'?>";
                 var diag = "<?php echo $id?$id:'' ?>";
                 console.log(diag);
                 if (diag === "") {
-                    var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                    var diag_timenow = diag_date;
+                    var onset_timenow = onset_date;
                     var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
                 } else {
-                    var timenow = date;
+                    var diag_timenow = diag_date;
+                    var onset_timenow = onset_date;
                     var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
                 }
-                flatpickr(".flatpickr", {
+                flatpickr("#date1", {
                     disable: [maxdate],
                     maxDate: maxdate,
                     altInput: true,
@@ -741,7 +784,18 @@
                     dateFormat: "Y-m-d h:i K",
                     disableMobile: "true",
                     enableTime: true,
-                    defaultDate: timenow,
+                    defaultDate: diag_timenow,
+                });
+
+                flatpickr("#on_date1", {
+                    disable: [maxdate],
+                    maxDate: maxdate,
+                    altInput: true,
+                    altFormat: "F j, Y h:i K",
+                    dateFormat: "Y-m-d h:i K",
+                    disableMobile: "true",
+                    enableTime: true,
+                    defaultDate: onset_timenow,
                 });
             /*FlatPicker Element*/
 
