@@ -122,6 +122,12 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
+        
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
@@ -158,6 +164,41 @@
             });
         });
     </script> -->
+
+    <script type="text/javascript">
+        function deleteMedicationRequest(id) {
+            console.log(id);
+            swal({
+                title: "Delete Medication Request?",
+                text: "This will remove the record",
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+            }, function (isConfirm) {
+                if (!isConfirm) return;
+                $.ajax({
+                    url: "prescription/delete?id="+id,
+                    type: "GET",
+                    data: '',
+                    dataType: "json",
+                    success: function (response) {
+                        // swal("Done!", "You successfully removed the Service Request with ID of "+response, "success");
+                        swal({
+                            title: "Done!",
+                            text: "You successfully removed the Medication Request with ID of "+response,
+                            type: "success",
+                        }, function (isConfirm) {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        swal("Error on Removing Medication Request!", "Please try again", "error");
+                    }
+                });
+            });
+        }
+    </script>
+
     <script>
         $(document).ready(function () {
             var table = $('#editable-sample1').DataTable({

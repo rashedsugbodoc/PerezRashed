@@ -703,13 +703,14 @@ class Prescription extends MX_Controller {
                     $this->session->set_flashdata('success', lang('error_deleting_record'));
                 }
                 
-                if (!empty($patient)) {
-                    redirect('patient/caseHistory?patient_id=' . $patient);
-                } elseif (!empty($admin)) {
-                    redirect('prescription/all');
-                } else {
-                    redirect('prescription');
-                }
+                // if (!empty($patient)) {
+                //     redirect('patient/caseHistory?patient_id=' . $patient);
+                // } elseif (!empty($admin)) {
+                //     redirect('prescription/all');
+                // } else {
+                //     redirect('prescription');
+                // }
+                echo json_encode($id);
             }
         } else {
             $this->load->view('home/permission');
@@ -842,7 +843,8 @@ class Prescription extends MX_Controller {
             $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->prescription_number . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . lang('edit'). '</a>';
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete'). '</a>';
+                // $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete'). '</a>';
+                $option2 = '<button type="button" class="btn btn-danger" onclick="deleteMedicationRequest('.$prescription->id.');"><i class="fe fe-trash-2"></i>'.lang('delete').'</button>';
             }
 
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->prescription_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
@@ -964,7 +966,8 @@ class Prescription extends MX_Controller {
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '&admin=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i>' .' '. lang('delete') . '</a>';
+                // $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '&admin=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i>' .' '. lang('delete') . '</a>';
+                $option2 = '<button type="button" class="btn btn-danger" onclick="deleteMedicationRequest('.$prescription->id.');"><i class="fe fe-trash-2"></i>'.lang('delete').'</button>';
             }
             
             
