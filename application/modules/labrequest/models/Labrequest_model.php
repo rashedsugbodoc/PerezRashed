@@ -56,6 +56,18 @@ class Labrequest_model extends CI_model {
         return $this->db->affected_rows() > 0;
     }
 
+    function deleteServiceRequest($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('service_request');
+        return $this->db->affected_rows() > 0;
+    }
+
+    function deleteServiceRequestItemByServiceRequestId($id) {
+        $this->db->where('service_request_id', $id);
+        $this->db->delete('service_request_item');
+        return $this->db->affected_rows() > 0;
+    }
+
     function getLabrequestInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');

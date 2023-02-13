@@ -516,19 +516,20 @@ class Labrequest extends MX_Controller {
         echo json_encode($data);
     }
 
-    function deleteLabrequestByRequestNumber() {
+    function deleteServiceRequestById() {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
-        $request_number = $this->input->get('request_number');
+        $id = $this->input->get('id');
 
-        if ($this->labrequest_model->deleteLabrequestByRequestNumber($request_number)) {
+        if ($this->labrequest_model->deleteServiceRequest($id)) {
+            $this->labrequest_model->deleteServiceRequestItemByServiceRequestId($id);
             $this->session->set_flashdata('success', lang('record_deleted'));
         } else {
             $this->session->set_flashdata('error', lang('error_deleting_record'));
         }
 
-        redirect('labrequest');
+        echo json_encode($id);
     }
 
     function labrequestView() {
@@ -630,7 +631,8 @@ class Labrequest extends MX_Controller {
             }
             $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->service_request_number.'"><i class="fa fa-file-text-o"></i>'.' '.lang('details').'</a>';
             if ($this->ion_auth->in_group(array('admin', 'Midwife'))) {
-                $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->service_request_number.'"><i class="fe fe-trash-2"></i>'.' '.lang('delete').'</a>';
+                // $option3 = '<a class="btn btn-danger" href="labrequest/deleteServiceRequestById?id='.$labrequest->id.'"><i class="fe fe-trash-2"></i>'.' '.lang('delete').'</a>';
+                $option3 = '<button type="button" class="btn btn-danger" onclick="deleteServiceRequest('.$labrequest->id.');"><i class="fe fe-trash-2"></i>'.lang('delete').'</button>';
             }
             if (!empty($patient_id)) {
                 $options4 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->service_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id.'"><i class="fe fe-edit"></i></a>';

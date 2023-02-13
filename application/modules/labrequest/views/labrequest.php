@@ -108,7 +108,54 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        function deleteServiceRequest(id) {
+            console.log(id);
+            swal({
+                title: "Delete Service Request?",
+                text: "This will remove the record",
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+            }, function (isConfirm) {
+                if (!isConfirm) return;
+                $.ajax({
+                    url: "labrequest/deleteServiceRequestById?id="+id,
+                    type: "GET",
+                    data: '',
+                    dataType: "json",
+                    success: function (response) {
+                        // swal("Done!", "You successfully removed the Service Request with ID of "+response, "success");
+                        swal({
+                            title: "Done!",
+                            text: "You successfully removed the Service Request with ID of "+response,
+                            type: "success",
+                        }, function (isConfirm) {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        swal("Error on Removing Service Request!", "Please try again", "error");
+                    }
+                });
+            });
+        }
+    </script>
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function() {
+            $(".confirm").onclick(function() {
+                location.reload();
+            })
+        })
+    </script> -->
 
     <script>
         $(document).ready(function () {
