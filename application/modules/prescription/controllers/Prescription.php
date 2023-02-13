@@ -1071,7 +1071,7 @@ class Prescription extends MX_Controller {
                 $medicine_details = $this->medicine_model->getMedicineById($mri->medicine_id);
                 $medicine_select_option = '<option value="'.$mri->medicine_id.'*'.$medicine_details->name.'*'.$mri->uses.'*'.$medicine_details->form.'*'.$medicine_details->generic.'" selected>'.$medicine_details->generic.' ( '.$medicine_details->name.' ) '.$medicine_details->form.'</option>';
                 $data['medicine_display'] .= '<tr class="record_row_'.$data['count'].'">
-                                            <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['count'].'" onclick="removeRecord('.$data['count'].')"><i class="fe fe-trash-2"></i></button><input type="text" name="medicine_id[]" id="medicine_id_'.$data['count'].'" value="'.$mri->medicine_id.'"></td>
+                                            <td><button class="btn btn-danger btn-sm" id="delete_record_'.$data['count'].'" onclick="removeRecord('.$data['count'].')"><i class="fe fe-trash-2"></i></button><input type="hidden" name="medicine_id[]" id="medicine_id_'.$data['count'].'" value="'.$mri->medicine_id.'"></td>
                                             <td><select class="select2-show-search form-control medicine_select" name="medicine_select[]" id="medicine_select'.$data['count'].'" value="" onchange="selectMedicine('.$data['count'].')">'.$medicine_select_option.'</select></td>
                                             <td><input type="text" class="form-control" name="quantity[]" id="quantity'.$data['count'].'" value="'.$mri->quantity.'"></td>
                                         </tr>
