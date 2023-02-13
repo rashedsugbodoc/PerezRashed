@@ -155,8 +155,13 @@
                     data: '',
                     dataType: "json",
                     success: function (response) {
-                        swal("Done!", "You Successfully Remove a Diagnosis", "success");
-                        location.reload();
+                        swal({
+                            title: "Done!",
+                            text: "You successfully removed the Diagnosis with ID of "+response,
+                            type: "success",
+                        }, function (isConfirm) {
+                            location.reload();
+                        });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         swal("Error on Removing Diagnosis!", "Please try again", "error");
