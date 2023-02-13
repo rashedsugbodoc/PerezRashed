@@ -703,6 +703,7 @@
                             var onset_date = response.onset_date;
                             var diag = "<?php echo $id?$id:'' ?>";
                             console.log(diag);
+                            JqueryFunctionCall()
                             if (diag === "") {
                                 var diag_timenow = diag_date;
                                 var onset_timenow = onset_date;
@@ -742,6 +743,7 @@
                             var onset_date = response.onset_date;
                             var diag = "<?php echo $id?$id:'' ?>";
                             console.log(diag);
+                            JqueryFunctionCall()
                             if (diag === "") {
                                 var diag_timenow = diag_date;
                                 var onset_timenow = onset_date;
@@ -831,40 +833,42 @@
         function JqueryFunctionCall() {
             var encounter_value = $("#encounter").val();
             /*FlatPicker Element*/
-                var diag_date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->diagnosis_date.' UTC')):'today'?>";
-                var onset_date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->onset_date.' UTC')):'today'?>";
-                var diag = "<?php echo $id?$id:'' ?>";
-                console.log(diag);
                 if (diag === "") {
-                    var diag_timenow = diag_date;
-                    var onset_timenow = onset_date;
-                    var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
-                } else {
-                    var diag_timenow = diag_date;
-                    var onset_timenow = onset_date;
-                    var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
-                }
-                flatpickr("#date1", {
-                    disable: [maxdate],
-                    maxDate: maxdate,
-                    altInput: true,
-                    altFormat: "F j, Y h:i K",
-                    dateFormat: "Y-m-d h:i K",
-                    disableMobile: "true",
-                    enableTime: true,
-                    defaultDate: diag_timenow,
-                });
+                    var diag_date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->diagnosis_date.' UTC')):'today'?>";
+                    var onset_date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis->onset_date.' UTC')):'today'?>";
+                    var diag = "<?php echo $id?$id:'' ?>";
+                    console.log(diag);
+                    if (diag === "") {
+                        var diag_timenow = diag_date;
+                        var onset_timenow = onset_date;
+                        var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                    } else {
+                        var diag_timenow = diag_date;
+                        var onset_timenow = onset_date;
+                        var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                    }
+                    flatpickr("#date1", {
+                        disable: [maxdate],
+                        maxDate: maxdate,
+                        altInput: true,
+                        altFormat: "F j, Y h:i K",
+                        dateFormat: "Y-m-d h:i K",
+                        disableMobile: "true",
+                        enableTime: true,
+                        defaultDate: diag_timenow,
+                    });
 
-                flatpickr("#on_date1", {
-                    disable: [maxdate],
-                    maxDate: maxdate,
-                    altInput: true,
-                    altFormat: "F j, Y h:i K",
-                    dateFormat: "Y-m-d h:i K",
-                    disableMobile: "true",
-                    enableTime: true,
-                    defaultDate: onset_timenow,
-                });
+                    flatpickr("#on_date1", {
+                        disable: [maxdate],
+                        maxDate: maxdate,
+                        altInput: true,
+                        altFormat: "F j, Y h:i K",
+                        dateFormat: "Y-m-d h:i K",
+                        disableMobile: "true",
+                        enableTime: true,
+                        defaultDate: onset_timenow,
+                    });
+                }
             /*FlatPicker Element*/
 
             /*Doctor DropDown*/
