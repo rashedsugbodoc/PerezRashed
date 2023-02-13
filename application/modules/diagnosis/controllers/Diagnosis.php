@@ -787,6 +787,9 @@ class Diagnosis extends MX_Controller {
             $user = '';
         }
 
+        $data['diagnosis_date'] = date('Y-m-d H:i A', strtotime($data['diagnosis_details']->diagnosis_date.' UTC'));
+        $data['onset_date'] = date('Y-m-d H:i A', strtotime($data['diagnosis_details']->onset_date.' UTC'));
+
         $data['user'] = $user;
         
         echo json_encode($data);

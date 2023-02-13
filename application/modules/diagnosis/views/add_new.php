@@ -699,11 +699,79 @@
                             $("#diagnosis_div").empty();
                             $("#diagnosis_div").append('<select class="select2-show-search form-control diagnosis_select" name="diag" id="diagnosis_select" value=""></select>');
                             $("#diagnosis_select").append($('<option selected>').text(response.diagnosis.long_description).val(response.diagnosis.id)).end();
-                            JqueryFunctionCall();
+                            var diag_date = response.diagnosis_date;
+                            var onset_date = response.onset_date;
+                            var diag = "<?php echo $id?$id:'' ?>";
+                            console.log(diag);
+                            if (diag === "") {
+                                var diag_timenow = diag_date;
+                                var onset_timenow = onset_date;
+                                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                            } else {
+                                var diag_timenow = diag_date;
+                                var onset_timenow = onset_date;
+                                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                            }
+                            flatpickr("#date1", {
+                                disable: [maxdate],
+                                maxDate: maxdate,
+                                altInput: true,
+                                altFormat: "F j, Y h:i K",
+                                dateFormat: "Y-m-d h:i K",
+                                disableMobile: "true",
+                                enableTime: true,
+                                defaultDate: diag_timenow+1,
+                            });
+
+                            flatpickr("#on_date1", {
+                                disable: [maxdate],
+                                maxDate: maxdate,
+                                altInput: true,
+                                altFormat: "F j, Y h:i K",
+                                dateFormat: "Y-m-d h:i K",
+                                disableMobile: "true",
+                                enableTime: true,
+                                defaultDate: onset_timenow+1,
+                            });
+                            // JqueryFunctionCall();
                         } else {
                             $("#switchDiagnosisType").text('Select from List');
                             $("#diagnosis_div").empty();
                             $("#diagnosis_div").append('<input type="text" class="form-control" id="diagnosis_input" name="diag_manual" value="'+response.diagnosis_details.patient_diagnosis_text+'">');
+                            var diag_date = response.diagnosis_date;
+                            var onset_date = response.onset_date;
+                            var diag = "<?php echo $id?$id:'' ?>";
+                            console.log(diag);
+                            if (diag === "") {
+                                var diag_timenow = diag_date;
+                                var onset_timenow = onset_date;
+                                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                            } else {
+                                var diag_timenow = diag_date;
+                                var onset_timenow = onset_date;
+                                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                            }
+                            flatpickr("#date1", {
+                                disable: [maxdate],
+                                maxDate: maxdate,
+                                altInput: true,
+                                altFormat: "F j, Y h:i K",
+                                dateFormat: "Y-m-d h:i K",
+                                disableMobile: "true",
+                                enableTime: true,
+                                defaultDate: diag_timenow,
+                            });
+
+                            flatpickr("#on_date1", {
+                                disable: [maxdate],
+                                maxDate: maxdate,
+                                altInput: true,
+                                altFormat: "F j, Y h:i K",
+                                dateFormat: "Y-m-d h:i K",
+                                disableMobile: "true",
+                                enableTime: true,
+                                defaultDate: onset_timenow,
+                            });
                         }
                         $("#new_record").text("<?php echo lang('save').' '.lang('changes'); ?>");
                         $("#cancel_change_td").append('<button type="button" class="btn btn-danger" id="cancel_changes" onclick="cancelChanges();">'+"<?php echo lang('cancel').' '.lang('changes') ?>"+'</button>');
